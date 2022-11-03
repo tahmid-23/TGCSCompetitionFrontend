@@ -2,11 +2,11 @@ import { Children, PropsWithChildren } from 'react';
 
 const BulletedList: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div>
+    <ul>
       {Children.map(children, (child) => {
         return <li>{child}</li>;
       })}
-    </div>
+    </ul>
   );
 };
 
