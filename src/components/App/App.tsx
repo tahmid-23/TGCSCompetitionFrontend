@@ -1,8 +1,7 @@
-import { ReactElement, useState } from 'react';
-import BulletedList from '../BulletedList/BulletedList';
+import { ReactElement, useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
-import Experience, { ExperienceCategory } from '../Experience/Experience';
+import ExperienceList from '../Experience/Experience';
 import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
@@ -13,6 +12,20 @@ const App = () => {
   const [searchString, setSearchString] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<string>('name');
   let inputComponent: ReactElement;
+
+  const [experienceData, setExperienceData] =
+    useState<Record<string, object>[]>();
+
+  useEffect(() => {
+    async function downloadData() {
+      const experienceJson = await fetch(
+        'http://192.168.1.8:3000/experiences'
+      ).then((res) => res.json());
+      setExperienceData(experienceJson);
+    }
+
+    downloadData();
+  }, []);
 
   if (searchFilter === 'grade') {
     inputComponent = <GradeFilter></GradeFilter>;
@@ -31,10 +44,10 @@ const App = () => {
   return (
     <>
       <>
-        <BulletedList>
-          <Experience name="AMC" category={ExperienceCategory.MATH} />
-          <Experience name="USACO" category={ExperienceCategory.CS} />
-        </BulletedList>
+        <ExperienceList
+          expData={experienceData || []}
+          filterData={searchString}
+        ></ExperienceList>
         <Button
           text="Add"
           onclick={() => {

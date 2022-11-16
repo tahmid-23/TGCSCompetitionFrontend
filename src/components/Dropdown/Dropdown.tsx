@@ -10,8 +10,12 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ name, id, items, onChange }) => {
   return (
     <select name={name} id={id} onChange={onChange}>
-      {items.map((item) => {
-        return <option value={item}>{item}</option>;
+      {items.map((item, index) => {
+        return (
+          <option key={index} value={item}>
+            {item}
+          </option>
+        );
       })}
     </select>
   );
