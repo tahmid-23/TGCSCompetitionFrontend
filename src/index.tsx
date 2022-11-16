@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App/App';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './components/Home/Home';
+import Update from './components/Update/Update';
 import './index.css';
 
 const root = ReactDOM.createRoot(
@@ -9,6 +11,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/update" element={<Update />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -1,13 +1,15 @@
+import { Link, To } from 'react-router-dom';
+
 interface ButtonProps {
   text: string;
-  onclick: () => void;
+  to: To;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, onclick }) => {
+const Button: React.FC<ButtonProps> = ({ text, to }) => {
   return (
-    <button type="button" onClick={onclick}>
-      {text}
-    </button>
+    <Link to={to}>
+      <button type="button">{text}</button>
+    </Link>
   );
 };
 

@@ -1,11 +1,6 @@
 import { ReactElement } from 'react';
 import BulletedList from '../BulletedList/BulletedList';
 
-export enum ExperienceCategory {
-  MATH,
-  CS
-}
-
 interface ExperienceProps {
   id: number;
   url?: string;
@@ -47,7 +42,7 @@ const ExperienceList: React.FC<ExpListProps> = ({ expData, filterData }) => {
           fee={Number(exp.fee)}
           name={String(exp.name)}
           category={categories}
-        ></Experience>
+        />
       );
     }
   }
