@@ -11,19 +11,20 @@ import TopicFilter from '../Search/TopicFilter';
 const Home = () => {
   const [searchString, setSearchString] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<string>('name');
+  const [highlightId, setHighlightId] = useState<number>();
   let inputComponent: ReactElement;
 
   const [experienceData, setExperienceData] =
     useState<Record<string, object>[]>();
 
-  useEffect(() => {
-    async function downloadData() {
-      const experienceJson = await fetch(
-        'http://192.168.1.8:3000/experiences'
-      ).then((res) => res.json());
-      setExperienceData(experienceJson);
-    }
+  async function downloadData() {
+    const experienceJson = await fetch(
+      'http://192.168.1.2:3000/experiences'
+    ).then((res) => res.json());
+    setExperienceData(experienceJson);
+  }
 
+  useEffect(() => {
     downloadData();
   }, []);
 
@@ -41,15 +42,42 @@ const Home = () => {
     );
   }
 
+  const onDelete = () => {
+    if (!highlightId) {
+      return;
+    }
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tableName: 'experience', rowId: highlightId })
+    };
+    fetch('http://192.168.1.2:3000/remove', requestOptions)
+      .then(() => {
+        setExperienceData(
+          experienceData?.filter(
+            (experience) => Number(experience.experience_id) !== highlightId
+          )
+        );
+      })
+      .finally(() => {
+        setHighlightId(undefined);
+      });
+  };
+
   return (
     <>
       <ExperienceList
         expData={experienceData || []}
         filterData={searchString}
+        highlightId={highlightId}
+        onSelect={(id) => {
+          setHighlightId(id);
+        }}
       />
-      <Button text="Add" to="/update" />
+      <Button text="Add" to="/add" />
       <Button text="Edit" to="/update" />
-      <Button text="Delete" to="/update" />
+      <Button text="Delete" onClick={onDelete} />
       <Dropdown
         name="test"
         id="test"
