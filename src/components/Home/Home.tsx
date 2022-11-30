@@ -1,4 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
+import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
 import ExperienceList from '../ExperienceList/ExperienceList';
@@ -18,9 +19,9 @@ const Home = () => {
     useState<Record<string, object>[]>();
 
   async function downloadData() {
-    const experienceJson = await fetch(
-      'http://192.168.1.2:3000/experiences'
-    ).then((res) => res.json());
+    const experienceJson = await fetch(`${IP_ADDRESS}/experiences`)
+      .then((res) => res.json())
+      .catch(() => alert('No Data Access'));
     setExperienceData(experienceJson);
   }
 
@@ -52,7 +53,7 @@ const Home = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tableName: 'experience', rowId: highlightId })
     };
-    fetch('http://192.168.1.2:3000/remove', requestOptions)
+    fetch(`${IP_ADDRESS}/remove`, requestOptions)
       .then(() => {
         setExperienceData(
           experienceData?.filter(
@@ -76,8 +77,8 @@ const Home = () => {
         }}
       />
       <Button text="Add" to="/add" />
-      <Button text="Edit" to="/update" />
-      <Button text="Delete" onClick={onDelete} />
+      <Button text="Edit" disabled={!highlightId} to="/update" />
+      <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
       <Dropdown
         name="test"
         id="test"

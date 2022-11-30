@@ -2,27 +2,34 @@ import { MouseEventHandler } from 'react';
 import { Link, To } from 'react-router-dom';
 
 interface ButtonProps {
+  disabled?: boolean;
   text: string;
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   to?: To;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, onClick, to }) => {
+const Button: React.FC<ButtonProps> = ({ disabled, text, onClick, to }) => {
   let result;
   if (onClick) {
     result = (
-      <button type="button" onClick={onClick}>
+      <button type="button" disabled={disabled} onClick={onClick}>
         {text}
       </button>
     );
   } else if (to) {
     result = (
       <Link to={to}>
-        <button type="button">{text}</button>
+        <button type="button" disabled={disabled}>
+          {text}
+        </button>
       </Link>
     );
   } else {
-    result = <button type="button">{text}</button>;
+    result = (
+      <button type="button" disabled={disabled}>
+        {text}
+      </button>
+    );
   }
 
   return result;

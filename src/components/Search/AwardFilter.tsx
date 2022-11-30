@@ -1,4 +1,4 @@
-import MultipleSelect from './MultipleSelect';
+import MultipleSelect from '../InputComponents/MultipleSelect';
 
 const AwardFilter = () => {
   return (

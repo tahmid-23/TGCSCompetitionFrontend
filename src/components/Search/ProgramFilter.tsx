@@ -1,4 +1,4 @@
-import MultipleChoice from './MultipleChoice';
+import MultipleChoice from '../InputComponents/MultipleChoice';
 
 const ProgramFilter = () => {
   return (
