@@ -21,7 +21,10 @@ const Home = () => {
   async function downloadData() {
     const experienceJson = await fetch(`${IP_ADDRESS}/experiences`)
       .then((res) => res.json())
-      .catch(() => alert('No Data Access'));
+      .catch((err) => {
+        alert('No Data Access');
+        console.error(err);
+      });
     setExperienceData(experienceJson);
   }
 
