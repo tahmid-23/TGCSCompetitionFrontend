@@ -1,4 +1,5 @@
 import { FormEventHandler } from 'react';
+import Dropdown from '../InputComponents/Dropdown';
 import CheckBox from '../InputComponents/CheckBox';
 import DateBox from '../InputComponents/DateBox';
 import MultipleChoice from '../InputComponents/MultipleChoice';
@@ -28,12 +29,11 @@ const AddForm: React.FC<AddFormProps> = ({ onSubmit }) => {
         <br></br>
         <NumberBox name="Entry Fee" id="fee" min="0"></NumberBox>
         <br></br>
-        <NumberBox
+        <Dropdown
           name="Participant Count"
           id="participant_count"
-          min="1"
-          interval="1"
-        ></NumberBox>
+          items={['1-10', '11-50', '51-99', '100+']}
+        ></Dropdown>
         <br></br>
         <NumberBox
           name="Origin Year"
@@ -123,16 +123,8 @@ const AddForm: React.FC<AddFormProps> = ({ onSubmit }) => {
         &nbsp; &nbsp; &nbsp; &nbsp;
         <TextBox name="Description" id="descrption"></TextBox>
         <br></br>
-        <TextBox name="Judge Description" id="judge_description"></TextBox>
         <br></br>
-        <TextBox name="Judging Criteria" id="judge_criteria"></TextBox>
-        <br></br>
-        <AwardFilter></AwardFilter>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <TextBox name="Description" id="descrption"></TextBox>
-        <br></br>
-        <br></br>
-        <input type="submit" value="Add"></input>
+        <input type="submit" value="Next"></input>
       </form>
     </>
   );

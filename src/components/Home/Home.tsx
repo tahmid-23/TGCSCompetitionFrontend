@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown from '../InputComponents/Dropdown';
 import ExperienceList from '../ExperienceList/ExperienceList';
 import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
