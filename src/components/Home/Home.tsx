@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
-import ExperienceList from '../ExperienceList/ExperienceList';
+import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
 import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
@@ -10,8 +10,8 @@ import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
 
 const Home = () => {
-  const [searchString, setSearchString] = useState<string>('');
-  const [searchFilter, setSearchFilter] = useState<string>('name');
+  const [filter, setFilter] = useState<Filter>();
+  const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
   let inputComponent: ReactElement;
 
@@ -32,17 +32,40 @@ const Home = () => {
     downloadData();
   }, []);
 
-  if (searchFilter === 'grade') {
+  if (filterType === 'grade') {
     inputComponent = <GradeFilter></GradeFilter>;
-  } else if (searchFilter === 'topic') {
-    inputComponent = <TopicFilter></TopicFilter>;
-  } else if (searchFilter === 'award') {
+  } else if (filterType === 'topic') {
+    inputComponent = (
+      <TopicFilter
+        onChange={(e) => {
+          console.log(e.currentTarget.checked);
+          setFilter(() => (experience: Record<string, any>) => {
+            for (const categoryObject of experience.categories) {
+              if (categoryObject.category === e.target.value) {
+                return true;
+              }
+            }
+
+            return false;
+          });
+        }}
+      ></TopicFilter>
+    );
+  } else if (filterType === 'award') {
     inputComponent = <AwardFilter></AwardFilter>;
-  } else if (searchFilter === 'program') {
+  } else if (filterType === 'program') {
     inputComponent = <ProgramFilter></ProgramFilter>;
   } else {
     inputComponent = (
-      <SearchBox name="test" id="test" output={setSearchString}></SearchBox>
+      <SearchBox
+        name="test"
+        id="test"
+        onChange={(e) =>
+          setFilter(() => (experience: Record<string, any>) => {
+            return String(experience.name).includes(e.target.value);
+          })
+        }
+      ></SearchBox>
     );
   }
 
@@ -73,7 +96,7 @@ const Home = () => {
     <>
       <ExperienceList
         expData={experienceData || []}
-        filterData={searchString}
+        filter={filter}
         highlightId={highlightId}
         onSelect={(id) => {
           setHighlightId(id);
@@ -87,12 +110,11 @@ const Home = () => {
         id="test"
         items={['name', 'grade', 'topic', 'award', 'program']}
         onChange={(e) => {
-          setSearchFilter(e.target.value);
+          setFilterType(e.target.value);
         }}
       />
       {inputComponent}
       <hr />
-      <h1>Search Results: {searchString}</h1>
     </>
   );
 };
