@@ -1,13 +1,22 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { IP_ADDRESS } from '../../Global';
+import { IP_ADDRESS } from '../../global';
 import Button from '../Button/Button';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown from '../InputComponents/Dropdown';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
 import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
 import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
+
+async function downloadData(): Promise<any> {
+  return await fetch(`${IP_ADDRESS}/experiences`)
+    .then((res) => res.json())
+    .catch((err) => {
+      alert('No Data Access');
+      console.error(err);
+    });
+}
 
 const Home = () => {
   const [filter, setFilter] = useState<Filter>();
@@ -18,18 +27,8 @@ const Home = () => {
   const [experienceData, setExperienceData] =
     useState<Record<string, object>[]>();
 
-  async function downloadData() {
-    const experienceJson = await fetch(`${IP_ADDRESS}/experiences`)
-      .then((res) => res.json())
-      .catch((err) => {
-        alert('No Data Access');
-        console.error(err);
-      });
-    setExperienceData(experienceJson);
-  }
-
   useEffect(() => {
-    downloadData();
+    downloadData().then(setExperienceData);
   }, []);
 
   if (filterType === 'grade') {
@@ -37,11 +36,10 @@ const Home = () => {
   } else if (filterType === 'topic') {
     inputComponent = (
       <TopicFilter
-        onChange={(e) => {
-          console.log(e.currentTarget.checked);
+        onTopicChange={(topics) => {
           setFilter(() => (experience: Record<string, any>) => {
             for (const categoryObject of experience.categories) {
-              if (categoryObject.category === e.target.value) {
+              if (topics.includes(categoryObject.category)) {
                 return true;
               }
             }

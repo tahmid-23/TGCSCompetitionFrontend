@@ -1,28 +1,34 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import MultipleSelect from '../InputComponents/MultipleSelect';
 
 interface TopicFilterProps {
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onTopicChange?: (arg0: string[]) => void;
 }
 
-const TopicFilter: React.FC<TopicFilterProps> = ({ onChange }) => {
-  const [topics, setTopics] = useState<string[]>();
+const TopicFilter: React.FC<TopicFilterProps> = ({ onTopicChange }) => {
+  const [topics, setTopics] = useState<string[]>([]);
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let newTopics;
+    if (e.currentTarget.checked) {
+      setTopics((newTopics = topics.concat(e.currentTarget.value)));
+    } else {
+      setTopics(
+        (newTopics = topics.filter((topic) => topic !== e.currentTarget.value))
+      );
+    }
+
+    if (onTopicChange) {
+      onTopicChange(newTopics);
+    }
+  };
 
   return (
     <>
       <MultipleSelect
         name="technology"
         value="Technology"
-        onChange={(e) => {
-          if (e.currentTarget.checked) {
-            if (topics?.includes()) {
-              
-            }
-            setTopics([...(topics || []), e.currentTarget.value]);
-          } else {
-            
-          }
-        }}
+        onChange={onChange}
       ></MultipleSelect>
       <MultipleSelect
         name="science"

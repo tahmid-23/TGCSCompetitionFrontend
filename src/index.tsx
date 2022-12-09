@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Add from './components/Add/Add';
+import AddCompetition from './components/Add/AddCompetition';
+import AddProgram from './components/Add/AddProgram';
 import ExperienceOverview from './components/ExperienceOverview/ExperienceOverview';
 import Home from './components/Home/Home';
 import Update from './components/Update/Update';
@@ -26,6 +28,8 @@ root.render(
             />
           }
         />
+        <Route path="/add_competition" element={<AddCompetition />} />
+        <Route path="/add_program" element={<AddProgram />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
