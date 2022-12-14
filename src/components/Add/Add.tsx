@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { IP_ADDRESS } from '../../global';
+import { IP_ADDRESS } from '../../Global';
 import AddForm from '../Forms/AddForm';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
