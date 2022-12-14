@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { IP_ADDRESS } from '../../global';
+import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
 import Dropdown from '../InputComponents/Dropdown';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
@@ -8,6 +8,7 @@ import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
 import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
+import { useNavigate } from 'react-router';
 
 async function downloadData(): Promise<any> {
   return await fetch(`${IP_ADDRESS}/experiences`)
@@ -22,6 +23,7 @@ const Home = () => {
   const [filter, setFilter] = useState<Filter>();
   const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
+  const navigate = useNavigate();
   let inputComponent: ReactElement;
 
   const [experienceData, setExperienceData] =
@@ -103,6 +105,13 @@ const Home = () => {
       <Button text="Add" to="/add" />
       <Button text="Edit" disabled={!highlightId} to="/update" />
       <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
+      <Button
+        text="View"
+        disabled={!highlightId}
+        onClick={() => {
+          navigate(`/view/${highlightId}`);
+        }}
+      />
       <Dropdown
         name="test"
         id="test"
