@@ -6,7 +6,6 @@ import MultipleChoice from '../InputComponents/MultipleChoice';
 import NumberBox from '../InputComponents/NumberBox';
 import TextBox from '../InputComponents/TextBox';
 import URLBox from '../InputComponents/URLBox';
-import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
 import TopicFilter from '../Search/TopicFilter';
 
@@ -102,8 +101,6 @@ const AddForm: React.FC<AddFormProps> = ({ onSubmit }) => {
         <DateBox name="Start Date" id="start_date"></DateBox>
         <br></br>
         <DateBox name="End Date" id="end_date"></DateBox>
-        <br></br>
-        <DateBox name="Application Due Date" id="due_date"></DateBox>
         <br></br>
         <TextBox
           name="Prerequisite Description"

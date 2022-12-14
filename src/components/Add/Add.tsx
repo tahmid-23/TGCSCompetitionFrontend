@@ -3,7 +3,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import AddForm from '../Forms/AddForm';
 
-function getValue(event: FormEvent<HTMLFormElement>, id: string): any {
+function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
   if (value === '') {
     return null;
@@ -37,7 +37,6 @@ async function onSubmit(
     address: getValue(event, 'address'),
     start_date: getValue(event, 'start_date'),
     end_date: getValue(event, 'end_date'),
-    application_due_date: getValue(event, 'due_date'),
     prerequisite_description: getValue(event, 'prerequisite_description'),
     entry_description: getValue(event, 'entry_description')
   };
@@ -84,20 +83,28 @@ async function onSubmit(
     }
   }
 
-  const experienceId = await fetch(
-    `${IP_ADDRESS}/insert`,
-    experienceRequestOptions
-  ).then((res) => {
-    if (res.status === 400) {
-      alert('Something went wrong!');
-    } else if (res.status === 200 || res.status === 204) {
-      alert('Success!');
-      return res.json();
-    } else {
-      alert('We have no idea what went wrong\n But its not error 400.');
-    }
-  });
+  let experienceId: number;
+  try {
+    experienceId = await fetch(
+      `${IP_ADDRESS}/insert`,
+      experienceRequestOptions
+    ).then((res) => {
+      if (res.status === 400) {
+        throw new Error('Something went wrong!');
+      } else if (res.status === 200 || res.status === 204) {
+        return res.json();
+      } else {
+        throw new Error(
+          'We have no idea what went wrong\n But its not error 400.'
+        );
+      }
+    });
+  } catch (err) {
+    alert(err);
+    return;
+  }
 
+  const promises = [];
   for (const g of selected_grades) {
     const grade_data = {
       experience_id: experienceId,
@@ -108,17 +115,23 @@ async function onSubmit(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tableName: 'experience_grade', data: grade_data })
     };
-    await fetch(`${IP_ADDRESS}/insert`, gradeRequestOptions).then((res) => {
+    const gradePromise = fetch(
+      `${IP_ADDRESS}/insert`,
+      gradeRequestOptions
+    ).then((res) => {
       if (res.status === 400) {
-        alert('Something went wrong!');
+        throw new Error('Something went wrong!');
       } else if (res.status === 200 || res.status === 204) {
-        alert('Success!');
-        return res.json();
+        return 'Success!';
       } else {
-        alert('We have no idea what went wrong\n But its not error 400.');
+        throw new Error(
+          'We have no idea what went wrong\n But its not error 400.'
+        );
       }
     });
+    promises.push(gradePromise);
   }
+
   for (const t of selected_topics) {
     const topic_data = {
       experience_id: experienceId,
@@ -132,19 +145,29 @@ async function onSubmit(
         data: topic_data
       })
     };
-    await fetch(`${IP_ADDRESS}/insert`, topicRequestOptions).then((res) => {
+    const topicPromise = fetch(
+      `${IP_ADDRESS}/insert`,
+      topicRequestOptions
+    ).then((res) => {
       if (res.status === 400) {
-        alert('Something went wrong!');
+        throw new Error('Something went wrong!');
       } else if (res.status === 200 || res.status === 204) {
-        alert('Success!');
         return res.json();
       } else {
-        alert('We have no idea what went wrong\n But its not error 400.');
+        throw new Error(
+          'We have no idea what went wrong\n But its not error 400.'
+        );
       }
     });
+    promises.push(topicPromise);
   }
 
-  navigate(`/add_${type.toLowerCase()}?experienceId=${experienceId}`);
+  await Promise.all(promises)
+    .then(() => {
+      alert('Success!');
+      navigate(`/add_${type.toLowerCase()}?experienceId=${experienceId}`);
+    })
+    .catch(alert);
 }
 
 const Add = () => {
