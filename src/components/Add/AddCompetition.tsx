@@ -4,7 +4,7 @@ import {
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
+import { IP_ADDRESS } from '../../global';
 import CompetitionAddForm from '../Forms/CompetitionAddForm';
 
 async function onSubmit(

@@ -32,21 +32,24 @@ const Experience: React.FC<ExperienceProps> = ({
   );
 };
 
+export type Filter = (arg0: Record<string, any>) => boolean;
+
 interface ExpListProps {
   expData: Record<string, any>[];
-  filterData: string;
+  filter?: Filter;
   highlightId?: number;
   onSelect?: (arg0: number) => void;
 }
+
 const ExperienceList: React.FC<ExpListProps> = ({
   expData,
-  filterData,
+  filter,
   highlightId,
   onSelect
 }) => {
   const validExp: ReactElement[] = [];
   for (const exp of expData) {
-    if (filterData === '' || String(exp.name).includes(filterData)) {
+    if (!filter || filter(exp)) {
       let categories = '';
       for (const category of exp.categories) {
         categories += String(category.category) + ', ';
