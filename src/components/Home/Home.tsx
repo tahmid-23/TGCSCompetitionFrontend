@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
 import Dropdown from '../InputComponents/Dropdown';
@@ -69,7 +69,7 @@ const Home = () => {
     );
   }
 
-  const onDelete = () => {
+  const onDelete = useCallback(() => {
     if (!highlightId) {
       return;
     }
@@ -90,7 +90,7 @@ const Home = () => {
       .finally(() => {
         setHighlightId(undefined);
       });
-  };
+  }, [experienceData, highlightId]);
 
   return (
     <>
@@ -98,9 +98,7 @@ const Home = () => {
         expData={experienceData || []}
         filter={filter}
         highlightId={highlightId}
-        onSelect={(id) => {
-          setHighlightId(id);
-        }}
+        onSelect={setHighlightId}
       />
       <Button text="Add" to="/add" />
       <Button text="Edit" disabled={!highlightId} to="/update" />
@@ -117,7 +115,7 @@ const Home = () => {
         id="test"
         items={['name', 'grade', 'topic', 'award', 'program']}
         onChange={(e) => {
-          setFilterType(e.target.value);
+          setFilterType(e.currentTarget.value);
         }}
       />
       {inputComponent}

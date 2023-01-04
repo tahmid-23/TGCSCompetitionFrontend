@@ -1,96 +1,84 @@
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
+import { Experience, ExperienceType } from '../../../experience';
 import QuickNavigation from '../../QuickNavigation/QuickNavigation';
 import styles from '../Overview.module.css';
 
 interface ExperienceOverviewProps {
-  experienceId: number;
-  competitionName: string;
-  category: string;
-  url?: string;
-  fee: number;
-  grades: string[];
-  categories: string[];
-  participantCount?: string;
-  originYear?: Date;
-  purpose?: string;
-  description: string;
-  requiredItems?: string;
-  advice?: string;
+  experience: Experience;
 }
 
-const ExperienceOverview: React.FC<
-  PropsWithChildren<ExperienceOverviewProps>
-> = ({
-  experienceId,
-  competitionName,
-  children,
-  url,
-  fee,
-  grades,
-  categories,
-  participantCount,
-  originYear,
-  purpose,
-  description,
-  requiredItems,
-  advice,
-  category
-}) => {
+const ExperienceOverview = ({
+  experience,
+  children
+}: PropsWithChildren<ExperienceOverviewProps>) => {
   const navigate = useNavigate();
 
   return (
     <>
       <div className={styles.infoEntry}>
-        <h1 className={styles.title}>{competitionName}</h1>
+        <h1 className={styles.title}>{experience.name}</h1>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Category: {category}</p>
+        <p className={styles.info}>Type: {ExperienceType[experience.type]}</p>
       </div>
-      {url && (
+      {experience.website_url && (
         <div className={styles.infoEntry}>
           <span className={styles.info}>Website URL:</span>
           &nbsp;
-          <a className={styles.info} href={url}>
-            {url}
+          <a className={styles.info} href={experience.website_url}>
+            {experience.website_url}
           </a>
         </div>
       )}
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Entry Fee: ${fee}</p>
+        <p className={styles.info}>Entry Fee: ${experience.entry_fee}</p>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Grades: {grades.join(', ')}</p>
+        <p className={styles.info}>
+          Grades: {experience.grades.map((grade) => grade.grade).join(', ')}
+        </p>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Categories: {categories.join(', ')}</p>
+        <p className={styles.info}>
+          Categories:{' '}
+          {experience.categories
+            .map((category) => category.category)
+            .join(', ')}
+        </p>
       </div>
-      {participantCount && (
+      {experience.participant_count && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Participant count: {participantCount}</p>
+          <p className={styles.info}>
+            Participant count: {experience.participant_count}
+          </p>
         </div>
       )}
-      {originYear && (
+      {experience.origin_year && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Origin Year: {originYear.getFullYear()}</p>
+          <p className={styles.info}>
+            Origin Year: {experience.origin_year.getFullYear()}
+          </p>
         </div>
       )}
-      {purpose && (
+      {experience.purpose && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Purpose: {purpose}</p>
+          <p className={styles.info}>Purpose: {experience.purpose}</p>
         </div>
       )}
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Description: {description}</p>
+        <p className={styles.info}>Description: {experience.description}</p>
       </div>
-      {requiredItems && (
+      {experience.required_items && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Required Items: {requiredItems}</p>
+          <p className={styles.info}>
+            Required Items: {experience.required_items}
+          </p>
         </div>
       )}
-      {advice && (
+      {experience.advice && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Advice: {advice}</p>
+          <p className={styles.info}>Advice: {experience.advice}</p>
         </div>
       )}
       {children}
@@ -99,7 +87,9 @@ const ExperienceOverview: React.FC<
         &nbsp;
         <button
           type="button"
-          onClick={() => navigate(`/feedback?experienceId=${experienceId}`)}
+          onClick={() =>
+            navigate(`/feedback?experienceId=${experience.experience_id}`)
+          }
         >
           Submit Feedback
         </button>

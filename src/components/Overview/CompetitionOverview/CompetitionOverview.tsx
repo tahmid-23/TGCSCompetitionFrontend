@@ -1,47 +1,47 @@
 import React from 'react';
-import competitionStyles from './CompetitionOverview.module.css';
+import { Competition } from '../../../competition';
 import styles from '../Overview.module.css';
-
-export interface Award {
-  type: string;
-  description?: string;
-}
+import competitionStyles from './CompetitionOverview.module.css';
 
 interface CompetitionOverviewProps {
-  judgesDescription?: string;
-  judgingCriteria: string;
-  awards: Award[];
+  competition: Competition;
 }
 
 const CompetitionOverview: React.FC<CompetitionOverviewProps> = ({
-  judgesDescription,
-  judgingCriteria,
-  awards
+  competition
 }) => {
   return (
     <>
-      {judgesDescription && (
+      {competition.judges_description && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Judge Description: {judgesDescription}</p>
+          <p className={styles.info}>
+            Judge Description: {competition.judges_description}
+          </p>
         </div>
       )}
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Judging Criteria: {judgingCriteria}</p>
+        <p className={styles.info}>
+          Judging Criteria: {competition.judging_criteria}
+        </p>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>Awards: </p>
-      </div>
-      <ul className={competitionStyles.awardList}>
-        {awards.map((award, index) => {
-          return (
-            <li key={index} className={styles.infoEntry}>
-              <p className={styles.info}>
-                {award.type}: {award.description}
-              </p>
-            </li>
-          );
-        })}
-      </ul>
+      {competition.awards.length !== 0 && (
+        <>
+          <div className={styles.infoEntry}>
+            <p className={styles.info}>Awards: </p>
+          </div>
+          <ul className={competitionStyles.awardList}>
+            {competition.awards.map((award, index) => {
+              return (
+                <li key={index} className={styles.infoEntry}>
+                  <p className={styles.info}>
+                    {award.type}: {award.description}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
     </>
   );
 };

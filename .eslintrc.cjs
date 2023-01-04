@@ -1,16 +1,17 @@
 module.exports = {
+  env: {
+    browser: true,
+    es6: true
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'react-app'
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
-  root: true,
-  env: {
-    es6: true
-  },
+  plugins: ['@typescript-eslint'],
   rules: {
-    'prettier/prettier': 2
+    '@typescript-eslint/no-empty-interface': 'off',
+    'no-constant-condition': 'off'
   }
 };

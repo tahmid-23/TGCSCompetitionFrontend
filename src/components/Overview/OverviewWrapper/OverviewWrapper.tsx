@@ -1,19 +1,27 @@
-import { ReactFragment, ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { Competition } from '../../../competition';
+import {
+  Experience,
+  ExperienceGrade,
+  ExperienceType
+} from '../../../experience';
 import { IP_ADDRESS } from '../../../Global';
-import CompetitionOverview, {
-  Award
-} from '../CompetitionOverview/CompetitionOverview';
+import { Program } from '../../../program';
+import CompetitionOverview from '../CompetitionOverview/CompetitionOverview';
 import ExperienceOverview from '../ExperienceOverview/ExperienceOverview';
+import ProgramOverview from '../ProgramOverview/ProgramOverview';
 
 const OverviewWrapper = () => {
   const params = useParams();
-  const experienceId = Number(params['experienceId']);
-  const [loaded, setLoaded] = useState<boolean>();
-  const [data, setData] = useState<any>();
+  const [loaded, setLoaded] = useState(false);
+  const [data, setData] = useState<
+    (Experience & Competition) | (Experience & Program)
+  >();
 
-  const downloadData = async () => {
-    if (!experienceId) {
+  const experienceId = Number(params['experienceId']);
+  const downloadData = useCallback(async () => {
+    if (!experienceId || loaded) {
       return;
     }
 
@@ -23,6 +31,26 @@ const OverviewWrapper = () => {
         for (const experience of res) {
           if (Number(experience.experience_id) !== experienceId) {
             continue;
+          }
+          experience.type =
+            ExperienceType[experience.type as keyof typeof ExperienceType];
+          const newGrades: ExperienceGrade[] = [];
+          for (const grade of experience.grades) {
+            newGrades.push({ grade: grade });
+          }
+          experience.origin_year = new Date(experience.origin_year);
+          experience.start_date = new Date(experience.start_date);
+          experience.end_date = new Date(experience.end_date);
+          const newDates = [];
+          for (const importantDate of experience.important_dates) {
+            importantDate.date = new Date(importantDate.date);
+            newDates.push(importantDate);
+          }
+          experience.important_dates = newDates;
+          if (experience.type === ExperienceType.PROGRAM) {
+            experience.application_due_date = new Date(
+              experience.application_due_date
+            );
           }
 
           setData(experience);
@@ -35,11 +63,11 @@ const OverviewWrapper = () => {
       .finally(() => {
         setLoaded(true);
       });
-  };
+  }, [experienceId, loaded]);
 
   useEffect(() => {
     downloadData();
-  });
+  }, [downloadData]);
 
   if (!experienceId) {
     return <>You must specify a valid experience id.</>;
@@ -53,52 +81,20 @@ const OverviewWrapper = () => {
     return <>Failed to load data.</>;
   }
 
-  const type = data['type'];
   let extra: ReactNode;
+  const type = data.type;
   switch (type) {
-    case 'COMPETITION': {
-      const awards: Award[] = [];
-      for (const award of data['awards']) {
-        awards.push(award);
-      }
-      const competitionProps = {
-        judges_description: data['judges_description'],
-        judgingCriteria: data['judging_criteria'],
-        awards: awards
-      };
-      extra = <CompetitionOverview {...competitionProps} />;
+    case ExperienceType.COMPETITION: {
+      extra = <CompetitionOverview competition={data as Competition} />;
       break;
     }
-    case 'PROGRAM': {
-      extra = '';
+    case ExperienceType.PROGRAM: {
+      extra = <ProgramOverview program={data as Program} />;
       break;
     }
   }
-  const grades = [];
-  for (const grade of data['grades']) {
-    grades.push(grade.grade);
-  }
-  const categories = [];
-  for (const category of data['categories']) {
-    categories.push(category.category);
-  }
-  const experienceProps = {
-    experienceId: Number(experienceId),
-    competitionName: data['name'],
-    category: type,
-    url: data['website_url'],
-    fee: data['entry_fee'],
-    grades: grades,
-    categories: categories,
-    participantCount: data['participant_count'],
-    originYear: new Date(data['origin_year']),
-    purpose: data['purpose'],
-    description: data['description'],
-    requiredItems: data['required_items'],
-    advice: data['advice'],
-    children: extra
-  };
-  return <ExperienceOverview {...experienceProps} />;
+
+  return <ExperienceOverview experience={data}>{extra}</ExperienceOverview>;
 };
 
 export default OverviewWrapper;

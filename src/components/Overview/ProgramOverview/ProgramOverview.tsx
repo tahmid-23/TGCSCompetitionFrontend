@@ -1,26 +1,35 @@
+import { Program } from '../../../program';
 import styles from '../Overview.module.css';
 
-interface ProgramOverviewProps {
-  type: string;
-  monthly_fee: number;
-  time_commitment: number;
+export interface ProgramOverviewProps {
+  program: Program;
 }
 
-const ProgramOverview: React.FC<ProgramOverviewProps> = ({
-  type,
-  monthly_fee,
-  time_commitment
-}) => {
+const ProgramOverview = ({ program }: ProgramOverviewProps) => {
   return (
     <>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Type: {type}</p>
+        <p className={styles.info}>Program Type: {program.program_type}</p>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Monthly Fee: {monthly_fee}</p>
+        <p className={styles.info}>Monthly Fee: ${program.monthly_fee}</p>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Time commitment: {time_commitment}</p>
+        <p className={styles.info}>
+          Focuses:{' '}
+          {program.program_focuses.map((focus) => focus.focus).join(', ')}
+        </p>
+      </div>
+      <div className={styles.infoEntry}>
+        <p className={styles.info}>
+          Time commitment: {program.time_commitment}
+        </p>
+      </div>
+      <div className={styles.infoEntry}>
+        <p className={styles.info}>
+          Application Due Date:{' '}
+          {program.application_due_date.toLocaleDateString()}
+        </p>
       </div>
     </>
   );

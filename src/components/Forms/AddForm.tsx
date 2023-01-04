@@ -9,11 +9,11 @@ import URLBox from '../InputComponents/URLBox';
 import GradeFilter from '../Search/GradeFilter';
 import TopicFilter from '../Search/TopicFilter';
 
-interface AddFormProps {
-  onSubmit: FormEventHandler<HTMLFormElement>;
+export interface AddFormProps {
+  onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
-const AddForm: React.FC<AddFormProps> = ({ onSubmit }) => {
+const AddForm = ({ onSubmit }: AddFormProps) => {
   const d: Date = new Date();
   const year = String(d.getFullYear());
   return (

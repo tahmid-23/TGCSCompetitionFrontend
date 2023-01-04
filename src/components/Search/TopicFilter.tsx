@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import MultipleSelect from '../InputComponents/MultipleSelect';
 
 interface TopicFilterProps {
@@ -8,20 +8,23 @@ interface TopicFilterProps {
 const TopicFilter: React.FC<TopicFilterProps> = ({ onTopicChange }) => {
   const [topics, setTopics] = useState<string[]>([]);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let newTopics;
-    if (e.currentTarget.checked) {
-      setTopics((newTopics = topics.concat(e.currentTarget.value)));
-    } else {
-      setTopics(
-        (newTopics = topics.filter((topic) => topic !== e.currentTarget.value))
-      );
-    }
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      let newTopics;
+      if (e.currentTarget.checked) {
+        setTopics((newTopics = topics.concat(e.currentTarget.value)));
+      } else {
+        setTopics(
+          (newTopics = topics.filter(
+            (topic) => topic !== e.currentTarget.value
+          ))
+        );
+      }
 
-    if (onTopicChange) {
-      onTopicChange(newTopics);
-    }
-  };
+      onTopicChange?.(newTopics);
+    },
+    [onTopicChange, topics]
+  );
 
   return (
     <>
