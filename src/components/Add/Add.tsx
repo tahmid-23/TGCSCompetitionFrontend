@@ -172,7 +172,7 @@ async function onSubmit(
 
 const Add = () => {
   const navigate = useNavigate();
-  return <AddForm onSubmit={(e) => onSubmit(navigate, e)}></AddForm>;
+  return <AddForm onSubmit={(e) => onSubmit(navigate, e)} />;
 };
 
 export default Add;

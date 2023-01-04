@@ -12,6 +12,13 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/no-empty-interface': 'off',
-    'no-constant-condition': 'off'
+    'no-constant-condition': 'off',
+    'react/self-closing-comp': [
+      'warn',
+      {
+        component: true,
+        html: true
+      }
+    ]
   }
 };

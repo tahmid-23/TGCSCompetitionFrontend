@@ -1,7 +1,7 @@
 import { FormEventHandler } from 'react';
-import Dropdown from '../InputComponents/Dropdown';
 import CheckBox from '../InputComponents/CheckBox';
 import DateBox from '../InputComponents/DateBox';
+import Dropdown from '../InputComponents/Dropdown';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import NumberBox from '../InputComponents/NumberBox';
 import TextBox from '../InputComponents/TextBox';
@@ -20,108 +20,104 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
     <>
       <form onSubmit={onSubmit}>
         <p>This is the add page</p>
-        <TextBox name="Name" id="name"></TextBox>
-        <br></br>
-        <NumberBox name="Id" id="id" min="1" interval="1"></NumberBox>
-        <br></br>
-        <URLBox name="Website URL" id="url"></URLBox>
-        <br></br>
-        <NumberBox name="Entry Fee" id="fee" min="0"></NumberBox>
-        <br></br>
+        <TextBox name="Name" id="name" />
+        <br />
+        <NumberBox name="Id" id="id" min="1" interval="1" />
+        <br />
+        <URLBox name="Website URL" id="url" />
+        <br />
+        <NumberBox name="Entry Fee" id="fee" min="0" />
+        <br />
         <Dropdown
           name="Participant Count"
           id="participant_count"
           items={['1-10', '11-50', '51-99', '100+']}
-        ></Dropdown>
-        <br></br>
+        />
+        <br />
         <NumberBox
           name="Origin Year"
           id="origin_year"
           min="1700"
           max={year}
           interval="1"
-        ></NumberBox>
-        <br></br>
-        <TextBox name="Purpose" id="purpose"></TextBox>
-        <br></br>
-        <TextBox name="Description" id="description"></TextBox>
-        <br></br>
-        <TextBox name="Required Items" id="required_items"></TextBox>
-        <br></br>
-        <TextBox name="Advice" id="advice"></TextBox>
-        <br></br>
+        />
+        <br />
+        <TextBox name="Purpose" id="purpose" />
+        <br />
+        <TextBox name="Description" id="description" />
+        <br />
+        <TextBox name="Required Items" id="required_items" />
+        <br />
+        <TextBox name="Advice" id="advice" />
+        <br />
         <NumberBox
           name="Time Score"
           id="time_score"
           min="0"
           max="10"
           interval="1"
-        ></NumberBox>
-        <br></br>
+        />
+        <br />
         <NumberBox
           name="Difficulty Score"
           id="difficulty_score"
           min="0"
           max="10"
           interval="1"
-        ></NumberBox>
-        <br></br>
+        />
+        <br />
         <NumberBox
           name="Benefit Score"
           id="benefit_score"
           min="0"
           max="10"
           interval="1"
-        ></NumberBox>
-        <br></br>
+        />
+        <br />
         <NumberBox
           name="Management Score"
           id="management_score"
           min="0"
           max="10"
           interval="1"
-        ></NumberBox>
-        <br></br>
+        />
+        <br />
         <p>Type</p>
         <MultipleChoice
           name="Type"
           value="Competition"
           id="competition_button"
-        ></MultipleChoice>
-        <MultipleChoice
-          name="Type"
-          value="Program"
-          id="program_button"
-        ></MultipleChoice>
-        <br></br>
-        <CheckBox name="Virtual" id="virtual"></CheckBox>
-        <br></br>
-        <TextBox name="Address" id="address"></TextBox>
-        <br></br>
-        <DateBox name="Start Date" id="start_date"></DateBox>
-        <br></br>
-        <DateBox name="End Date" id="end_date"></DateBox>
-        <br></br>
+        />
+        <MultipleChoice name="Type" value="Program" id="program_button" />
+        <br />
+        <CheckBox name="Virtual" id="virtual" />
+        <br />
+        <TextBox name="Address" id="address" />
+        <br />
+        <DateBox name="Start Date" id="start_date" />
+        <br />
+        <DateBox name="End Date" id="end_date" />
+        <br />
         <TextBox
           name="Prerequisite Description"
           id="prerequisite_description"
-        ></TextBox>
-        <br></br>
-        <TextBox name="Entry Description" id="entry_description"></TextBox>
-        <br></br>
+        />
+        <br />
+        <TextBox name="Entry Description" id="entry_description" />
+        <br />
         <p>Grades</p>
-        <GradeFilter></GradeFilter>
-        <br></br>
+        <GradeFilter />
+        <br />
         <p>Categories</p>
-        <TopicFilter></TopicFilter>
-        <br></br>
-        <br></br>
-        <DateBox name="Important Dates" id="important_dates"></DateBox>
+        <TopicFilter />
+        <br />
+        <br />
+        <DateBox name="Important Dates" id="important_dates" />
         &nbsp; &nbsp; &nbsp; &nbsp;
-        <TextBox name="Description" id="descrption"></TextBox>
-        <br></br>
-        <br></br>
-        <input type="submit" value="Next"></input>
+        <TextBox name="Description" id="descrption" />
+        <br />
+        <br />
+        <input type="submit" value="Next" />
       </form>
     </>
   );

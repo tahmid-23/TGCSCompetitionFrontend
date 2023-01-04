@@ -3,10 +3,15 @@ interface URLBoxProps {
   id: string;
 }
 
-const URLBox: React.FC<URLBoxProps> = ({ name, id }) => {
+const URLBox = (
+  {
+    name,
+    id
+  }: URLBoxProps
+) => {
   return (
     <>
-      <input type="url" name={name} id={id}></input>
+      <input type="url" name={name} id={id} />
       <label htmlFor={id}>{name}</label>
     </>
   );

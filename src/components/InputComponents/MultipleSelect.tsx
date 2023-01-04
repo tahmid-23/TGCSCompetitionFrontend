@@ -6,11 +6,13 @@ interface MultipleSelectProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const MultipleSelect: React.FC<MultipleSelectProps> = ({
-  name,
-  value,
-  onChange
-}) => {
+const MultipleSelect = (
+  {
+    name,
+    value,
+    onChange
+  }: MultipleSelectProps
+) => {
   return (
     <>
       <input
@@ -19,7 +21,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-      ></input>
+      />
       <label htmlFor={name}>{value}</label>
     </>
   );

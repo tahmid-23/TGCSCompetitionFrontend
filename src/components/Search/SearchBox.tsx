@@ -6,8 +6,14 @@ interface SearchBoxProps {
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ name, id, onChange }) => {
-  return <input type="text" name={name} id={id} onChange={onChange}></input>;
+const SearchBox = (
+  {
+    name,
+    id,
+    onChange
+  }: SearchBoxProps
+) => {
+  return <input type="text" name={name} id={id} onChange={onChange} />;
 };
 
 export default SearchBox;

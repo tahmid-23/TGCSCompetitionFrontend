@@ -4,10 +4,16 @@ interface MultipleChoiceProps {
   value: string;
 }
 
-const MultipleChoice: React.FC<MultipleChoiceProps> = ({ name, id, value }) => {
+const MultipleChoice = (
+  {
+    name,
+    id,
+    value
+  }: MultipleChoiceProps
+) => {
   return (
     <>
-      <input type="radio" id={id} name={name} value={value}></input>
+      <input type="radio" id={id} name={name} value={value} />
       <label htmlFor={id}>{value}</label>
     </>
   );

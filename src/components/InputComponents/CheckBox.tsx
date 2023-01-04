@@ -3,10 +3,15 @@ interface CheckBoxProps {
   id: string;
 }
 
-const CheckBox: React.FC<CheckBoxProps> = ({ name, id }) => {
+const CheckBox = (
+  {
+    name,
+    id
+  }: CheckBoxProps
+) => {
   return (
     <>
-      <input type="checkbox" name={name} id={id}></input>
+      <input type="checkbox" name={name} id={id} />
       <label htmlFor={id}>{name}</label>
     </>
   );

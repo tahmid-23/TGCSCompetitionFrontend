@@ -3,10 +3,15 @@ interface TextBoxProps {
   id: string;
 }
 
-const TextBox: React.FC<TextBoxProps> = ({ name, id }) => {
+const TextBox = (
+  {
+    name,
+    id
+  }: TextBoxProps
+) => {
   return (
     <>
-      <input type="text" name={name} id={id}></input>
+      <input type="text" name={name} id={id} />
       <label htmlFor={id}>{name}</label>
     </>
   );

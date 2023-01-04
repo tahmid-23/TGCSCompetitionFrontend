@@ -8,7 +8,14 @@ interface ButtonProps {
   to?: To;
 }
 
-const Button: React.FC<ButtonProps> = ({ disabled, text, onClick, to }) => {
+const Button = (
+  {
+    disabled,
+    text,
+    onClick,
+    to
+  }: ButtonProps
+) => {
   let result;
   if (onClick) {
     result = (

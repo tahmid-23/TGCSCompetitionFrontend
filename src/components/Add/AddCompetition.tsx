@@ -72,7 +72,7 @@ const AddCompetition = () => {
       onSubmit={(e) =>
         onSubmit(Number(searchParams.get('experienceId')), navigate, e)
       }
-    ></CompetitionAddForm>
+    />
   );
 };
 

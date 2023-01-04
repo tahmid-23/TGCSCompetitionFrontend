@@ -5,7 +5,11 @@ interface TopicFilterProps {
   onTopicChange?: (arg0: string[]) => void;
 }
 
-const TopicFilter: React.FC<TopicFilterProps> = ({ onTopicChange }) => {
+const TopicFilter = (
+  {
+    onTopicChange
+  }: TopicFilterProps
+) => {
   const [topics, setTopics] = useState<string[]>([]);
 
   const onChange = useCallback(

@@ -3,10 +3,15 @@ interface DateBoxProps {
   id: string;
 }
 
-const DateBox: React.FC<DateBoxProps> = ({ name, id }) => {
+const DateBox = (
+  {
+    name,
+    id
+  }: DateBoxProps
+) => {
   return (
     <>
-      <input type="date" name={name} id={id}></input>
+      <input type="date" name={name} id={id} />
       <label htmlFor={id}>{name}</label>
     </>
   );

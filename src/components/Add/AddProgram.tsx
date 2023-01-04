@@ -78,7 +78,7 @@ const AddProgram = () => {
       onSubmit={(e) =>
         onSubmit(Number(searchParams.get('experienceId')), navigate, e)
       }
-    ></ProgramAddForm>
+    />
   );
 };
 

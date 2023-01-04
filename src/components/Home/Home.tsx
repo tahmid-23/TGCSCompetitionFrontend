@@ -1,14 +1,14 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
-import Dropdown from '../InputComponents/Dropdown';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
+import Dropdown from '../InputComponents/Dropdown';
 import AwardFilter from '../Search/AwardFilter';
 import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
 import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
-import { useNavigate } from 'react-router';
 
 async function downloadData(): Promise<any> {
   return await fetch(`${IP_ADDRESS}/experiences`)
@@ -17,6 +17,30 @@ async function downloadData(): Promise<any> {
       alert('No Data Access');
       console.error(err);
     });
+}
+
+function createTopicFilter(topics: string[]) {
+  return (experience: Record<string, any>) => {
+    for (const categoryObject of experience.categories) {
+      if (
+        topics
+          .map((topic) => topic.toLowerCase())
+          .includes(categoryObject.category.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
+function createSearchFilter(keyword: string) {
+  return (experience: Record<string, any>) => {
+    return String(experience.name)
+      .toLowerCase()
+      .includes(keyword.toLowerCase());
+  };
 }
 
 const Home = () => {
@@ -34,38 +58,29 @@ const Home = () => {
   }, []);
 
   if (filterType === 'grade') {
-    inputComponent = <GradeFilter></GradeFilter>;
+    inputComponent = <GradeFilter />;
   } else if (filterType === 'topic') {
     inputComponent = (
       <TopicFilter
         onTopicChange={(topics) => {
-          setFilter(() => (experience: Record<string, any>) => {
-            for (const categoryObject of experience.categories) {
-              if (topics.includes(categoryObject.category)) {
-                return true;
-              }
-            }
-
-            return false;
-          });
+          setFilter(() => createTopicFilter(topics));
         }}
-      ></TopicFilter>
+      />
     );
   } else if (filterType === 'award') {
-    inputComponent = <AwardFilter></AwardFilter>;
+    inputComponent = <AwardFilter />;
   } else if (filterType === 'program') {
-    inputComponent = <ProgramFilter></ProgramFilter>;
+    inputComponent = <ProgramFilter />;
   } else {
     inputComponent = (
       <SearchBox
         name="test"
         id="test"
-        onChange={(e) =>
-          setFilter(() => (experience: Record<string, any>) => {
-            return String(experience.name).includes(e.target.value);
-          })
-        }
-      ></SearchBox>
+        onChange={(e) => {
+          const keyword = e.currentTarget.value;
+          setFilter(() => createSearchFilter(keyword));
+        }}
+      />
     );
   }
 
@@ -116,10 +131,17 @@ const Home = () => {
         items={['name', 'grade', 'topic', 'award', 'program']}
         onChange={(e) => {
           setFilterType(e.currentTarget.value);
+          switch (e.currentTarget.value) {
+            case 'name':
+              setFilter(() => createSearchFilter(''));
+              break;
+            case 'topic':
+              setFilter(() => createTopicFilter([]));
+              break;
+          }
         }}
       />
       {inputComponent}
-      <hr />
     </>
   );
 };

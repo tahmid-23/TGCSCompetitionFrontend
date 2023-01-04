@@ -7,9 +7,11 @@ interface CompetitionOverviewProps {
   competition: Competition;
 }
 
-const CompetitionOverview: React.FC<CompetitionOverviewProps> = ({
-  competition
-}) => {
+const CompetitionOverview = (
+  {
+    competition
+  }: CompetitionOverviewProps
+) => {
   return (
     <>
       {competition.judges_description && (

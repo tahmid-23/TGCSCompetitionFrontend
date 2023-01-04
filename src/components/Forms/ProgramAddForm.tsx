@@ -8,47 +8,33 @@ interface ProgramAddFormProps {
   onSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-const ProgramAddForm: React.FC<ProgramAddFormProps> = ({ onSubmit }) => {
+const ProgramAddForm = (
+  {
+    onSubmit
+  }: ProgramAddFormProps
+) => {
   return (
     <form onSubmit={onSubmit}>
-      <MultipleChoice
-        name="Type"
-        id="program_type_intern"
-        value="Intern"
-      ></MultipleChoice>
+      <MultipleChoice name="Type" id="program_type_intern" value="Intern" />
       <MultipleChoice
         name="Type"
         id="program_type_presentation"
         value="Presentation"
-      ></MultipleChoice>
-      <MultipleChoice
-        name="Type"
-        id="program_type_research"
-        value="Research"
-      ></MultipleChoice>
-      <MultipleChoice
-        name="Type"
-        id="program_type_academic"
-        value="Academic"
-      ></MultipleChoice>
-      <br></br>
-      <MultipleSelect
-        name="theoretical_checkbox"
-        value="Theoretical"
-      ></MultipleSelect>
-      <MultipleSelect
-        name="practical_checkbox"
-        value="Practical"
-      ></MultipleSelect>
-      <br></br>
-      <NumberBox name="Monthly Fee" id="monthly_fee"></NumberBox>
-      <br></br>
-      <NumberBox name="Time Commitment" id="time_commitment"></NumberBox>
-      <br></br>
-      <DateBox name="Application Due Date" id="due_date"></DateBox>
-      <br></br>
-      <br></br>
-      <input type="submit" value="Add Program"></input>
+      />
+      <MultipleChoice name="Type" id="program_type_research" value="Research" />
+      <MultipleChoice name="Type" id="program_type_academic" value="Academic" />
+      <br />
+      <MultipleSelect name="theoretical_checkbox" value="Theoretical" />
+      <MultipleSelect name="practical_checkbox" value="Practical" />
+      <br />
+      <NumberBox name="Monthly Fee" id="monthly_fee" />
+      <br />
+      <NumberBox name="Time Commitment" id="time_commitment" />
+      <br />
+      <DateBox name="Application Due Date" id="due_date" />
+      <br />
+      <br />
+      <input type="submit" value="Add Program" />
     </form>
   );
 };

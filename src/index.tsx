@@ -4,13 +4,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Add from './components/Add/Add';
 import AddCompetition from './components/Add/AddCompetition';
 import AddProgram from './components/Add/AddProgram';
-import ExperienceOverview from './components/Overview/ExperienceOverview/ExperienceOverview';
+import FeedbackForm from './components/FeedbackForm/FeedbackForm';
 import Home from './components/Home/Home';
+import OverviewWrapper from './components/Overview/OverviewWrapper/OverviewWrapper';
 import Update from './components/Update/Update';
 import './index.css';
-import CompetitionOverview from './components/Overview/CompetitionOverview/CompetitionOverview';
-import FeedbackForm from './components/FeedbackForm/FeedbackForm';
-import OverviewWrapper from './components/Overview/OverviewWrapper/OverviewWrapper';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

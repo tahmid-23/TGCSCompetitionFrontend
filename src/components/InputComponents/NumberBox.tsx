@@ -6,13 +6,15 @@ interface NumberBoxProps {
   interval?: string;
 }
 
-const NumberBox: React.FC<NumberBoxProps> = ({
-  name,
-  id,
-  min,
-  max,
-  interval
-}) => {
+const NumberBox = (
+  {
+    name,
+    id,
+    min,
+    max,
+    interval
+  }: NumberBoxProps
+) => {
   return (
     <>
       <input
@@ -22,7 +24,7 @@ const NumberBox: React.FC<NumberBoxProps> = ({
         min={min}
         max={max}
         step={interval}
-      ></input>
+      />
       <label htmlFor={id}>{name}</label>
     </>
   );

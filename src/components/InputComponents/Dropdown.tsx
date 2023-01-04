@@ -7,7 +7,14 @@ interface DropdownProps {
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ name, id, items, onChange }) => {
+const Dropdown = (
+  {
+    name,
+    id,
+    items,
+    onChange
+  }: DropdownProps
+) => {
   return (
     <>
       <select name={name} id={id} onChange={onChange}>

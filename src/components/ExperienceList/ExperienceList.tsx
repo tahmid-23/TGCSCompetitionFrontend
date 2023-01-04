@@ -18,12 +18,14 @@ interface ExperienceProps {
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-const Experience: React.FC<ExperienceProps> = ({
-  name,
-  category,
-  highlight,
-  onClick
-}) => {
+const Experience = (
+  {
+    name,
+    category,
+    highlight,
+    onClick
+  }: ExperienceProps
+) => {
   const className = highlight ? styles.highlight : undefined;
   return (
     <div className={className} onClick={onClick}>
@@ -41,14 +43,17 @@ interface ExpListProps {
   onSelect?: (arg0: number) => void;
 }
 
-const ExperienceList: React.FC<ExpListProps> = ({
-  expData,
-  filter,
-  highlightId,
-  onSelect
-}) => {
+const ExperienceList = (
+  {
+    expData,
+    filter,
+    highlightId,
+    onSelect
+  }: ExpListProps
+) => {
   const validExp: ReactElement[] = [];
-  for (const exp of expData) {
+  for (let i = 0; i < expData.length; ++i) {
+    const exp = expData[i];
     if (!filter || filter(exp)) {
       let categories = '';
       for (const category of exp.categories) {
@@ -60,6 +65,7 @@ const ExperienceList: React.FC<ExpListProps> = ({
       validExp.push(
         <Experience
           id={Number(exp.experience_id)}
+          key={i}
           fee={Number(exp.fee)}
           name={String(exp.name)}
           category={categories}
