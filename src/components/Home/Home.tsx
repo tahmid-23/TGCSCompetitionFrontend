@@ -1,5 +1,6 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Grade } from '../../experience';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
@@ -26,6 +27,22 @@ function createTopicFilter(topics: string[]) {
         topics
           .map((topic) => topic.toLowerCase())
           .includes(categoryObject.category.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
+function createGradeFilter(grades: Grade[]) {
+  return (experience: Record<string, any>) => {
+    for (const gradeObject of experience.grades) {
+      if (
+        grades
+          .map((grade) => Grade[grade].toUpperCase())
+          .includes(String(gradeObject.grade).toUpperCase())
       ) {
         return true;
       }
@@ -134,6 +151,9 @@ const Home = () => {
           switch (e.currentTarget.value) {
             case 'name':
               setFilter(() => createSearchFilter(''));
+              break;
+            case 'grade':
+              setFilter(() => createGradeFilter([]));
               break;
             case 'topic':
               setFilter(() => createTopicFilter([]));
