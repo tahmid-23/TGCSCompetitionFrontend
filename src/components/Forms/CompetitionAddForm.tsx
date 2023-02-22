@@ -70,11 +70,11 @@ const CompetitionAddForm = (
       <br />
       <TextBox name="Judging Criteria" id="judge_criteria" />
       <br />
+      {z}
+      <br />
       <button type="button" onClick={() => setAwardAmount(awardAmount + 1)}>
         Add Award
       </button>
-      <br />
-      {z}
       <br />
       <input type="submit" value="Add Competition" />
     </form>

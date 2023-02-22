@@ -35,8 +35,6 @@ async function onSubmit(
     type: type.toUpperCase(),
     virtual: getValue(event, 'virtual') === 'on',
     address: getValue(event, 'address'),
-    start_date: getValue(event, 'start_date'),
-    end_date: getValue(event, 'end_date'),
     prerequisite_description: getValue(event, 'prerequisite_description'),
     entry_description: getValue(event, 'entry_description')
   };

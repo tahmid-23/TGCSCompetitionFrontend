@@ -38,21 +38,8 @@ const OverviewWrapper = () => {
           for (const grade of experience.grades) {
             newGrades.push({ grade: grade });
           }
-          experience.origin_year = new Date(experience.origin_year);
-          experience.start_date = new Date(experience.start_date);
-          experience.end_date = new Date(experience.end_date);
-          const newDates = [];
-          for (const importantDate of experience.important_dates) {
-            importantDate.date = new Date(importantDate.date);
-            newDates.push(importantDate);
-          }
-          experience.important_dates = newDates;
-          if (experience.type === ExperienceType.PROGRAM) {
-            experience.application_due_date = new Date(
-              experience.application_due_date
-            );
-          }
 
+          console.log(experience)
           setData(experience);
         }
       })
@@ -82,6 +69,7 @@ const OverviewWrapper = () => {
   }
 
   let extra: ReactNode;
+  console.log(data)
   const type = data.type;
   switch (type) {
     case ExperienceType.COMPETITION: {

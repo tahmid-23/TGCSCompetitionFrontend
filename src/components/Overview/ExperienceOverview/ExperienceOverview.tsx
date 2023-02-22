@@ -57,7 +57,7 @@ const ExperienceOverview = ({
       {experience.origin_year && (
         <div className={styles.infoEntry}>
           <p className={styles.info}>
-            Origin Year: {experience.origin_year.getFullYear()}
+            Origin Year: {experience.origin_year}
           </p>
         </div>
       )}
@@ -80,6 +80,16 @@ const ExperienceOverview = ({
         <div className={styles.infoEntry}>
           <p className={styles.info}>Advice: {experience.advice}</p>
         </div>
+      )}
+      {(experience.virtual !== undefined) && (
+        <div className={styles.infoEntry}>
+          <p className={styles.info}>Virtual: {(experience.virtual) ? 'True' : 'False'}</p>
+        </div>
+      )}
+      {experience.entry_description && (
+        <div className={styles.infoEntry}>
+        <p className={styles.info}>Entry Description: {experience.entry_description}</p>
+      </div>
       )}
       {children}
       <div>

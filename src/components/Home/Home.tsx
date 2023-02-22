@@ -126,12 +126,6 @@ const Home = () => {
 
   return (
     <>
-      <ExperienceList
-        expData={experienceData || []}
-        filter={filter}
-        highlightId={highlightId}
-        onSelect={setHighlightId}
-      />
       <Button text="Add" to="/add" />
       <Button text="Edit" disabled={!highlightId} to="/update" />
       <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
@@ -162,6 +156,22 @@ const Home = () => {
         }}
       />
       {inputComponent}
+      <ExperienceList
+        expData={experienceData || []}
+        filter={filter}
+        highlightId={highlightId}
+        onSelect={setHighlightId}
+      />
+      <Button text="Add" to="/add" />
+      <Button text="Edit" disabled={!highlightId} to="/update" />
+      <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
+      <Button
+        text="View"
+        disabled={!highlightId}
+        onClick={() => {
+          navigate(`/view/${highlightId}`);
+        }}
+      />
     </>
   );
 };

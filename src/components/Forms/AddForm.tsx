@@ -94,10 +94,6 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
         <br />
         <TextBox name="Address" id="address" />
         <br />
-        <DateBox name="Start Date" id="start_date" />
-        <br />
-        <DateBox name="End Date" id="end_date" />
-        <br />
         <TextBox
           name="Prerequisite Description"
           id="prerequisite_description"

@@ -25,12 +25,6 @@ const ProgramOverview = ({ program }: ProgramOverviewProps) => {
           Time commitment: {program.time_commitment}
         </p>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
-          Application Due Date:{' '}
-          {program.application_due_date.toLocaleDateString()}
-        </p>
-      </div>
     </>
   );
 };

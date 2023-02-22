@@ -62,7 +62,7 @@ export interface Experience {
   entry_fee: number;
   participant_count?: ParticipantCount;
   name: string;
-  origin_year?: Date;
+  origin_year?: number;
   purpose?: string;
   description: string;
   required_items?: string;

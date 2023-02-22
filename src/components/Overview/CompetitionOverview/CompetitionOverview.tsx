@@ -26,7 +26,7 @@ const CompetitionOverview = (
           Judging Criteria: {competition.judging_criteria}
         </p>
       </div>
-      {competition.awards.length !== 0 && (
+      {competition.awards && competition.awards.length !== 0 && (
         <>
           <div className={styles.infoEntry}>
             <p className={styles.info}>Awards: </p>
