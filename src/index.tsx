@@ -7,6 +7,8 @@ import AddProgram from './components/Add/AddProgram';
 import FeedbackForm from './components/FeedbackForm/FeedbackForm';
 import Home from './components/Home/Home';
 import OverviewWrapper from './components/Overview/OverviewWrapper/OverviewWrapper';
+import Recommendation from './components/Recommendation/Recommendation';
+import RecommendationWrapper from './components/Recommendation/RecommendationWrapper';
 import Update from './components/Update/Update';
 import './index.css';
 
@@ -25,6 +27,7 @@ root.render(
         <Route path="/add_competition" element={<AddCompetition />} />
         <Route path="/add_program" element={<AddProgram />} />
         <Route path="/feedback" element={<FeedbackForm />} />
+        <Route path="/recommendation" element={<RecommendationWrapper />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
