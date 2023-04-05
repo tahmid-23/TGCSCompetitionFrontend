@@ -8,30 +8,40 @@ import TextBox from '../InputComponents/TextBox';
 import URLBox from '../InputComponents/URLBox';
 import GradeFilter from '../Search/GradeFilter';
 import TopicFilter from '../Search/TopicFilter';
+import { Experience, ExperienceType, ParticipantCount } from '../../experience';
 
-export interface AddFormProps {
+export interface ChangeFormProps {
+  experience?: Experience;
   onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
-const AddForm = ({ onSubmit }: AddFormProps) => {
+const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
   const d: Date = new Date();
   const year = String(d.getFullYear());
   return (
     <>
       <form onSubmit={onSubmit}>
-        <p>This is the add page</p>
-        <TextBox name="Name" id="name" />
+        <TextBox name="Name" id="name" value={experience?.name} />
         <br />
-        <NumberBox name="Id" id="id" min="1" interval="1" />
+        <URLBox name="Website URL" id="url" value={experience?.website_url} />
         <br />
-        <URLBox name="Website URL" id="url" />
-        <br />
-        <NumberBox name="Entry Fee" id="fee" min="0" />
+        <NumberBox
+          name="Entry Fee"
+          id="fee"
+          min="0"
+          value={experience?.entry_fee}
+        />
         <br />
         <Dropdown
           name="Participant Count"
           id="participant_count"
-          items={['1-10', '11-50', '51-99', '100+']}
+          value={experience?.participant_count}
+          items={[
+            ParticipantCount['1-10'],
+            ParticipantCount['11-50'],
+            ParticipantCount['51-99'],
+            ParticipantCount['100+']
+          ]}
         />
         <br />
         <NumberBox
@@ -40,15 +50,24 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           min="1700"
           max={year}
           interval="1"
+          value={experience?.origin_year}
         />
         <br />
-        <TextBox name="Purpose" id="purpose" />
+        <TextBox name="Purpose" id="purpose" value={experience?.purpose} />
         <br />
-        <TextBox name="Description" id="description" />
+        <TextBox
+          name="Description"
+          id="description"
+          value={experience?.description}
+        />
         <br />
-        <TextBox name="Required Items" id="required_items" />
+        <TextBox
+          name="Required Items"
+          id="required_items"
+          value={experience?.required_items}
+        />
         <br />
-        <TextBox name="Advice" id="advice" />
+        <TextBox name="Advice" id="advice" value={experience?.advice} />
         <br />
         <NumberBox
           name="Time Score"
@@ -56,6 +75,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           min="0"
           max="10"
           interval="1"
+          value={experience?.score_time}
         />
         <br />
         <NumberBox
@@ -64,6 +84,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           min="0"
           max="10"
           interval="1"
+          value={experience?.score_difficulty}
         />
         <br />
         <NumberBox
@@ -72,6 +93,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           min="0"
           max="10"
           interval="1"
+          value={experience?.score_benefit}
         />
         <br />
         <NumberBox
@@ -80,6 +102,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           min="0"
           max="10"
           interval="1"
+          value={experience?.score_mgmt}
         />
         <br />
         <p>Type</p>
@@ -87,19 +110,30 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           name="Type"
           value="Competition"
           id="competition_button"
+          checked={experience?.type === ExperienceType.COMPETITION}
         />
-        <MultipleChoice name="Type" value="Program" id="program_button" />
+        <MultipleChoice
+          name="Type"
+          value="Program"
+          id="program_button"
+          checked={experience?.type === ExperienceType.PROGRAM}
+        />
         <br />
-        <CheckBox name="Virtual" id="virtual" />
+        <CheckBox name="Virtual" id="virtual" checked={experience?.virtual} />
         <br />
-        <TextBox name="Address" id="address" />
+        <TextBox name="Address" id="address" value={experience?.address} />
         <br />
         <TextBox
           name="Prerequisite Description"
           id="prerequisite_description"
+          value={experience?.prerequisite_description}
         />
         <br />
-        <TextBox name="Entry Description" id="entry_description" />
+        <TextBox
+          name="Entry Description"
+          id="entry_description"
+          value={experience?.entry_description}
+        />
         <br />
         <p>Grades</p>
         <GradeFilter />
@@ -110,7 +144,11 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
         <br />
         <DateBox name="Important Dates" id="important_dates" />
         &nbsp; &nbsp; &nbsp; &nbsp;
-        <TextBox name="Description" id="descrption" />
+        <TextBox
+          name="Description"
+          id="descrption"
+          value={experience?.description}
+        />
         <br />
         <br />
         <input type="submit" value="Next" />
@@ -119,4 +157,4 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
   );
 };
 
-export default AddForm;
+export default ChangeForm;

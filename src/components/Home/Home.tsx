@@ -1,5 +1,4 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { Grade } from '../../experience';
 import { IP_ADDRESS } from '../../Global';
 import Button from '../Button/Button';
@@ -64,7 +63,6 @@ const Home = () => {
   const [filter, setFilter] = useState<Filter>();
   const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
-  const navigate = useNavigate();
   let inputComponent: ReactElement;
 
   const [experienceData, setExperienceData] =
@@ -109,7 +107,11 @@ const Home = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tableName: 'experience', rowId: highlightId })
+      body: JSON.stringify({
+        tableName: 'experience',
+        rowName: 'experience_id',
+        rowId: highlightId
+      })
     };
     fetch(`${IP_ADDRESS}/remove`, requestOptions)
       .then(() => {
@@ -127,15 +129,9 @@ const Home = () => {
   return (
     <>
       <Button text="Add" to="/add" />
-      <Button text="Edit" disabled={!highlightId} to="/update" />
+      <Button text="Edit" disabled={!highlightId} to={`/edit/${highlightId}`} />
       <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-      <Button
-        text="View"
-        disabled={!highlightId}
-        onClick={() => {
-          navigate(`/view/${highlightId}`);
-        }}
-      />
+      <Button text="View" disabled={!highlightId} to={`/edit/${highlightId}`} />
       <Dropdown
         name="test"
         id="test"
@@ -163,15 +159,9 @@ const Home = () => {
         onSelect={setHighlightId}
       />
       <Button text="Add" to="/add" />
-      <Button text="Edit" disabled={!highlightId} to="/update" />
+      <Button text="Edit" disabled={!highlightId} to={`/edit/${highlightId}`} />
       <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-      <Button
-        text="View"
-        disabled={!highlightId}
-        onClick={() => {
-          navigate(`/view/${highlightId}`);
-        }}
-      />
+      <Button text="View" disabled={!highlightId} to={`/view/${highlightId}`} />
     </>
   );
 };

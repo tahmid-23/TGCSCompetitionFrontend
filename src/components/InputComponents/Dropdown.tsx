@@ -1,23 +1,27 @@
 import { ChangeEvent } from 'react';
 
-interface DropdownProps {
+interface DropdownProps<
+  T extends string | ReadonlyArray<string> | number | undefined
+> {
   name: string;
   id: string;
-  items: string[];
+  items: T[];
+  value?: T;
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Dropdown = (
-  {
-    name,
-    id,
-    items,
-    onChange
-  }: DropdownProps
-) => {
+const Dropdown = <
+  T extends string | ReadonlyArray<string> | number | undefined
+>({
+  name,
+  id,
+  items,
+  value,
+  onChange
+}: DropdownProps<T>) => {
   return (
     <>
-      <select name={name} id={id} onChange={onChange}>
+      <select name={name} id={id} defaultValue={value} onChange={onChange}>
         {items.map((item, index) => {
           return (
             <option key={index} value={item}>

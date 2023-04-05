@@ -5,7 +5,7 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
-import CompetitionAddForm from '../Forms/CompetitionAddForm';
+import CompetitionChangeForm from '../Forms/CompetitionChangeForm';
 
 async function onSubmit(
   experienceId: number,
@@ -68,7 +68,7 @@ const AddCompetition = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   return (
-    <CompetitionAddForm
+    <CompetitionChangeForm
       onSubmit={(e) =>
         onSubmit(Number(searchParams.get('experienceId')), navigate, e)
       }

@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
-import AddForm from '../Forms/AddForm';
+import ChangeForm from '../Forms/ChangeForm';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -71,7 +71,7 @@ async function onSubmit(
     'history',
     'foreign',
     'chess',
-    'reasearch',
+    'research',
     'other'
   ];
   const selected_topics = [];
@@ -170,7 +170,12 @@ async function onSubmit(
 
 const Add = () => {
   const navigate = useNavigate();
-  return <AddForm onSubmit={(e) => onSubmit(navigate, e)} />;
+  return (
+    <>
+      <h1>Add</h1>
+      <ChangeForm onSubmit={(e) => onSubmit(navigate, e)} />
+    </>
+  );
 };
 
 export default Add;

@@ -2,7 +2,7 @@ import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
-import ProgramAddForm from '../Forms/ProgramAddForm';
+import ProgramChangeForm from '../Forms/ProgramChangeForm';
 
 async function onSubmit(
   experienceId: number,
@@ -74,7 +74,7 @@ const AddProgram = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   return (
-    <ProgramAddForm
+    <ProgramChangeForm
       onSubmit={(e) =>
         onSubmit(Number(searchParams.get('experienceId')), navigate, e)
       }

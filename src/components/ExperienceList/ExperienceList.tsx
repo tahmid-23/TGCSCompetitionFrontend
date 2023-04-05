@@ -1,4 +1,5 @@
 import { MouseEventHandler, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 import BulletedList from '../BulletedList/BulletedList';
 import styles from './ExperienceList.module.css';
 
@@ -18,18 +19,27 @@ interface ExperienceProps {
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-const Experience = (
-  {
-    name,
-    category,
-    highlight,
-    onClick
-  }: ExperienceProps
-) => {
+const Experience = ({
+  id,
+  name,
+  category,
+  highlight,
+  onClick
+}: ExperienceProps) => {
   const className = highlight ? styles.highlight : undefined;
   return (
     <div className={className} onClick={onClick}>
-      {name} <i>({category})</i>
+      <Link
+        className={styles.experienceLink}
+        to={`/view/${id}`}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {name} <i>({category})</i>
+      </Link>
     </div>
   );
 };
@@ -43,14 +53,12 @@ interface ExpListProps {
   onSelect?: (arg0: number) => void;
 }
 
-const ExperienceList = (
-  {
-    expData,
-    filter,
-    highlightId,
-    onSelect
-  }: ExpListProps
-) => {
+const ExperienceList = ({
+  expData,
+  filter,
+  highlightId,
+  onSelect
+}: ExpListProps) => {
   const validExp: ReactElement[] = [];
   for (let i = 0; i < expData.length; ++i) {
     const exp = expData[i];

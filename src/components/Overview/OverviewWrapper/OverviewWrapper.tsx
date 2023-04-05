@@ -39,7 +39,7 @@ const OverviewWrapper = () => {
             newGrades.push({ grade: grade });
           }
 
-          console.log(experience)
+          console.log(experience);
           setData(experience);
         }
       })
@@ -69,7 +69,6 @@ const OverviewWrapper = () => {
   }
 
   let extra: ReactNode;
-  console.log(data)
   const type = data.type;
   switch (type) {
     case ExperienceType.COMPETITION: {

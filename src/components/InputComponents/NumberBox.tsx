@@ -4,17 +4,10 @@ interface NumberBoxProps {
   min?: string;
   max?: string;
   interval?: string;
+  value?: number;
 }
 
-const NumberBox = (
-  {
-    name,
-    id,
-    min,
-    max,
-    interval
-  }: NumberBoxProps
-) => {
+const NumberBox = ({ name, id, min, max, interval, value }: NumberBoxProps) => {
   return (
     <>
       <input
@@ -24,6 +17,7 @@ const NumberBox = (
         min={min}
         max={max}
         step={interval}
+        defaultValue={value}
       />
       <label htmlFor={id}>{name}</label>
     </>
