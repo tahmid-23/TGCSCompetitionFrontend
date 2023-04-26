@@ -1,6 +1,11 @@
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
-import { Experience, ExperienceType, Grade } from '../../../experience';
+import {
+  Experience,
+  ExperienceType,
+  Grade,
+  ParticipantCount
+} from '../../../experience';
 import QuickNavigation from '../../QuickNavigation/QuickNavigation';
 import styles from '../Overview.module.css';
 
@@ -51,7 +56,7 @@ const ExperienceOverview = ({
       {experience.participant_count && (
         <div className={styles.infoEntry}>
           <p className={styles.info}>
-            Participant count: {experience.participant_count}
+            Participant count: {ParticipantCount[experience.participant_count]}
           </p>
         </div>
       )}

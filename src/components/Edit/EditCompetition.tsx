@@ -47,13 +47,22 @@ async function onSubmit(
     }
   });
 
+  await fetch(`${IP_ADDRESS}/remove`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      tableName: 'award',
+      rowName: 'competition_id',
+      rowId: experienceId
+    })
+  });
   for (const d of award_data) {
     const awardRequestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rowId: experienceId, tableName: 'award', data: d })
+      body: JSON.stringify({ tableName: 'award', data: d })
     };
-    await fetch(`${IP_ADDRESS}/update`, awardRequestOptions).then((res) => {
+    await fetch(`${IP_ADDRESS}/insert`, awardRequestOptions).then((res) => {
       if (res.status === 400) {
         alert('Something went wrong!');
       } else if (res.status === 200 || res.status === 204) {

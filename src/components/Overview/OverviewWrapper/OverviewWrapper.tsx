@@ -5,7 +5,8 @@ import {
   Experience,
   ExperienceGrade,
   ExperienceType,
-  Grade
+  Grade,
+  ParticipantCount
 } from '../../../experience';
 import { IP_ADDRESS } from '../../../Global';
 import { Program } from '../../../program';
@@ -32,6 +33,10 @@ const OverviewWrapper = () => {
         const experience = res as unknown as any;
         experience.type =
           ExperienceType[experience.type as keyof typeof ExperienceType];
+        experience.participant_count =
+          ParticipantCount[
+            experience.participant_count as keyof typeof ParticipantCount
+          ];
         const newGrades: ExperienceGrade[] = [];
         for (const grade of experience.grades) {
           newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });

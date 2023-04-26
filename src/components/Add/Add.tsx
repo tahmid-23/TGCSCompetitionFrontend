@@ -93,7 +93,7 @@ async function onSubmit(
         return res.json();
       } else {
         throw new Error(
-          'We have no idea what went wrong\n But its not error 400.'
+          "We have no idea what went wrong\n But it's not error 400."
         );
       }
     });

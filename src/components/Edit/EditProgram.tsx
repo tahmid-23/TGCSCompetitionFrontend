@@ -40,6 +40,16 @@ async function onSubmit(
     }
   });
 
+  await fetch(`${IP_ADDRESS}/remove`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      tableName: 'program_focus',
+      rowName: 'program_id',
+      rowId: experienceId
+    })
+  });
+
   if (isTheoretical) {
     sendFocus(experienceId, 'THEORETICAL');
   }
@@ -59,13 +69,9 @@ async function sendFocus(experienceId: number, focus: string) {
   const focusRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      rowId: experienceId,
-      tableName: 'program_focus',
-      data: focus_data
-    })
+    body: JSON.stringify({ tableName: 'program_focus', data: focus_data })
   };
-  await fetch(`${IP_ADDRESS}/update`, focusRequestOptions).then((res) => {
+  await fetch(`${IP_ADDRESS}/insert`, focusRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
     } else if (res.status === 200 || res.status === 204) {

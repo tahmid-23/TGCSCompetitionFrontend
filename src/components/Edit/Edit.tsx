@@ -8,7 +8,8 @@ import {
   ExperienceCategory,
   ExperienceGrade,
   ExperienceType,
-  Grade
+  Grade,
+  ParticipantCount
 } from '../../experience';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
@@ -116,6 +117,30 @@ const Edit = () => {
         return;
       }
 
+      try {
+        await fetch(`${IP_ADDRESS}/remove`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tableName: 'experience_grade',
+            rowName: 'experience_id',
+            rowId: experienceId
+          })
+        });
+        await fetch(`${IP_ADDRESS}/remove`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tableName: 'experience_category',
+            rowName: 'experience_id',
+            rowId: experienceId
+          })
+        });
+      } catch (err) {
+        alert(err);
+        return;
+      }
+
       const promises = [];
       for (const g of selected_grades) {
         const grade_data = {
@@ -126,13 +151,12 @@ const Edit = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            rowId: experienceId,
             tableName: 'experience_grade',
             data: grade_data
           })
         };
         const gradePromise = fetch(
-          `${IP_ADDRESS}/update`,
+          `${IP_ADDRESS}/insert`,
           gradeRequestOptions
         ).then((res) => {
           if (res.status === 400) {
@@ -157,13 +181,12 @@ const Edit = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            rowId: experienceId,
             tableName: 'experience_category',
             data: topic_data
           })
         };
         const topicPromise = fetch(
-          `${IP_ADDRESS}/update`,
+          `${IP_ADDRESS}/insert`,
           topicRequestOptions
         ).then((res) => {
           if (res.status === 400) {
@@ -196,6 +219,10 @@ const Edit = () => {
         const experience = res as unknown as any;
         experience.type =
           ExperienceType[experience.type as keyof typeof ExperienceType];
+        experience.participant_count =
+          ParticipantCount[
+            experience.participant_count as keyof typeof ParticipantCount
+          ];
         const newGrades: ExperienceGrade[] = [];
         for (const grade of experience.grades) {
           newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });

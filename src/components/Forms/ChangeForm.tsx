@@ -24,6 +24,8 @@ export interface ChangeFormProps {
 const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
   const d: Date = new Date();
   const year = String(d.getFullYear());
+  console.log(experience);
+
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -41,12 +43,15 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         <Dropdown
           name="Participant Count"
           id="participant_count"
-          value={experience?.participant_count}
+          value={
+            experience?.participant_count &&
+            ParticipantCount[experience.participant_count]
+          }
           items={[
-            ParticipantCount['1-10'],
-            ParticipantCount['11-50'],
-            ParticipantCount['51-99'],
-            ParticipantCount['100+']
+            ParticipantCount[ParticipantCount['1-10']],
+            ParticipantCount[ParticipantCount['11-50']],
+            ParticipantCount[ParticipantCount['51-99']],
+            ParticipantCount[ParticipantCount['100+']]
           ]}
         />
         <br />
