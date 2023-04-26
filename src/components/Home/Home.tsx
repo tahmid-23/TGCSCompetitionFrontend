@@ -39,9 +39,9 @@ function createGradeFilter(grades: Grade[]) {
   return (experience: Record<string, any>) => {
     for (const gradeObject of experience.grades) {
       if (
-        grades
-          .map((grade) => Grade[grade].toUpperCase())
-          .includes(String(gradeObject.grade).toUpperCase())
+        grades.some(
+          (grade) => Grade[gradeObject.grade as keyof typeof Grade] === grade
+        )
       ) {
         return true;
       }
@@ -59,6 +59,36 @@ function createSearchFilter(keyword: string) {
   };
 }
 
+function createProgramFilter(programTypes: string[]) {
+  return (experience: Record<string, any>) => {
+    if (experience.type !== 'PROGRAM') {
+      return false;
+    }
+    return programTypes.some((type) => {
+      return type.toUpperCase() === experience.program_type;
+    });
+  };
+}
+function createFocusFilter(programFocuses: string[]) {
+  return (experience: Record<string, any>) => {
+    if (experience.type !== 'PROGRAM') {
+      return false;
+    }
+    for (const focusObject of experience.program_focuses) {
+      console.log(focusObject.focus);
+      if (
+        programFocuses.some((focus) => {
+          return focus.toUpperCase() === focusObject.focus;
+        })
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
 const Home = () => {
   const [filter, setFilter] = useState<Filter>();
   const [filterType, setFilterType] = useState<string>('name');
@@ -73,7 +103,13 @@ const Home = () => {
   }, []);
 
   if (filterType === 'grade') {
-    inputComponent = <GradeFilter />;
+    inputComponent = (
+      <GradeFilter
+        onGradeChange={(grades) => {
+          setFilter(() => createGradeFilter(grades));
+        }}
+      />
+    );
   } else if (filterType === 'topic') {
     inputComponent = (
       <TopicFilter
@@ -85,7 +121,13 @@ const Home = () => {
   } else if (filterType === 'award') {
     inputComponent = <AwardFilter />;
   } else if (filterType === 'program') {
-    inputComponent = <ProgramFilter />;
+    inputComponent = (
+      <ProgramFilter
+        onFocusChange={(focuses) => {
+          setFilter(() => createProgramFilter(focuses));
+        }}
+      />
+    );
   } else {
     inputComponent = (
       <SearchBox

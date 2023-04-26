@@ -1,12 +1,41 @@
-import MultipleChoice from '../InputComponents/MultipleChoice';
+import { ChangeEvent, useCallback, useState } from 'react';
+import MultipleSelect from '../InputComponents/MultipleSelect';
 
-const ProgramFilter = () => {
+interface ProgramFilterProps {
+  onFocusChange?: (arg0: string[]) => void;
+}
+
+const ProgramFilter = ({ onFocusChange }: ProgramFilterProps) => {
+  const [focuses, setFocuses] = useState<string[]>([]);
+
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      let newFocuses;
+
+      if (e.currentTarget.checked) {
+        setFocuses((newFocuses = focuses.concat(e.currentTarget.value)));
+      } else {
+        setFocuses(
+          (newFocuses = focuses.filter(
+            (focus) => focus !== e.currentTarget.value
+          ))
+        );
+      }
+
+      onFocusChange?.(newFocuses);
+    },
+    [onFocusChange, focuses]
+  );
   return (
     <>
-      <MultipleChoice name="prog_type" id="intern" value="Internship" />
-      <MultipleChoice name="prog_type" id="academic" value="Academic" />
-      <MultipleChoice name="prog_type" id="presentation" value="Presentation" />
-      <MultipleChoice name="prog_type" id="research" value="Research" />
+      <MultipleSelect name="intern" value="Internship" onChange={onChange} />
+      <MultipleSelect name="academic" value="Academic" onChange={onChange} />
+      <MultipleSelect
+        name="presentation"
+        value="Presentation"
+        onChange={onChange}
+      />
+      <MultipleSelect name="research" value="Research" onChange={onChange} />
     </>
   );
 };
