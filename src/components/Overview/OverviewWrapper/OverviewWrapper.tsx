@@ -25,23 +25,18 @@ const OverviewWrapper = () => {
       return;
     }
 
-    await fetch(`${IP_ADDRESS}/experiences`)
+    await fetch(`${IP_ADDRESS}/experience/${experienceId}`)
       .then((res) => res.json())
       .then((res) => {
-        for (const experience of res) {
-          if (Number(experience.experience_id) !== experienceId) {
-            continue;
-          }
-          experience.type =
-            ExperienceType[experience.type as keyof typeof ExperienceType];
-          const newGrades: ExperienceGrade[] = [];
-          for (const grade of experience.grades) {
-            newGrades.push({ grade: grade });
-          }
-
-          console.log(experience);
-          setData(experience);
+        const experience = res as unknown as any;
+        experience.type =
+          ExperienceType[experience.type as keyof typeof ExperienceType];
+        const newGrades: ExperienceGrade[] = [];
+        for (const grade of experience.grades) {
+          newGrades.push({ grade: grade });
         }
+
+        setData(experience);
       })
       .catch((err) => {
         alert('No Data Access');

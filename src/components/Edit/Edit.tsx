@@ -1,7 +1,8 @@
-import { FormEvent, useCallback } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import ChangeForm from '../Forms/ChangeForm';
+import { Experience, ExperienceGrade, ExperienceType } from '../../experience';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -16,6 +17,7 @@ const Edit = () => {
   const params = useParams();
   const navigate = useNavigate();
   const experienceId = Number(params['experienceId']);
+  const [experience, setExperience] = useState<Experience>();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -89,7 +91,7 @@ const Edit = () => {
       }
 
       try {
-        await fetch(`${IP_ADDRESS}/edit`, experienceRequestOptions).then(
+        await fetch(`${IP_ADDRESS}/update`, experienceRequestOptions).then(
           (res) => {
             if (res.status === 400) {
               throw new Error('Something went wrong!');
@@ -117,12 +119,13 @@ const Edit = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            rowId: experienceId,
             tableName: 'experience_grade',
             data: grade_data
           })
         };
         const gradePromise = fetch(
-          `${IP_ADDRESS}/edit`,
+          `${IP_ADDRESS}/update`,
           gradeRequestOptions
         ).then((res) => {
           if (res.status === 400) {
@@ -147,12 +150,13 @@ const Edit = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            rowId: experienceId,
             tableName: 'experience_category',
             data: topic_data
           })
         };
         const topicPromise = fetch(
-          `${IP_ADDRESS}/edit`,
+          `${IP_ADDRESS}/update`,
           topicRequestOptions
         ).then((res) => {
           if (res.status === 400) {
@@ -178,10 +182,34 @@ const Edit = () => {
     [experienceId, navigate]
   );
 
+  const downloadData = useCallback(async () => {
+    await fetch(`${IP_ADDRESS}/experience/${experienceId}`)
+      .then((res) => res.json())
+      .then((res) => {
+        const experience = res as unknown as any;
+        experience.type =
+          ExperienceType[experience.type as keyof typeof ExperienceType];
+        const newGrades: ExperienceGrade[] = [];
+        for (const grade of experience.grades) {
+          newGrades.push({ grade: grade });
+        }
+
+        setExperience(experience);
+      });
+  }, [experienceId]);
+
+  useEffect(() => {
+    downloadData();
+  }, [downloadData]);
+
+  if (!experience) {
+    return <></>;
+  }
+
   return (
     <>
       <h1>Edit</h1>
-      <ChangeForm onSubmit={onSubmit} />
+      <ChangeForm experience={experience} onSubmit={onSubmit} />
     </>
   );
 };

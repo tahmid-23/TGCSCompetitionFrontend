@@ -21,7 +21,7 @@ const MultipleSelect = ({
         name={name}
         value={value}
         onChange={onChange}
-        checked={checked}
+        defaultChecked={checked}
       />
       <label htmlFor={name}>{value}</label>
     </>

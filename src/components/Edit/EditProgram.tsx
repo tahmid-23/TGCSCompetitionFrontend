@@ -19,13 +19,17 @@ async function onSubmit(
   const programRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'program', data: program_data })
+    body: JSON.stringify({
+      rowId: experienceId,
+      tableName: 'program',
+      data: program_data
+    })
   };
 
   const isTheoretical = event.currentTarget['theoretical_checkbox'].checked;
   const isPractical = event.currentTarget['practical_checkbox'].checked;
 
-  await fetch(`${IP_ADDRESS}/insert`, programRequestOptions).then((res) => {
+  await fetch(`${IP_ADDRESS}/update`, programRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
     } else if (res.status === 200 || res.status === 204) {
@@ -55,9 +59,13 @@ async function sendFocus(experienceId: number, focus: string) {
   const focusRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'program_focus', data: focus_data })
+    body: JSON.stringify({
+      rowId: experienceId,
+      tableName: 'program_focus',
+      data: focus_data
+    })
   };
-  await fetch(`${IP_ADDRESS}/insert`, focusRequestOptions).then((res) => {
+  await fetch(`${IP_ADDRESS}/update`, focusRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
     } else if (res.status === 200 || res.status === 204) {
@@ -69,7 +77,7 @@ async function sendFocus(experienceId: number, focus: string) {
   });
 }
 
-const AddProgram = () => {
+const EditProgram = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   return (
@@ -81,4 +89,4 @@ const AddProgram = () => {
   );
 };
 
-export default AddProgram;
+export default EditProgram;

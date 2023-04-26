@@ -8,7 +8,12 @@ import TextBox from '../InputComponents/TextBox';
 import URLBox from '../InputComponents/URLBox';
 import GradeFilter from '../Search/GradeFilter';
 import TopicFilter from '../Search/TopicFilter';
-import { Experience, ExperienceType, ParticipantCount } from '../../experience';
+import {
+  Experience,
+  ExperienceType,
+  Grade,
+  ParticipantCount
+} from '../../experience';
 
 export interface ChangeFormProps {
   experience?: Experience;
@@ -136,7 +141,20 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         />
         <br />
         <p>Grades</p>
-        <GradeFilter />
+        <GradeFilter
+          checkedA={experience?.grades.some(
+            (grade) => (grade.grade as unknown as string) === 'K-2'
+          )}
+          checkedB={experience?.grades.some(
+            (grade) => (grade.grade as unknown as string) === '3-5'
+          )}
+          checkedC={experience?.grades.some(
+            (grade) => (grade.grade as unknown as string) === '6-8'
+          )}
+          checkedD={experience?.grades.some(
+            (grade) => (grade.grade as unknown as string) === '9-12'
+          )}
+        />
         <br />
         <p>Categories</p>
         <TopicFilter />
@@ -144,11 +162,6 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         <br />
         <DateBox name="Important Dates" id="important_dates" />
         &nbsp; &nbsp; &nbsp; &nbsp;
-        <TextBox
-          name="Description"
-          id="descrption"
-          value={experience?.description}
-        />
         <br />
         <br />
         <input type="submit" value="Next" />
