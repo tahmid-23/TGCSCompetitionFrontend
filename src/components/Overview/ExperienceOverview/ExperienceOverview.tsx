@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
-import { Experience, ExperienceType } from '../../../experience';
+import { Experience, ExperienceType, Grade } from '../../../experience';
 import QuickNavigation from '../../QuickNavigation/QuickNavigation';
 import styles from '../Overview.module.css';
 
@@ -36,7 +36,8 @@ const ExperienceOverview = ({
       </div>
       <div className={styles.infoEntry}>
         <p className={styles.info}>
-          Grades: {experience.grades.map((grade) => grade.grade).join(', ')}
+          Grades:{' '}
+          {experience.grades.map((grade) => Grade[grade.grade]).join(', ')}
         </p>
       </div>
       <div className={styles.infoEntry}>
@@ -56,9 +57,7 @@ const ExperienceOverview = ({
       )}
       {experience.origin_year && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>
-            Origin Year: {experience.origin_year}
-          </p>
+          <p className={styles.info}>Origin Year: {experience.origin_year}</p>
         </div>
       )}
       {experience.purpose && (
@@ -81,15 +80,19 @@ const ExperienceOverview = ({
           <p className={styles.info}>Advice: {experience.advice}</p>
         </div>
       )}
-      {(experience.virtual !== undefined) && (
+      {experience.virtual !== undefined && (
         <div className={styles.infoEntry}>
-          <p className={styles.info}>Virtual: {(experience.virtual) ? 'True' : 'False'}</p>
+          <p className={styles.info}>
+            Virtual: {experience.virtual ? 'True' : 'False'}
+          </p>
         </div>
       )}
       {experience.entry_description && (
         <div className={styles.infoEntry}>
-        <p className={styles.info}>Entry Description: {experience.entry_description}</p>
-      </div>
+          <p className={styles.info}>
+            Entry Description: {experience.entry_description}
+          </p>
+        </div>
       )}
       {children}
       <div>

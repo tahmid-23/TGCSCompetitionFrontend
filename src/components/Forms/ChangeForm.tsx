@@ -9,6 +9,7 @@ import URLBox from '../InputComponents/URLBox';
 import GradeFilter from '../Search/GradeFilter';
 import TopicFilter from '../Search/TopicFilter';
 import {
+  Category,
   Experience,
   ExperienceType,
   Grade,
@@ -143,21 +144,91 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         <p>Grades</p>
         <GradeFilter
           checkedA={experience?.grades.some(
-            (grade) => (grade.grade as unknown as string) === 'K-2'
+            (grade) => grade.grade === Grade['K-2']
           )}
           checkedB={experience?.grades.some(
-            (grade) => (grade.grade as unknown as string) === '3-5'
+            (grade) => grade.grade === Grade['3-5']
           )}
           checkedC={experience?.grades.some(
-            (grade) => (grade.grade as unknown as string) === '6-8'
+            (grade) => grade.grade === Grade['6-8']
           )}
           checkedD={experience?.grades.some(
-            (grade) => (grade.grade as unknown as string) === '9-12'
+            (grade) => grade.grade === Grade['9-12']
           )}
         />
         <br />
         <p>Categories</p>
-        <TopicFilter />
+        <TopicFilter
+          technology={experience?.categories.some(
+            (category) => category.category === Category.TECHNOLOGY
+          )}
+          science={experience?.categories.some(
+            (category) => category.category === Category.SCIENCE
+          )}
+          biology={experience?.categories.some(
+            (category) => category.category === Category.BIOLOGY
+          )}
+          chemistry={experience?.categories.some(
+            (category) => category.category === Category.CHEMISTRY
+          )}
+          physics={experience?.categories.some(
+            (category) => category.category === Category.PHYSICS
+          )}
+          math={experience?.categories.some(
+            (category) => category.category === Category.MATH
+          )}
+          engineering={experience?.categories.some(
+            (category) => category.category === Category.ENGINEERING
+          )}
+          business={experience?.categories.some(
+            (category) => category.category === Category.BUSINESS
+          )}
+          medical={experience?.categories.some(
+            (category) => category.category === Category.MEDICAL
+          )}
+          culinary={experience?.categories.some(
+            (category) => category.category === Category.CULINARY
+          )}
+          music={experience?.categories.some(
+            (category) => category.category === Category.MUSIC
+          )}
+          athletics={experience?.categories.some(
+            (category) => category.category === Category.ATHLETICS
+          )}
+          art={experience?.categories.some(
+            (category) => category.category === Category.ART
+          )}
+          theater={experience?.categories.some(
+            (category) => category.category === Category.THEATER
+          )}
+          dance={experience?.categories.some(
+            (category) => category.category === Category.DANCE
+          )}
+          languageArts={experience?.categories.some(
+            (category) => category.category === Category['LANGUAGE ARTS']
+          )}
+          geography={experience?.categories.some(
+            (category) => category.category === Category.GEOGRAPHY
+          )}
+          spelling={experience?.categories.some(
+            (category) => category.category === Category.SPELLING
+          )}
+          history={experience?.categories.some(
+            (category) => category.category === Category.HISTORY
+          )}
+          foreignLanguage={experience?.categories.some(
+            (category) => category.category === Category['FOREIGN LANGUAGE']
+          )}
+          chess={experience?.categories.some(
+            (category) => category.category === Category.CHESS
+          )}
+          research={experience?.categories.some(
+            (category) => category.category === Category.RESEARCH
+          )}
+          other={experience?.categories.some(
+            (category) => category.category === Category.OTHER
+          )}
+        />
         <br />
         <br />
         <DateBox name="Important Dates" id="important_dates" />

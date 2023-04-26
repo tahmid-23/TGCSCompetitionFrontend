@@ -3,14 +3,14 @@ import { ChangeEvent } from 'react';
 interface MultipleSelectProps {
   name: string;
   value: string;
-  checked?: boolean;
+  defaultChecked?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const MultipleSelect = ({
   name,
   value,
-  checked,
+  defaultChecked: checked,
   onChange
 }: MultipleSelectProps) => {
   return (

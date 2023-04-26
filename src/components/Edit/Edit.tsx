@@ -2,7 +2,14 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import ChangeForm from '../Forms/ChangeForm';
-import { Experience, ExperienceGrade, ExperienceType } from '../../experience';
+import {
+  Category,
+  Experience,
+  ExperienceCategory,
+  ExperienceGrade,
+  ExperienceType,
+  Grade
+} from '../../experience';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -191,8 +198,16 @@ const Edit = () => {
           ExperienceType[experience.type as keyof typeof ExperienceType];
         const newGrades: ExperienceGrade[] = [];
         for (const grade of experience.grades) {
-          newGrades.push({ grade: grade });
+          newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });
         }
+        experience.grades = newGrades;
+        const newCategories: ExperienceCategory[] = [];
+        for (const category of experience.categories) {
+          newCategories.push({
+            category: Category[category.category as keyof typeof Category]
+          });
+        }
+        experience.categories = newCategories;
 
         setExperience(experience);
       });

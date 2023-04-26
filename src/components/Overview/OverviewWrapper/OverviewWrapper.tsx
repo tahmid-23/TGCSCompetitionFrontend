@@ -4,7 +4,8 @@ import { Competition } from '../../../competition';
 import {
   Experience,
   ExperienceGrade,
-  ExperienceType
+  ExperienceType,
+  Grade
 } from '../../../experience';
 import { IP_ADDRESS } from '../../../Global';
 import { Program } from '../../../program';
@@ -33,8 +34,9 @@ const OverviewWrapper = () => {
           ExperienceType[experience.type as keyof typeof ExperienceType];
         const newGrades: ExperienceGrade[] = [];
         for (const grade of experience.grades) {
-          newGrades.push({ grade: grade });
+          newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });
         }
+        experience.grades = newGrades;
 
         setData(experience);
       })

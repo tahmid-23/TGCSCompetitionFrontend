@@ -41,7 +41,7 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
       <MultipleSelect
         name="theoretical_checkbox"
         value="Theoretical"
-        checked={
+        defaultChecked={
           program?.program_focuses.find(
             (focus) => focus.focus === Focus.THEORETICAL
           ) !== undefined
@@ -50,7 +50,7 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
       <MultipleSelect
         name="practical_checkbox"
         value="Practical"
-        checked={
+        defaultChecked={
           program?.program_focuses.find(
             (focus) => focus.focus === Focus.PRACTICAL
           ) !== undefined
