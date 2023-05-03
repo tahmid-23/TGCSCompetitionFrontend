@@ -163,7 +163,7 @@ async function onSubmit(
   await Promise.all(promises)
     .then(() => {
       alert('Success!');
-      navigate(`/add_${type.toLowerCase()}?experienceId=${experienceId}`);
+      navigate(`/add-${type.toLowerCase()}?experienceId=${experienceId}`);
     })
     .catch(alert);
 }

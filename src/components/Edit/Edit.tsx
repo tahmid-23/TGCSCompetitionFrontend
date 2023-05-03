@@ -103,9 +103,7 @@ const Edit = () => {
           (res) => {
             if (res.status === 400) {
               throw new Error('Something went wrong!');
-            } else if (res.status === 200 || res.status === 204) {
-              return res.json();
-            } else {
+            } else if (res.status !== 200 && res.status !== 204) {
               throw new Error(
                 'We have no idea what went wrong\n But its not error 400.'
               );
@@ -205,7 +203,7 @@ const Edit = () => {
       await Promise.all(promises)
         .then(() => {
           alert('Success!');
-          navigate(`/edit_${type.toLowerCase()}?experienceId=${experienceId}`);
+          navigate(`/edit-${type.toLowerCase()}/${experienceId}`);
         })
         .catch(alert);
     },

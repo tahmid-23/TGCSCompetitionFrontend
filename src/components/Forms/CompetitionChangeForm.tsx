@@ -1,4 +1,4 @@
-import { FormEventHandler, useCallback, useState } from 'react';
+import { FormEventHandler, Fragment, useCallback, useState } from 'react';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import TextBox from '../InputComponents/TextBox';
 import { Award, Competition } from '../../competition';
@@ -16,7 +16,7 @@ interface AwardInputProps {
 
 const AwardInput = ({ index, award }: AwardInputProps) => {
   return (
-    <>
+    <Fragment>
       <MultipleChoice
         name={`award${index}`}
         value="Trophy"
@@ -60,7 +60,7 @@ const AwardInput = ({ index, award }: AwardInputProps) => {
         value={award?.description}
       />
       <br />
-    </>
+    </Fragment>
   );
 };
 
@@ -73,7 +73,7 @@ const CompetitionChangeForm = ({
   );
 
   const awardInputs = awards.map((award, i) => {
-    return <AwardInput index={i} />;
+    return <AwardInput key={i} index={i} award={award} />;
   });
 
   const onAddAward = useCallback(() => {

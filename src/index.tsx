@@ -25,10 +25,13 @@ root.render(
         <Route path="/add" element={<Add />} />
         <Route path="/edit/:experienceId" element={<Edit />} />
         <Route path="/view/:experienceId" element={<OverviewWrapper />} />
-        <Route path="/add_competition" element={<AddCompetition />} />
-        <Route path="/add_program" element={<AddProgram />} />
-        <Route path="/edit_competition" element={<EditCompetition />} />
-        <Route path="/edit_program" element={<EditProgram />} />
+        <Route path="/add-competition" element={<AddCompetition />} />
+        <Route path="/add-program" element={<AddProgram />} />
+        <Route
+          path="/edit-competition/:competitionId"
+          element={<EditCompetition />}
+        />
+        <Route path="/edit-program/:programId" element={<EditProgram />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/recommendation" element={<RecommendationWrapper />} />
       </Routes>

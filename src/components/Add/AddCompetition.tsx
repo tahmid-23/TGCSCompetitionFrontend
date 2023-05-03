@@ -1,9 +1,5 @@
 import { FormEvent } from 'react';
-import {
-  NavigateFunction,
-  useNavigate,
-  useSearchParams
-} from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import CompetitionChangeForm from '../Forms/CompetitionChangeForm';
 
@@ -65,13 +61,11 @@ async function onSubmit(
 }
 
 const AddCompetition = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
   const navigate = useNavigate();
   return (
     <CompetitionChangeForm
-      onSubmit={(e) =>
-        onSubmit(Number(searchParams.get('experienceId')), navigate, e)
-      }
+      onSubmit={(e) => onSubmit(Number(params['experienceId']), navigate, e)}
     />
   );
 };

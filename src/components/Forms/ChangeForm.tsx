@@ -24,7 +24,6 @@ export interface ChangeFormProps {
 const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
   const d: Date = new Date();
   const year = String(d.getFullYear());
-  console.log(experience);
 
   return (
     <>

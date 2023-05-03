@@ -1,5 +1,4 @@
 import { FormEventHandler } from 'react';
-import DateBox from '../InputComponents/DateBox';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import MultipleSelect from '../InputComponents/MultipleSelect';
 import NumberBox from '../InputComponents/NumberBox';
@@ -68,8 +67,6 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
         id="time_commitment"
         value={program?.time_commitment}
       />
-      <br />
-      <DateBox name="Application Due Date" id="due_date" />
       <br />
       <br />
       <input type="submit" value="Add Program" />

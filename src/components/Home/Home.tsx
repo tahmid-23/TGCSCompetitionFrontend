@@ -75,7 +75,6 @@ function createFocusFilter(programFocuses: string[]) {
       return false;
     }
     for (const focusObject of experience.program_focuses) {
-      console.log(focusObject.focus);
       if (
         programFocuses.some((focus) => {
           return focus.toUpperCase() === focusObject.focus;

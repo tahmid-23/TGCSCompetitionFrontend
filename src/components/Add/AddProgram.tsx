@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import ProgramChangeForm from '../Forms/ProgramChangeForm';
 
@@ -70,13 +70,12 @@ async function sendFocus(experienceId: number, focus: string) {
 }
 
 const AddProgram = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
   const navigate = useNavigate();
+
   return (
     <ProgramChangeForm
-      onSubmit={(e) =>
-        onSubmit(Number(searchParams.get('experienceId')), navigate, e)
-      }
+      onSubmit={(e) => onSubmit(Number(params['experienceId']), navigate, e)}
     />
   );
 };
