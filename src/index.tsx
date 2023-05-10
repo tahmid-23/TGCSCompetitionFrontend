@@ -12,6 +12,7 @@ import RecommendationWrapper from './components/Recommendation/RecommendationWra
 import './index.css';
 import EditCompetition from './components/Edit/EditCompetition';
 import EditProgram from './components/Edit/EditProgram';
+import Login from './components/Login/Login';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -34,6 +35,7 @@ root.render(
         <Route path="/edit-program/:programId" element={<EditProgram />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/recommendation" element={<RecommendationWrapper />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
