@@ -14,8 +14,9 @@ async function onSubmit(
     judges_description: event.currentTarget['judge_description'].value,
     judging_criteria: event.currentTarget['judge_criteria'].value
   };
-  const judgeRequestOptions = {
+  const judgeRequestOptions: RequestInit = {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tableName: 'competition', data: judge_data })
   };
@@ -40,8 +41,9 @@ async function onSubmit(
   });
 
   for (const d of award_data) {
-    const awardRequestOptions = {
+    const awardRequestOptions: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tableName: 'award', data: d })
     };

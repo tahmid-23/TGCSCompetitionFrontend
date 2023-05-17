@@ -19,8 +19,9 @@ const EditCompetition = () => {
         judges_description: event.currentTarget['judge_description'].value,
         judging_criteria: event.currentTarget['judge_criteria'].value
       };
-      const judgeRequestOptions = {
+      const judgeRequestOptions: RequestInit = {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rowId: competitionId,
@@ -47,6 +48,7 @@ const EditCompetition = () => {
 
       await fetch(`${IP_ADDRESS}/remove`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tableName: 'award',
@@ -55,8 +57,9 @@ const EditCompetition = () => {
         })
       });
       for (const d of award_data) {
-        const awardRequestOptions = {
+        const awardRequestOptions: RequestInit = {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tableName: 'award', data: d })
         };
@@ -78,7 +81,9 @@ const EditCompetition = () => {
   );
 
   const downloadData = useCallback(async () => {
-    await fetch(`${IP_ADDRESS}/experience/${competitionId}`)
+    await fetch(`${IP_ADDRESS}/experience/${competitionId}`, {
+      credentials: 'include',
+    })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;

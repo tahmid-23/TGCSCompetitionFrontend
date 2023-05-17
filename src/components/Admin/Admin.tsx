@@ -23,8 +23,9 @@ const Admin = () => {
       email: `${email}@giftedchildsociety.org`,
       token: token
     };
-    const options = {
+    const options: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     };
@@ -52,7 +53,6 @@ const Admin = () => {
 
   return (
     <>
-      <script src="https://smtpjs.com/v3/smtp.js" />
       <h1>Admin Only Interface</h1>
       <br />
       <br />

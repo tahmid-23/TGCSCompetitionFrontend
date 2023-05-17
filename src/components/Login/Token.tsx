@@ -1,11 +1,31 @@
-import { FormEvent } from 'react';
-
-function onLogin(e: FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-  console.log(e.currentTarget['token'].value);
-}
+import { FormEvent, useCallback } from 'react';
+import { IP_ADDRESS } from '../../Global';
+import { useNavigate } from 'react-router-dom';
 
 const Token = () => {
+  const navigate = useNavigate();
+
+  const onLogin = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetch(`${IP_ADDRESS}/token`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: e.currentTarget['token'].value
+      })
+    }).then((res) => {
+      if (res.status !== 200) {
+        alert('Invalid token');
+        return;
+      }
+      
+      navigate('/');
+    });
+  }, [navigate]);
+
   return (
     <>
       <h1>Token Verification</h1>

@@ -11,7 +11,9 @@ import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
 
 async function downloadData(): Promise<any> {
-  return await fetch(`${IP_ADDRESS}/experiences`)
+  return await fetch(`${IP_ADDRESS}/experiences`, {
+    credentials: 'include'
+  })
     .then((res) => res.json())
     .catch((err) => {
       alert('No Data Access');
@@ -145,8 +147,9 @@ const Home = () => {
       return;
     }
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tableName: 'experience',

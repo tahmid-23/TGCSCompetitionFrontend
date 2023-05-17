@@ -51,8 +51,9 @@ const Edit = () => {
         prerequisite_description: getValue(event, 'prerequisite_description'),
         entry_description: getValue(event, 'entry_description')
       };
-      const experienceRequestOptions = {
+      const experienceRequestOptions: RequestInit = {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tableName: 'experience',
@@ -118,6 +119,7 @@ const Edit = () => {
       try {
         await fetch(`${IP_ADDRESS}/remove`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             tableName: 'experience_grade',
@@ -127,6 +129,7 @@ const Edit = () => {
         });
         await fetch(`${IP_ADDRESS}/remove`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             tableName: 'experience_category',
@@ -145,8 +148,9 @@ const Edit = () => {
           experience_id: experienceId,
           grade: g
         };
-        const gradeRequestOptions = {
+        const gradeRequestOptions: RequestInit = {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             tableName: 'experience_grade',
@@ -175,8 +179,9 @@ const Edit = () => {
           experience_id: experienceId,
           category: t
         };
-        const topicRequestOptions = {
+        const topicRequestOptions: RequestInit = {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             tableName: 'experience_category',
@@ -211,7 +216,9 @@ const Edit = () => {
   );
 
   const downloadData = useCallback(async () => {
-    await fetch(`${IP_ADDRESS}/experience/${experienceId}`)
+    await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
+      credentials: 'include',
+    })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;

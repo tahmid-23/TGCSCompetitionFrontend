@@ -27,7 +27,9 @@ const OverviewWrapper = () => {
       return;
     }
 
-    await fetch(`${IP_ADDRESS}/experience/${experienceId}`)
+    await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
+      credentials: 'include'
+    })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;

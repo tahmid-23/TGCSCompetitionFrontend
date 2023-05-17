@@ -38,8 +38,9 @@ async function onSubmit(
     prerequisite_description: getValue(event, 'prerequisite_description'),
     entry_description: getValue(event, 'entry_description')
   };
-  const experienceRequestOptions = {
+  const experienceRequestOptions: RequestInit = {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tableName: 'experience', data: experience_data })
   };
@@ -108,8 +109,9 @@ async function onSubmit(
       experience_id: experienceId,
       grade: g
     };
-    const gradeRequestOptions = {
+    const gradeRequestOptions: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tableName: 'experience_grade', data: grade_data })
     };
@@ -135,8 +137,9 @@ async function onSubmit(
       experience_id: experienceId,
       category: t
     };
-    const topicRequestOptions = {
+    const topicRequestOptions: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tableName: 'experience_category',

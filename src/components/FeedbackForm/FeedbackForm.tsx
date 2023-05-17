@@ -14,8 +14,9 @@ const FeedbackForm = () => {
 
   const onSubmitFeedback = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const feedbackOptions = {
+    const feedbackOptions: RequestInit = {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tableName: 'feedback',

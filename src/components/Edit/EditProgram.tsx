@@ -10,8 +10,9 @@ async function sendFocus(experienceId: number, focus: string) {
     program_id: experienceId,
     focus: focus
   };
-  const focusRequestOptions = {
+  const focusRequestOptions: RequestInit = {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tableName: 'program_focus', data: focus_data })
   };
@@ -42,8 +43,9 @@ const EditProgram = () => {
         monthly_fee: event.currentTarget['monthly_fee'].value,
         time_commitment: event.currentTarget['time_commitment'].value
       };
-      const programRequestOptions = {
+      const programRequestOptions: RequestInit = {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rowId: programId,
@@ -65,6 +67,7 @@ const EditProgram = () => {
 
       await fetch(`${IP_ADDRESS}/remove`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tableName: 'program_focus',
@@ -87,7 +90,9 @@ const EditProgram = () => {
   );
 
   const downloadData = useCallback(async () => {
-    await fetch(`${IP_ADDRESS}/experience/${programId}`)
+    await fetch(`${IP_ADDRESS}/experience/${programId}`, {
+      credentials: 'include'
+    })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;

@@ -43,6 +43,7 @@ const Recommendation = ({
         'Content-Type': 'application/json'
       },
       method: 'POST',
+      credentials: 'include',
       body: JSON.stringify({
         preferenceVec: allTopics.map((topic) =>
           topics.indexOf(topic.toUpperCase()) === -1 ? 0 : 1

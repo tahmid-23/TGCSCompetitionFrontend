@@ -16,8 +16,9 @@ async function onSubmit(
     monthly_fee: event.currentTarget['monthly_fee'].value,
     time_commitment: event.currentTarget['time_commitment'].value
   };
-  const programRequestOptions = {
+  const programRequestOptions: RequestInit = {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tableName: 'program', data: program_data })
   };
@@ -52,8 +53,9 @@ async function sendFocus(experienceId: number, focus: string) {
     program_id: experienceId,
     focus: focus
   };
-  const focusRequestOptions = {
+  const focusRequestOptions: RequestInit = {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tableName: 'program_focus', data: focus_data })
   };
