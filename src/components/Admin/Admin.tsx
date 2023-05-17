@@ -20,7 +20,7 @@ const Admin = () => {
   const onTokenGen = useCallback(async () => {
     const token = genToken(16);
     const data = {
-      email: `${email}@gifted.org`,
+      email: `${email}@giftedchildsociety.org`,
       token: token
     };
     const options = {
@@ -52,13 +52,14 @@ const Admin = () => {
 
   return (
     <>
+      <script src="https://smtpjs.com/v3/smtp.js" />
       <h1>Admin Only Interface</h1>
       <br />
       <br />
       <label htmlFor="email">Email</label>
       <br />
       <input type="text" id="email" onChange={onChange} />
-      <label htmlFor="email">@gifted.org</label>
+      <label htmlFor="email">@giftedchildsociety.org</label>
       <br />
       <br />
       <p>Token: {displayedToken}</p>

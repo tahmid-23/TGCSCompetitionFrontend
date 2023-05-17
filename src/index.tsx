@@ -14,6 +14,7 @@ import EditCompetition from './components/Edit/EditCompetition';
 import EditProgram from './components/Edit/EditProgram';
 import Login from './components/Login/Login';
 import Admin from './components/Admin/Admin';
+import Token from './components/Login/Token';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,6 +38,7 @@ root.render(
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/recommendation" element={<RecommendationWrapper />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/token" element={<Token />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
