@@ -29,6 +29,8 @@ async function onSubmit(
   await fetch(`${IP_ADDRESS}/insert`, programRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
+    } else if (res.status === 401) {
+      navigate("/login");
     } else if (res.status === 200 || res.status === 204) {
       alert('Success!');
       return res.json();
@@ -38,17 +40,17 @@ async function onSubmit(
   });
 
   if (isTheoretical) {
-    sendFocus(experienceId, 'THEORETICAL');
+    sendFocus(experienceId, 'THEORETICAL', navigate);
   }
 
   if (isPractical) {
-    sendFocus(experienceId, 'PRACTICAL');
+    sendFocus(experienceId, 'PRACTICAL', navigate);
   }
 
   navigate(`/`);
 }
 
-async function sendFocus(experienceId: number, focus: string) {
+async function sendFocus(experienceId: number, focus: string, navigate: NavigateFunction) {
   const focus_data = {
     program_id: experienceId,
     focus: focus
@@ -62,6 +64,8 @@ async function sendFocus(experienceId: number, focus: string) {
   await fetch(`${IP_ADDRESS}/insert`, focusRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
+    } else if (res.status === 401) {
+      navigate("/login");
     } else if (res.status === 200 || res.status === 204) {
       alert('Success!');
       return res.json();

@@ -41,6 +41,8 @@ const EditCompetition = () => {
       await fetch(`${IP_ADDRESS}/update`, judgeRequestOptions).then((res) => {
         if (res.status === 400) {
           alert('Something went wrong!');
+        } else if (res.status === 401) {
+          navigate("/login");
         } else if (res.status !== 200 && res.status !== 204) {
           alert('We have no idea what went wrong\n But its not error 400.');
         }
@@ -66,6 +68,8 @@ const EditCompetition = () => {
         await fetch(`${IP_ADDRESS}/insert`, awardRequestOptions).then((res) => {
           if (res.status === 400) {
             alert('Something went wrong!');
+          } else if (res.status === 401) {
+            navigate("/login");
           } else if (res.status === 200 || res.status === 204) {
             alert('Success!');
             return res.json();
@@ -84,6 +88,12 @@ const EditCompetition = () => {
     await fetch(`${IP_ADDRESS}/experience/${competitionId}`, {
       credentials: 'include',
     })
+    .then((res) => {
+      if (res.status === 401) {
+        navigate("/login");
+      }
+      return res;
+    })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;
@@ -91,6 +101,7 @@ const EditCompetition = () => {
         const newAwards: Award[] = [];
         for (const award of experience.awards) {
           newAwards.push({
+            awardId: award.award_id,
             type: AwardType[award.type as keyof typeof AwardType],
             description: award.description
           });

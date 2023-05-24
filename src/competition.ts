@@ -8,6 +8,7 @@ export enum AwardType {
 }
 
 export interface Award {
+  awardId: number;
   type: AwardType;
   description?: string;
 }

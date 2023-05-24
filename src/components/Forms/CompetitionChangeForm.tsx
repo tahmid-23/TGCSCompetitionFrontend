@@ -1,8 +1,9 @@
-import { FormEventHandler, Fragment, useCallback, useState } from 'react';
+import { FormEventHandler, Fragment, MouseEventHandler, useCallback, useState } from 'react';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import TextBox from '../InputComponents/TextBox';
 import { Award, Competition } from '../../competition';
 import { AwardType } from '../../competition';
+import Button from '../Button/Button';
 
 interface CompetitionAddFormProps {
   competition?: Competition;
@@ -12,9 +13,10 @@ interface CompetitionAddFormProps {
 interface AwardInputProps {
   index: number;
   award?: Award;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
-const AwardInput = ({ index, award }: AwardInputProps) => {
+const AwardInput = ({ index, award, onClick }: AwardInputProps) => {
   return (
     <Fragment>
       <MultipleChoice
@@ -53,12 +55,14 @@ const AwardInput = ({ index, award }: AwardInputProps) => {
         id={`other${index}`}
         checked={award?.type === AwardType.OTHER}
       />
-      &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp;
       <TextBox
         name="Description"
         id={`award_description${index}`}
         value={award?.description}
       />
+      &nbsp;
+      <Button text="X" onClick={onClick}></Button>
       <br />
     </Fragment>
   );
@@ -72,8 +76,37 @@ const CompetitionChangeForm = ({
     competition ? [...competition.awards] : []
   );
 
+  const removeAward = useCallback((awardIndex: number) => {
+    const newAwards = [...awards];
+    newAwards.splice(awardIndex, 1);
+    setAwards(newAwards);
+  }, [awards]);
+
+  let maxId = -Infinity;
+  let undefinedCount = 0;
+  for (let i = 0; i < awards.length; ++i) {
+    const awardId = awards[i]?.awardId;
+    if (awardId) {
+      if (awardId > maxId) {
+        maxId = awardId;
+      }
+    } else {
+      undefinedCount += 1;
+    }
+  }
+  if (maxId === -Infinity) {
+    maxId = -1;
+  }
+
   const awardInputs = awards.map((award, i) => {
-    return <AwardInput key={i} index={i} award={award} />;
+    let key;
+    if (award?.awardId) {
+      key = award.awardId;
+    } else {
+      key = maxId + undefinedCount--;
+    }
+  
+    return <AwardInput key={key} index={i} award={award} onClick={() => removeAward(i)} />;
   });
 
   const onAddAward = useCallback(() => {

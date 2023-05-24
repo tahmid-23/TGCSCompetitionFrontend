@@ -32,6 +32,8 @@ async function onSubmit(
   await fetch(`${IP_ADDRESS}/insert`, judgeRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
+    } else if (res.status === 401) {
+      navigate("/login");
     } else if (res.status === 200 || res.status === 204) {
       alert('Success!');
       return res.json();
@@ -50,6 +52,8 @@ async function onSubmit(
     await fetch(`${IP_ADDRESS}/insert`, awardRequestOptions).then((res) => {
       if (res.status === 400) {
         alert('Something went wrong!');
+      } else if (res.status === 401) {
+        navigate("/login");
       } else if (res.status === 200 || res.status === 204) {
         alert('Success!');
         return res.json();

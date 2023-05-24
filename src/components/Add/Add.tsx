@@ -90,6 +90,8 @@ async function onSubmit(
     ).then((res) => {
       if (res.status === 400) {
         throw new Error('Something went wrong!');
+      } else if (res.status === 401) {
+        navigate("/login");
       } else if (res.status === 200 || res.status === 204) {
         return res.json();
       } else {
@@ -121,6 +123,8 @@ async function onSubmit(
     ).then((res) => {
       if (res.status === 400) {
         throw new Error('Something went wrong!');
+      } else if (res.status === 401) {
+        navigate("/login");
       } else if (res.status === 200 || res.status === 204) {
         return 'Success!';
       } else {
@@ -152,6 +156,8 @@ async function onSubmit(
     ).then((res) => {
       if (res.status === 400) {
         throw new Error('Something went wrong!');
+      } else if (res.status === 401) {
+        navigate("/login");
       } else if (res.status === 200 || res.status === 204) {
         return res.json();
       } else {

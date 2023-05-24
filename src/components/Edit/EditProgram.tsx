@@ -1,11 +1,11 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useParams } from 'react-router-dom';
+import { NavigateFunction, useParams } from 'react-router-dom';
 import { IP_ADDRESS } from '../../Global';
 import ProgramChangeForm from '../Forms/ProgramChangeForm';
 import { Focus, Program, ProgramFocus, ProgramType } from '../../program';
 
-async function sendFocus(experienceId: number, focus: string) {
+async function sendFocus(experienceId: number, focus: string, navigate: NavigateFunction) {
   const focus_data = {
     program_id: experienceId,
     focus: focus
@@ -19,6 +19,8 @@ async function sendFocus(experienceId: number, focus: string) {
   await fetch(`${IP_ADDRESS}/insert`, focusRequestOptions).then((res) => {
     if (res.status === 400) {
       alert('Something went wrong!');
+    } else if (res.status === 401) {
+      navigate("/login");
     } else if (res.status === 200 || res.status === 204) {
       alert('Success!');
       return res.json();
@@ -60,6 +62,8 @@ const EditProgram = () => {
       await fetch(`${IP_ADDRESS}/update`, programRequestOptions).then((res) => {
         if (res.status === 400) {
           alert('Something went wrong!');
+        } else if (res.status === 401) {
+          navigate("/login");
         } else if (res.status !== 200 && res.status !== 204) {
           alert('We have no idea what went wrong\n But its not error 400.');
         }
@@ -77,11 +81,11 @@ const EditProgram = () => {
       });
 
       if (isTheoretical) {
-        sendFocus(programId, 'THEORETICAL');
+        sendFocus(programId, 'THEORETICAL', navigate);
       }
 
       if (isPractical) {
-        sendFocus(programId, 'PRACTICAL');
+        sendFocus(programId, 'PRACTICAL', navigate);
       }
 
       navigate(`/`);
@@ -92,6 +96,13 @@ const EditProgram = () => {
   const downloadData = useCallback(async () => {
     await fetch(`${IP_ADDRESS}/experience/${programId}`, {
       credentials: 'include'
+    })
+    .then((res) => {
+      if (res.status === 401) {
+        navigate("/login");
+      }
+
+      return res;
     })
       .then((res) => res.json())
       .then((res) => {

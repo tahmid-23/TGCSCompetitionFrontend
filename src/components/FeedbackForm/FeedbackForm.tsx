@@ -30,6 +30,8 @@ const FeedbackForm = () => {
       .then((res) => {
         if (res.status === 400) {
           alert('Something went wrong!');
+        } else if (res.status === 401) {
+          navigate("/login");
         } else if (res.status === 200 || res.status === 204) {
           alert('Success!');
           return res.json();

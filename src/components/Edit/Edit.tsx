@@ -104,6 +104,8 @@ const Edit = () => {
           (res) => {
             if (res.status === 400) {
               throw new Error('Something went wrong!');
+            } else if (res.status === 401) {
+              navigate("/login");
             } else if (res.status !== 200 && res.status !== 204) {
               throw new Error(
                 'We have no idea what went wrong\n But its not error 400.'
@@ -194,6 +196,8 @@ const Edit = () => {
         ).then((res) => {
           if (res.status === 400) {
             throw new Error('Something went wrong!');
+          } else if (res.status === 401) {
+            navigate("/login");
           } else if (res.status === 200 || res.status === 204) {
             return res.json();
           } else {
@@ -219,6 +223,12 @@ const Edit = () => {
     await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
       credentials: 'include',
     })
+      .then((res) => {
+        if (res.status === 401) {
+          navigate("/login");
+        }
+        return res;
+      })
       .then((res) => res.json())
       .then((res) => {
         const experience = res as unknown as any;
@@ -243,7 +253,7 @@ const Edit = () => {
 
         setExperience(experience);
       });
-  }, [experienceId]);
+  }, [experienceId, navigate]);
 
   useEffect(() => {
     downloadData();

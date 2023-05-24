@@ -13,6 +13,7 @@ import { Program } from '../../../program';
 import CompetitionOverview from '../CompetitionOverview/CompetitionOverview';
 import ExperienceOverview from '../ExperienceOverview/ExperienceOverview';
 import ProgramOverview from '../ProgramOverview/ProgramOverview';
+import { useNavigate } from 'react-router-dom';
 
 const OverviewWrapper = () => {
   const params = useParams();
@@ -20,6 +21,7 @@ const OverviewWrapper = () => {
   const [data, setData] = useState<
     (Experience & Competition) | (Experience & Program)
   >();
+  const navigate = useNavigate();
 
   const experienceId = Number(params['experienceId']);
   const downloadData = useCallback(async () => {
@@ -29,6 +31,12 @@ const OverviewWrapper = () => {
 
     await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
       credentials: 'include'
+    })
+    .then((res) => {
+      if (res.status === 401) {
+        navigate("/login");
+      }
+      return res;
     })
       .then((res) => res.json())
       .then((res) => {

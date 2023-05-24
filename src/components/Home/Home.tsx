@@ -9,17 +9,7 @@ import GradeFilter from '../Search/GradeFilter';
 import ProgramFilter from '../Search/ProgramFilter';
 import SearchBox from '../Search/SearchBox';
 import TopicFilter from '../Search/TopicFilter';
-
-async function downloadData(): Promise<any> {
-  return await fetch(`${IP_ADDRESS}/experiences`, {
-    credentials: 'include'
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      alert('No Data Access');
-      console.error(err);
-    });
-}
+import { useNavigate } from 'react-router-dom';
 
 function createTopicFilter(topics: string[]) {
   return (experience: Record<string, any>) => {
@@ -94,10 +84,30 @@ const Home = () => {
   const [filter, setFilter] = useState<Filter>();
   const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
+  const navigate = useNavigate();
   let inputComponent: ReactElement;
 
   const [experienceData, setExperienceData] =
     useState<Record<string, object>[]>();
+
+  const downloadData = useCallback(async () => {
+    return await fetch(`${IP_ADDRESS}/experiences`, {
+      credentials: 'include'
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          navigate("/login");
+          throw new Error();
+        } else {
+          return res;
+        }
+      })
+      .then((res) => res.json())
+      .catch((err) => {
+        alert('No Data Access');
+        console.error(err);
+      });
+  }, [navigate]);
 
   useEffect(() => {
     downloadData().then(setExperienceData);
