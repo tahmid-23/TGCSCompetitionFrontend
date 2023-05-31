@@ -8,14 +8,7 @@ interface ButtonProps {
   to?: To;
 }
 
-const Button = (
-  {
-    disabled,
-    text,
-    onClick,
-    to
-  }: ButtonProps
-) => {
+const Button = ({ disabled, text, onClick, to }: ButtonProps) => {
   let result;
   if (onClick) {
     result = (

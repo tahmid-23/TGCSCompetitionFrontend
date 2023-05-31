@@ -3,12 +3,7 @@ interface DateBoxProps {
   id: string;
 }
 
-const DateBox = (
-  {
-    name,
-    id
-  }: DateBoxProps
-) => {
+const DateBox = ({ name, id }: DateBoxProps) => {
   return (
     <>
       <input type="date" name={name} id={id} />

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="%PUBLIC_URL%/TGCSlogotransparentCLEAN_new.png" />
     <title>TGCS Frontend</title>
-    <script src="https://accounts.google.com/gsi/client" ></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
     <script>
       function handleCredentialResponse(credentialResponse) {
         fetch('http://192.168.1.8:3000/login', {
@@ -18,25 +18,26 @@
             credential: credentialResponse.credential
           })
         })
-        .then((res) => {
-          if (res.status !== 200) {
-            alert('You are not permitted to enter the database');
-            return;
-          }
+          .then((res) => {
+            if (res.status !== 200) {
+              alert('You are not permitted to enter the database');
+              return;
+            }
 
-          return res.json();
-        })
-        .then((res) => {
-          window.location.href = res.admin ? '/admin' : '/token';
-        })
-        .catch((err) => {
-          alert('Failed to log into database');
-          console.error(err);
-        });
+            return res.json();
+          })
+          .then((res) => {
+            window.location.href = res.admin ? '/admin' : '/token';
+          })
+          .catch((err) => {
+            alert('Failed to log into database');
+            console.error(err);
+          });
       }
 
       google.accounts.id.initialize({
-        client_id: '436020276313-0o95mvljke1oomhgn7c65u3vo29mvki9.apps.googleusercontent.com',
+        client_id:
+          '436020276313-0o95mvljke1oomhgn7c65u3vo29mvki9.apps.googleusercontent.com',
         callback: handleCredentialResponse
       });
     </script>
