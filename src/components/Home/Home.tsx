@@ -14,9 +14,14 @@ import ProgramSelection from '../Search/ProgramSelection';
 import SearchBox from '../Search/SearchBox';
 import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
-import { checkAdmin, getExperiences, remove } from '../../api/api';
+import { checkLogin, getExperiences, remove } from '../../api/api';
 import { Focus, Program, ProgramType } from '../../api/model/program';
-import { selectLogin, setNotAdmin } from '../../features/login';
+import {
+  selectLogin,
+  setHasAccess,
+  setNotAdmin,
+  setNotHasAccess
+} from '../../features/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setAdmin } from '../../features/login';
 
@@ -102,11 +107,17 @@ const Home = () => {
   }, [navigate]);
 
   const updateAdminState = useCallback(async () => {
-    await checkAdmin().then((admin) => {
-      if (admin) {
+    await checkLogin().then((login) => {
+      if (login.admin) {
         dispatch(setAdmin());
       } else {
         dispatch(setNotAdmin());
+      }
+
+      if (login.hasAccess) {
+        dispatch(setHasAccess());
+      } else {
+        dispatch(setNotHasAccess());
       }
     });
   }, [dispatch]);
@@ -164,6 +175,12 @@ const Home = () => {
       setHighlightId(undefined);
     });
   }, [navigate, highlightId]);
+
+  if (adminState.hasAccess === undefined) {
+    return <></>;
+  } else if (!adminState.hasAccess) {
+    navigate('/login');
+  }
 
   return (
     <>

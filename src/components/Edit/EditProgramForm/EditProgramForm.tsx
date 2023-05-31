@@ -6,6 +6,7 @@ import { Program } from '../../../api/model/program';
 import { getExperience, insert, remove, update } from '../../../api/api';
 import { useAppSelector } from '../../../hooks/redux-hooks';
 import { selectLogin } from '../../../features/login';
+import { useRefreshLoginState } from '../../../hooks/login-hooks';
 
 async function sendFocus(
   experienceId: number,
@@ -30,6 +31,7 @@ const EditProgramForm = () => {
   const navigate = useNavigate();
   const programId = Number(params['programId']);
   const [program, setProgram] = useState<Program>();
+  const refreshed = useRefreshLoginState();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -78,8 +80,14 @@ const EditProgramForm = () => {
   }, [navigate, programId]);
 
   useEffect(() => {
-    downloadData();
-  }, [downloadData]);
+    if (refreshed) {
+      downloadData();
+    }
+  }, [downloadData, loginState.admin, navigate, refreshed]);
+
+  if (!refreshed) {
+    return <></>;
+  }
 
   if (!loginState.admin) {
     navigate('/');

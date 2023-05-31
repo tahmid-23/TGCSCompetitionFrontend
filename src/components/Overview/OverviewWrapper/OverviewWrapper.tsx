@@ -8,8 +8,11 @@ import ProgramOverview from '../ProgramOverview/ProgramOverview';
 import { useNavigate } from 'react-router-dom';
 import { Competition } from '../../../api/model/competition';
 import { getExperience } from '../../../api/api';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import { selectLogin } from '../../../features/login';
 
 const OverviewWrapper = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const [loaded, setLoaded] = useState(false);
   const [data, setData] = useState<
@@ -41,8 +44,12 @@ const OverviewWrapper = () => {
   }, [experienceId, loaded, navigate]);
 
   useEffect(() => {
+    if (!loginState.hasAccess) {
+      navigate('/');
+      return;
+    }
     downloadData();
-  }, [downloadData]);
+  }, [downloadData, loginState.hasAccess, navigate]);
 
   if (!experienceId) {
     return <>You must specify a valid experience id.</>;

@@ -34,8 +34,14 @@ root.render(
             <Route path="/add" element={<AddForm />} />
             <Route path="/edit/:experienceId" element={<EditForm />} />
             <Route path="/view/:experienceId" element={<OverviewWrapper />} />
-            <Route path="/add-competition" element={<AddCompetitionForm />} />
-            <Route path="/add-program" element={<AddProgramForm />} />
+            <Route
+              path="/add-competition/:competitionId"
+              element={<AddCompetitionForm />}
+            />
+            <Route
+              path="/add-program/:programId"
+              element={<AddProgramForm />}
+            />
             <Route
               path="/edit-competition/:competitionId"
               element={<EditCompetitionForm />}

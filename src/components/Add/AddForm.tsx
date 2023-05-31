@@ -4,6 +4,7 @@ import ChangeForm from '../Change/ChangeForm';
 import { insert } from '../../api/api';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
+import { useRefreshLoginState } from '../../hooks/login-hooks';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -131,7 +132,7 @@ async function onSubmit(
   await Promise.all(promises)
     .then(() => {
       alert('Success!');
-      navigate(`/add-${type.toLowerCase()}?experienceId=${experienceId}`);
+      navigate(`/add-${type.toLowerCase()}/${experienceId}`);
     })
     .catch(alert);
 }
@@ -139,6 +140,11 @@ async function onSubmit(
 const AddForm = () => {
   const adminState = useAppSelector(selectLogin);
   const navigate = useNavigate();
+  const refreshed = useRefreshLoginState();
+
+  if (!refreshed) {
+    return <></>;
+  }
 
   if (!adminState.admin) {
     navigate('/');

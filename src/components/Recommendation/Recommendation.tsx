@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { IP_ADDRESS } from '../../Global';
+import { IP_ADDRESS } from '../../global';
 import Button from '../Button/Button';
 import TopicSelection from '../Search/TopicSelection';
 import { Category } from '../../api/model/experience';

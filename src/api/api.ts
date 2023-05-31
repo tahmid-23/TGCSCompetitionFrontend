@@ -1,4 +1,4 @@
-import { IP_ADDRESS } from '../Global';
+import { IP_ADDRESS } from '../global';
 import { Award, AwardType } from './model/competition';
 import {
   ExperienceType,
@@ -11,8 +11,13 @@ import {
 } from './model/experience';
 import { Focus, ProgramFocus, ProgramType } from './model/program';
 
-export async function checkAdmin(): Promise<boolean> {
-  const response = await fetch(`${IP_ADDRESS}/check-admin`, {
+export interface LoginResponse {
+  admin: boolean;
+  hasAccess: boolean;
+}
+
+export async function checkLogin(): Promise<LoginResponse> {
+  const response = await fetch(`${IP_ADDRESS}/check-login`, {
     credentials: 'include'
   });
 

@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
+import { IP_ADDRESS } from '../../global';
 
 const FeedbackForm = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +31,7 @@ const FeedbackForm = () => {
         if (res.status === 400) {
           alert('Something went wrong!');
         } else if (res.status === 401) {
-          navigate("/login");
+          navigate('/login');
         } else if (res.status === 200 || res.status === 204) {
           alert('Success!');
           return res.json();

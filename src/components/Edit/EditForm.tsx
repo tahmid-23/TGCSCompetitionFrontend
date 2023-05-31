@@ -5,6 +5,7 @@ import { Experience } from '../../api/model/experience';
 import { getExperience, insert, remove, update } from '../../api/api';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
+import { useRefreshLoginState } from '../../hooks/login-hooks';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -21,6 +22,7 @@ const EditForm = () => {
   const navigate = useNavigate();
   const experienceId = Number(params['experienceId']);
   const [experience, setExperience] = useState<Experience>();
+  const refreshed = useRefreshLoginState();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -153,8 +155,14 @@ const EditForm = () => {
   }, [experienceId, navigate]);
 
   useEffect(() => {
-    downloadData();
-  }, [downloadData]);
+    if (refreshed) {
+      downloadData();
+    }
+  }, [downloadData, loginState.admin, navigate, refreshed]);
+
+  if (!refreshed) {
+    return <></>;
+  }
 
   if (!loginState.admin) {
     navigate('/');

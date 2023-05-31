@@ -1,8 +1,10 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import { IP_ADDRESS } from '../../Global';
+import { IP_ADDRESS } from '../../global';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
+import { useRefreshLoginState } from '../../hooks/login-hooks';
 
 function genToken(length: number) {
   let result = '';
@@ -21,6 +23,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [displayedToken, setDislpayedToken] = useState<string>('');
+  const refreshed = useRefreshLoginState();
 
   const onTokenGen = useCallback(async () => {
     const token = genToken(16);
@@ -55,6 +58,10 @@ const Admin = () => {
     navigator.clipboard.writeText(displayedToken);
     alert('Token copied to clipboard!');
   }, [displayedToken]);
+
+  if (!refreshed) {
+    return <></>;
+  }
 
   if (!loginState.admin) {
     navigate('/');
@@ -91,6 +98,8 @@ const Admin = () => {
       )}
       <br />
       <button onClick={onTokenGen}> Generate Token</button>
+      <br />
+      <Button text="View Database" to="/" />
     </>
   );
 };
