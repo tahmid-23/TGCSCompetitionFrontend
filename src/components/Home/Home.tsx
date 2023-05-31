@@ -15,7 +15,7 @@ import SearchBox from '../Search/SearchBox';
 import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
 import { checkLogin, getExperiences, remove } from '../../api/api';
-import { Focus, Program, ProgramType } from '../../api/model/program';
+import { Program, ProgramType } from '../../api/model/program';
 import {
   selectLogin,
   setHasAccess,
@@ -24,6 +24,7 @@ import {
 } from '../../features/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setAdmin } from '../../features/login';
+import { AwardType, Competition } from '../../api/model/competition';
 
 function createTopicFilter(topics: Category[]): Filter {
   return (experience: Experience) => {
@@ -60,24 +61,20 @@ function createProgramFilter(programTypes: ProgramType[]) {
     if (experience.type !== ExperienceType.PROGRAM) {
       return false;
     }
-    return programTypes.some((type) => {
-      return type === (experience as unknown as Program).program_type;
-    });
+    return programTypes.some(
+      (type) => type === (experience as unknown as Program).program_type
+    );
   };
 }
 
-function createFocusFilter(programFocuses: Focus[]) {
+function createAwardFilter(awardTypes: AwardType[]) {
   return (experience: Experience) => {
-    if (experience.type !== ExperienceType.PROGRAM) {
+    if (experience.type !== ExperienceType.COMPETITION) {
       return false;
     }
-    for (const focusObject of (experience as unknown as Program)
-      .program_focuses) {
-      if (
-        programFocuses.some((focus) => {
-          return focus === focusObject.focus;
-        })
-      ) {
+
+    for (const awardObject of (experience as unknown as Competition).awards) {
+      if (awardTypes.some((awardType) => awardType === awardObject.type)) {
         return true;
       }
     }
@@ -144,12 +141,18 @@ const Home = () => {
       />
     );
   } else if (filterType === 'award') {
-    inputComponent = <AwardSelection />;
+    inputComponent = (
+      <AwardSelection
+        onAwardChange={(awards) => {
+          setFilter(() => createAwardFilter(awards));
+        }}
+      />
+    );
   } else if (filterType === 'program') {
     inputComponent = (
       <ProgramSelection
-        onFocusChange={(focuses) => {
-          setFilter(() => createFocusFilter(focuses));
+        onProgramTypeChange={(focuses) => {
+          setFilter(() => createProgramFilter(focuses));
         }}
       />
     );
@@ -218,6 +221,12 @@ const Home = () => {
               break;
             case 'topic':
               setFilter(() => createTopicFilter([]));
+              break;
+            case 'program':
+              setFilter(() => createProgramFilter([]));
+              break;
+            case 'award':
+              setFilter(() => createAwardFilter([]));
               break;
           }
         }}

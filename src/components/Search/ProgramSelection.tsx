@@ -1,13 +1,15 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import MultipleSelect from '../InputComponents/MultipleSelect';
-import { Focus, ProgramType } from '../../api/model/program';
+import { ProgramType } from '../../api/model/program';
 
 interface ProgramSelectionProps {
-  onFocusChange?: (arg0: Focus[]) => void;
+  onProgramTypeChange?: (arg0: ProgramType[]) => void;
 }
 
-const ProgramSelection = ({ onFocusChange }: ProgramSelectionProps) => {
-  const [focuses, setFocuses] = useState<Focus[]>([]);
+const ProgramSelection = ({
+  onProgramTypeChange: onFocusChange
+}: ProgramSelectionProps) => {
+  const [focuses, setFocuses] = useState<ProgramType[]>([]);
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,14 +18,15 @@ const ProgramSelection = ({ onFocusChange }: ProgramSelectionProps) => {
       if (e.currentTarget.checked) {
         setFocuses(
           (newFocuses = focuses.concat(
-            Focus[e.currentTarget.value as keyof typeof Focus]
+            ProgramType[e.currentTarget.value as keyof typeof ProgramType]
           ))
         );
       } else {
         setFocuses(
           (newFocuses = focuses.filter(
             (focus) =>
-              focus !== Focus[e.currentTarget.value as keyof typeof Focus]
+              focus !==
+              ProgramType[e.currentTarget.value as keyof typeof ProgramType]
           ))
         );
       }
