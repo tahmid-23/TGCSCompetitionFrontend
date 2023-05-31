@@ -11,6 +11,14 @@ import {
 } from './model/experience';
 import { Focus, ProgramFocus, ProgramType } from './model/program';
 
+export async function checkAdmin(): Promise<boolean> {
+  const response = await fetch(`${IP_ADDRESS}/check-admin`, {
+    credentials: 'include'
+  });
+
+  return await response.json();
+}
+
 function createExperienceFromJson(json: unknown): Experience {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const experience = json as any;

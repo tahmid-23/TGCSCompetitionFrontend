@@ -1,7 +1,9 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import ChangeForm from '../Forms/ChangeForm';
+import ChangeForm from '../Change/ChangeForm';
 import { insert } from '../../api/api';
+import { useAppSelector } from '../../hooks/redux-hooks';
+import { selectLogin } from '../../features/login';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -134,8 +136,15 @@ async function onSubmit(
     .catch(alert);
 }
 
-const Add = () => {
+const AddForm = () => {
+  const adminState = useAppSelector(selectLogin);
   const navigate = useNavigate();
+
+  if (!adminState.admin) {
+    navigate('/');
+    return <></>;
+  }
+
   return (
     <>
       <h1>Add</h1>
@@ -144,4 +153,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default AddForm;

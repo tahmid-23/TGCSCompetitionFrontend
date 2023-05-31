@@ -14,8 +14,11 @@ import ProgramSelection from '../Search/ProgramSelection';
 import SearchBox from '../Search/SearchBox';
 import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
-import { getExperiences, remove } from '../../api/api';
+import { checkAdmin, getExperiences, remove } from '../../api/api';
 import { Focus, Program, ProgramType } from '../../api/model/program';
+import { selectLogin, setNotAdmin } from '../../features/login';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { setAdmin } from '../../features/login';
 
 function createTopicFilter(topics: Category[]): Filter {
   return (experience: Experience) => {
@@ -83,6 +86,8 @@ const Home = () => {
   const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
   const navigate = useNavigate();
+  const adminState = useAppSelector(selectLogin);
+  const dispatch = useAppDispatch();
   let inputComponent: ReactElement;
 
   const [experiences, setExperienceData] = useState<Experience[]>();
@@ -96,9 +101,20 @@ const Home = () => {
       });
   }, [navigate]);
 
+  const updateAdminState = useCallback(async () => {
+    await checkAdmin().then((admin) => {
+      if (admin) {
+        dispatch(setAdmin());
+      } else {
+        dispatch(setNotAdmin());
+      }
+    });
+  }, [dispatch]);
+
   useEffect(() => {
     downloadData();
-  }, [downloadData]);
+    updateAdminState();
+  }, [downloadData, updateAdminState]);
 
   if (filterType === 'grade') {
     inputComponent = (
@@ -152,13 +168,17 @@ const Home = () => {
   return (
     <>
       <div>
-        <Button text="Add" to="/add" />
-        <Button
-          text="Edit"
-          disabled={!highlightId}
-          to={`/edit/${highlightId}`}
-        />
-        <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
+        {adminState.admin && (
+          <>
+            <Button text="Add" to="/add" />
+            <Button
+              text="Edit"
+              disabled={!highlightId}
+              to={`/edit/${highlightId}`}
+            />
+            <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
+          </>
+        )}
         <Button
           text="View"
           disabled={!highlightId}

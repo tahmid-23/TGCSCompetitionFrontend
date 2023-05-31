@@ -1,7 +1,9 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import CompetitionChangeForm from '../Forms/CompetitionChangeForm';
-import { insert } from '../../api/api';
+import CompetitionChangeForm from '../../Change/CompetitionChangeForm/CompetitionChangeForm';
+import { insert } from '../../../api/api';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import { selectLogin } from '../../../features/login';
 
 async function onSubmit(
   experienceId: number,
@@ -40,9 +42,16 @@ async function onSubmit(
   navigate(`/`);
 }
 
-const AddCompetition = () => {
+const AddCompetitionForm = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
+
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
+
   return (
     <CompetitionChangeForm
       onSubmit={(e) =>
@@ -52,4 +61,4 @@ const AddCompetition = () => {
   );
 };
 
-export default AddCompetition;
+export default AddCompetitionForm;

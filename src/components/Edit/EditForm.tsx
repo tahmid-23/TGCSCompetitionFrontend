@@ -1,8 +1,10 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ChangeForm from '../Forms/ChangeForm';
+import ChangeForm from '../Change/ChangeForm';
 import { Experience } from '../../api/model/experience';
 import { getExperience, insert, remove, update } from '../../api/api';
+import { useAppSelector } from '../../hooks/redux-hooks';
+import { selectLogin } from '../../features/login';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -13,7 +15,8 @@ function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   return value;
 }
 
-const Edit = () => {
+const EditForm = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
   const experienceId = Number(params['experienceId']);
@@ -153,6 +156,11 @@ const Edit = () => {
     downloadData();
   }, [downloadData]);
 
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
+
   if (!experience) {
     return <></>;
   }
@@ -165,4 +173,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default EditForm;

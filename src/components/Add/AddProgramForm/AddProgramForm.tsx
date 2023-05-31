@@ -1,8 +1,10 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
-import ProgramChangeForm from '../Forms/ProgramChangeForm';
-import { insert } from '../../api/api';
+import ProgramChangeForm from '../../Change/ProgramChangeForm';
+import { insert } from '../../../api/api';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import { selectLogin } from '../../../features/login';
 
 async function onSubmit(
   experienceId: number,
@@ -55,9 +57,15 @@ async function sendFocus(
   );
 }
 
-const AddProgram = () => {
+const AddProgramForm = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
+
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
 
   return (
     <ProgramChangeForm
@@ -68,4 +76,4 @@ const AddProgram = () => {
   );
 };
 
-export default AddProgram;
+export default AddProgramForm;

@@ -1,10 +1,13 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import CompetitionChangeForm from '../Forms/CompetitionChangeForm';
-import { Competition } from '../../api/model/competition';
-import { getExperience, insert, remove, update } from '../../api/api';
+import CompetitionChangeForm from '../../Change/CompetitionChangeForm/CompetitionChangeForm';
+import { Competition } from '../../../api/model/competition';
+import { getExperience, insert, remove, update } from '../../../api/api';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import { selectLogin } from '../../../features/login';
 
-const EditCompetition = () => {
+const EditCompetitionForm = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
   const competitionId = Number(params['competitionId']);
@@ -63,6 +66,11 @@ const EditCompetition = () => {
     downloadData();
   }, [downloadData]);
 
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
+
   if (!competition) {
     return <></>;
   }
@@ -75,4 +83,4 @@ const EditCompetition = () => {
   );
 };
 
-export default EditCompetition;
+export default EditCompetitionForm;

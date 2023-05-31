@@ -5,10 +5,10 @@ import {
   useCallback,
   useState
 } from 'react';
-import MultipleChoice from '../InputComponents/MultipleChoice';
-import TextBox from '../InputComponents/TextBox';
-import Button from '../Button/Button';
-import { Competition, Award, AwardType } from '../../api/model/competition';
+import MultipleChoice from '../../InputComponents/MultipleChoice';
+import TextBox from '../../InputComponents/TextBox';
+import Button from '../../Button/Button';
+import { Competition, Award, AwardType } from '../../../api/model/competition';
 
 interface CompetitionAddFormProps {
   competition?: Competition;
@@ -67,7 +67,7 @@ const AwardInput = ({ index, award, onClick }: AwardInputProps) => {
         value={award?.description}
       />
       &nbsp;
-      <Button text="X" onClick={onClick}></Button>
+      <Button text="X" onClick={onClick} />
       <br />
     </Fragment>
   );

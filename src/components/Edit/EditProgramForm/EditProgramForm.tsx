@@ -1,9 +1,11 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction, useParams } from 'react-router-dom';
-import ProgramChangeForm from '../Forms/ProgramChangeForm';
-import { Program } from '../../api/model/program';
-import { getExperience, insert, remove, update } from '../../api/api';
+import ProgramChangeForm from '../../Change/ProgramChangeForm';
+import { Program } from '../../../api/model/program';
+import { getExperience, insert, remove, update } from '../../../api/api';
+import { useAppSelector } from '../../../hooks/redux-hooks';
+import { selectLogin } from '../../../features/login';
 
 async function sendFocus(
   experienceId: number,
@@ -22,7 +24,8 @@ async function sendFocus(
   );
 }
 
-const EditProgram = () => {
+const EditProgramForm = () => {
+  const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
   const programId = Number(params['programId']);
@@ -78,6 +81,11 @@ const EditProgram = () => {
     downloadData();
   }, [downloadData]);
 
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
+
   if (!program) {
     return <></>;
   }
@@ -90,4 +98,4 @@ const EditProgram = () => {
   );
 };
 
-export default EditProgram;
+export default EditProgramForm;

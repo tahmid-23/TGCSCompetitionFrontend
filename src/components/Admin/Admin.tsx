@@ -1,5 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { IP_ADDRESS } from '../../Global';
+import { useAppSelector } from '../../hooks/redux-hooks';
+import { selectLogin } from '../../features/login';
+import { useNavigate } from 'react-router-dom';
 
 function genToken(length: number) {
   let result = '';
@@ -14,6 +17,8 @@ function genToken(length: number) {
 }
 
 const Admin = () => {
+  const loginState = useAppSelector(selectLogin);
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [displayedToken, setDislpayedToken] = useState<string>('');
 
@@ -50,6 +55,11 @@ const Admin = () => {
     navigator.clipboard.writeText(displayedToken);
     alert('Token copied to clipboard!');
   }, [displayedToken]);
+
+  if (!loginState.admin) {
+    navigate('/');
+    return <></>;
+  }
 
   return (
     <>
