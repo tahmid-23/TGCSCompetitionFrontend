@@ -194,7 +194,7 @@ const Home = () => {
             <Button
               text="Edit"
               disabled={!highlightId}
-              to={`/edit/${highlightId}`}
+              to={highlightId ? `/edit/${highlightId}` : undefined}
             />
             <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
           </>
@@ -202,7 +202,7 @@ const Home = () => {
         <Button
           text="View"
           disabled={!highlightId}
-          to={`/view/${highlightId}`}
+          to={highlightId ? `/view/${highlightId}` : undefined}
         />
       </div>
       <Dropdown

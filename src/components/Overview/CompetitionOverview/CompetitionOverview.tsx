@@ -30,9 +30,9 @@ const CompetitionOverview = ({ competition }: CompetitionOverviewProps) => {
             <p className={styles.info}>Awards: </p>
           </div>
           <ul className={competitionStyles.awardList}>
-            {competition.awards.map((award, index) => {
+            {competition.awards.map((award) => {
               return (
-                <li key={index} className={styles.infoEntry}>
+                <li key={award.award_id} className={styles.infoEntry}>
                   <p className={styles.info}>
                     {getAwardTypeDisplay(award.type)}: {award.description}
                   </p>
