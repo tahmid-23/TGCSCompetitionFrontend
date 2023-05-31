@@ -18,13 +18,6 @@ const Login = () => {
         data-shape="rectangular"
         data-logo_alignment="left"
       />
-      <br />
-      <TextBox id="username" name="Username" />
-      <br />
-      <input type="password" name="Password" id="password" />
-      <label htmlFor="password">Password</label>
-      <br />
-      <TextBox id="auth_token" name="Auth Token" />
     </>
   );
 };

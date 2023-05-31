@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
 import ChangeForm from '../Forms/ChangeForm';
+import { insert } from '../../api/api';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -18,7 +18,7 @@ async function onSubmit(
 ) {
   event.preventDefault();
   const type: string = getValue(event, 'Type');
-  const experience_data = {
+  const experienceData = {
     website_url: getValue(event, 'url'),
     entry_fee: getValue(event, 'fee'),
     participant_count: getValue(event, 'participant_count'),
@@ -38,16 +38,11 @@ async function onSubmit(
     prerequisite_description: getValue(event, 'prerequisite_description'),
     entry_description: getValue(event, 'entry_description')
   };
-  const experienceRequestOptions: RequestInit = {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'experience', data: experience_data })
-  };
-  const selected_grades = [];
+
+  const selectedGrades = [];
   for (let i = 1; i <= 4; i++) {
     if (event.currentTarget[`bucket${i}`].checked) {
-      selected_grades.push(getValue(event, `bucket${i}`));
+      selectedGrades.push(getValue(event, `bucket${i}`));
     }
   }
   const topics = [
@@ -75,96 +70,58 @@ async function onSubmit(
     'research',
     'other'
   ];
-  const selected_topics = [];
+  const selectedTopics = [];
   for (const topic of topics) {
     if (event.currentTarget[topic].checked) {
-      selected_topics.push(String(getValue(event, topic)).toUpperCase());
+      selectedTopics.push(String(getValue(event, topic)));
     }
   }
 
   let experienceId: number;
   try {
-    experienceId = await fetch(
-      `${IP_ADDRESS}/insert`,
-      experienceRequestOptions
-    ).then((res) => {
-      if (res.status === 400) {
-        throw new Error('Something went wrong!');
-      } else if (res.status === 401) {
-        navigate("/login");
-      } else if (res.status === 200 || res.status === 204) {
-        return res.json();
-      } else {
-        throw new Error(
-          "We have no idea what went wrong\n But it's not error 400."
-        );
-      }
-    });
+    experienceId = await insert('experience', experienceData, () =>
+      navigate('/login')
+    );
   } catch (err) {
-    alert(err);
+    alert('Something went wrong!');
+    console.error(err);
     return;
   }
 
   const promises = [];
-  for (const g of selected_grades) {
-    const grade_data = {
+  for (const g of selectedGrades) {
+    const gradeData = {
       experience_id: experienceId,
       grade: g
     };
-    const gradeRequestOptions: RequestInit = {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tableName: 'experience_grade', data: grade_data })
-    };
-    const gradePromise = fetch(
-      `${IP_ADDRESS}/insert`,
-      gradeRequestOptions
-    ).then((res) => {
-      if (res.status === 400) {
-        throw new Error('Something went wrong!');
-      } else if (res.status === 401) {
-        navigate("/login");
-      } else if (res.status === 200 || res.status === 204) {
-        return 'Success!';
-      } else {
-        throw new Error(
-          'We have no idea what went wrong\n But its not error 400.'
-        );
-      }
+    try {
+      experienceId = await insert('experience', experienceData, () => {
+        navigate('/login');
+      });
+    } catch (err) {
+      alert('Something went wrong!');
+      console.error(err);
+      return;
+    }
+    const gradePromise = insert('experience_grade', gradeData, () => {
+      navigate('/login');
+    }).catch((err) => {
+      console.error(err);
+      throw new Error('Something went wrong!');
     });
     promises.push(gradePromise);
   }
 
-  for (const t of selected_topics) {
-    const topic_data = {
+  for (const t of selectedTopics) {
+    const topicData = {
       experience_id: experienceId,
       category: t
     };
-    const topicRequestOptions: RequestInit = {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tableName: 'experience_category',
-        data: topic_data
-      })
-    };
-    const topicPromise = fetch(
-      `${IP_ADDRESS}/insert`,
-      topicRequestOptions
-    ).then((res) => {
-      if (res.status === 400) {
-        throw new Error('Something went wrong!');
-      } else if (res.status === 401) {
-        navigate("/login");
-      } else if (res.status === 200 || res.status === 204) {
-        return res.json();
-      } else {
-        throw new Error(
-          'We have no idea what went wrong\n But its not error 400.'
-        );
-      }
+    const topicPromise = insert('experience_category', topicData, () =>
+      navigate('/login')
+    ).catch((err) => {
+      console.error(err);
+      throw new Error('Something went wrong!');
     });
     promises.push(topicPromise);
   }

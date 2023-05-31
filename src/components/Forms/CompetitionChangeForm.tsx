@@ -1,9 +1,14 @@
-import { FormEventHandler, Fragment, MouseEventHandler, useCallback, useState } from 'react';
+import {
+  FormEventHandler,
+  Fragment,
+  MouseEventHandler,
+  useCallback,
+  useState
+} from 'react';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import TextBox from '../InputComponents/TextBox';
-import { Award, Competition } from '../../competition';
-import { AwardType } from '../../competition';
 import Button from '../Button/Button';
+import { Competition, Award, AwardType } from '../../api/model/competition';
 
 interface CompetitionAddFormProps {
   competition?: Competition;
@@ -76,16 +81,19 @@ const CompetitionChangeForm = ({
     competition ? [...competition.awards] : []
   );
 
-  const removeAward = useCallback((awardIndex: number) => {
-    const newAwards = [...awards];
-    newAwards.splice(awardIndex, 1);
-    setAwards(newAwards);
-  }, [awards]);
+  const removeAward = useCallback(
+    (awardIndex: number) => {
+      const newAwards = [...awards];
+      newAwards.splice(awardIndex, 1);
+      setAwards(newAwards);
+    },
+    [awards]
+  );
 
   let maxId = -Infinity;
   let undefinedCount = 0;
   for (let i = 0; i < awards.length; ++i) {
-    const awardId = awards[i]?.awardId;
+    const awardId = awards[i]?.award_id;
     if (awardId) {
       if (awardId > maxId) {
         maxId = awardId;
@@ -100,13 +108,20 @@ const CompetitionChangeForm = ({
 
   const awardInputs = awards.map((award, i) => {
     let key;
-    if (award?.awardId) {
-      key = award.awardId;
+    if (award?.award_id) {
+      key = award.award_id;
     } else {
       key = maxId + undefinedCount--;
     }
-  
-    return <AwardInput key={key} index={i} award={award} onClick={() => removeAward(i)} />;
+
+    return (
+      <AwardInput
+        key={key}
+        index={i}
+        award={award}
+        onClick={() => removeAward(i)}
+      />
+    );
   });
 
   const onAddAward = useCallback(() => {

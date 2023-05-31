@@ -3,6 +3,7 @@ import { ChangeEvent } from 'react';
 interface MultipleSelectProps {
   name: string;
   value: string;
+  label: string;
   defaultChecked?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -10,6 +11,7 @@ interface MultipleSelectProps {
 const MultipleSelect = ({
   name,
   value,
+  label,
   defaultChecked: checked,
   onChange
 }: MultipleSelectProps) => {
@@ -23,7 +25,7 @@ const MultipleSelect = ({
         onChange={onChange}
         defaultChecked={checked}
       />
-      <label htmlFor={name}>{value}</label>
+      <label htmlFor={name}>{label}</label>
     </>
   );
 };

@@ -1,19 +1,13 @@
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Competition } from '../../../competition';
-import {
-  Experience,
-  ExperienceGrade,
-  ExperienceType,
-  Grade,
-  ParticipantCount
-} from '../../../experience';
-import { IP_ADDRESS } from '../../../Global';
-import { Program } from '../../../program';
+import { Experience, ExperienceType } from '../../../api/model/experience';
+import { Program } from '../../../api/model/program';
 import CompetitionOverview from '../CompetitionOverview/CompetitionOverview';
 import ExperienceOverview from '../ExperienceOverview/ExperienceOverview';
 import ProgramOverview from '../ProgramOverview/ProgramOverview';
 import { useNavigate } from 'react-router-dom';
+import { Competition } from '../../../api/model/competition';
+import { getExperience } from '../../../api/api';
 
 const OverviewWrapper = () => {
   const params = useParams();
@@ -29,40 +23,22 @@ const OverviewWrapper = () => {
       return;
     }
 
-    await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
-      credentials: 'include'
+    await getExperience(experienceId, () => {
+      navigate('/login');
     })
-    .then((res) => {
-      if (res.status === 401) {
-        navigate("/login");
-      }
-      return res;
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const experience = res as unknown as any;
-        experience.type =
-          ExperienceType[experience.type as keyof typeof ExperienceType];
-        experience.participant_count =
-          ParticipantCount[
-            experience.participant_count as keyof typeof ParticipantCount
-          ];
-        const newGrades: ExperienceGrade[] = [];
-        for (const grade of experience.grades) {
-          newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });
-        }
-        experience.grades = newGrades;
-
-        setData(experience);
-      })
+      .then((experience) =>
+        setData(
+          experience as (Experience & Competition) | (Experience & Program)
+        )
+      )
       .catch((err) => {
-        alert('No Data Access');
+        alert('Something went wrong!');
         console.error(err);
       })
       .finally(() => {
         setLoaded(true);
       });
-  }, [experienceId, loaded]);
+  }, [experienceId, loaded, navigate]);
 
   useEffect(() => {
     downloadData();

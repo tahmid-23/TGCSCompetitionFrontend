@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
 import ProgramChangeForm from '../Forms/ProgramChangeForm';
+import { insert } from '../../api/api';
 
 async function onSubmit(
   experienceId: number,
@@ -10,34 +10,22 @@ async function onSubmit(
   event: FormEvent<HTMLFormElement>
 ) {
   event.preventDefault();
-  const program_data = {
+  const programData = {
     program_id: experienceId,
     program_type: event.currentTarget['Type'].value,
     monthly_fee: event.currentTarget['monthly_fee'].value,
     time_commitment: event.currentTarget['time_commitment'].value
   };
-  const programRequestOptions: RequestInit = {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'program', data: program_data })
-  };
 
   const isTheoretical = event.currentTarget['theoretical_checkbox'].checked;
   const isPractical = event.currentTarget['practical_checkbox'].checked;
 
-  await fetch(`${IP_ADDRESS}/insert`, programRequestOptions).then((res) => {
-    if (res.status === 400) {
-      alert('Something went wrong!');
-    } else if (res.status === 401) {
-      navigate("/login");
-    } else if (res.status === 200 || res.status === 204) {
-      alert('Success!');
-      return res.json();
-    } else {
-      alert('We have no idea what went wrong\n But its not error 400.');
+  await insert('program', programData, () => navigate('/login')).catch(
+    (err) => {
+      console.error(err);
+      throw Error('Something went wrong!');
     }
-  });
+  );
 
   if (isTheoretical) {
     sendFocus(experienceId, 'THEORETICAL', navigate);
@@ -50,29 +38,21 @@ async function onSubmit(
   navigate(`/`);
 }
 
-async function sendFocus(experienceId: number, focus: string, navigate: NavigateFunction) {
-  const focus_data = {
+async function sendFocus(
+  experienceId: number,
+  focus: string,
+  navigate: NavigateFunction
+) {
+  const focusData = {
     program_id: experienceId,
     focus: focus
   };
-  const focusRequestOptions: RequestInit = {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'program_focus', data: focus_data })
-  };
-  await fetch(`${IP_ADDRESS}/insert`, focusRequestOptions).then((res) => {
-    if (res.status === 400) {
-      alert('Something went wrong!');
-    } else if (res.status === 401) {
-      navigate("/login");
-    } else if (res.status === 200 || res.status === 204) {
-      alert('Success!');
-      return res.json();
-    } else {
-      alert('We have no idea what went wrong\n But its not error 400.');
+  await insert('program_focus', focusData, () => navigate('/login')).catch(
+    (err) => {
+      console.error(err);
+      throw Error('Something went wrong!');
     }
-  });
+  );
 }
 
 const AddProgram = () => {
@@ -81,7 +61,9 @@ const AddProgram = () => {
 
   return (
     <ProgramChangeForm
-      onSubmit={(e) => onSubmit(Number(params['experienceId']), navigate, e)}
+      onSubmit={(e) =>
+        onSubmit(Number(params['experienceId']), navigate, e).catch(alert)
+      }
     />
   );
 };

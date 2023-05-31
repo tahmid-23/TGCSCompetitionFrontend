@@ -5,6 +5,7 @@ interface DropdownProps<
 > {
   name: string;
   id: string;
+  label: string;
   items: T[];
   value?: T;
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -15,12 +16,15 @@ const Dropdown = <
 >({
   name,
   id,
+  label,
   items,
   value,
   onChange
 }: DropdownProps<T>) => {
   return (
     <>
+      <label htmlFor={id}>{label}</label>
+      &nbsp;
       <select name={name} id={id} defaultValue={value} onChange={onChange}>
         {items.map((item, index) => {
           return (
@@ -30,7 +34,6 @@ const Dropdown = <
           );
         })}
       </select>
-      <label htmlFor={id}>{name}</label>
     </>
   );
 };

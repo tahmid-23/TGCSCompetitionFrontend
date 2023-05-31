@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
 import CompetitionChangeForm from '../Forms/CompetitionChangeForm';
+import { insert } from '../../api/api';
 
 async function onSubmit(
   experienceId: number,
@@ -9,57 +9,31 @@ async function onSubmit(
   event: FormEvent<HTMLFormElement>
 ) {
   event.preventDefault();
-  const judge_data = {
+  const judgeData = {
     competition_id: experienceId,
     judges_description: event.currentTarget['judge_description'].value,
     judging_criteria: event.currentTarget['judge_criteria'].value
   };
-  const judgeRequestOptions: RequestInit = {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tableName: 'competition', data: judge_data })
-  };
-  const award_data = [];
+  const awardData = [];
   for (let i = 0; event.currentTarget[`award${i}`]; i++) {
-    award_data.push({
+    awardData.push({
       competition_id: experienceId,
       type: String(event.currentTarget[`award${i}`].value).toUpperCase(),
       description: event.currentTarget[`award_description${i}`].value
     });
   }
 
-  await fetch(`${IP_ADDRESS}/insert`, judgeRequestOptions).then((res) => {
-    if (res.status === 400) {
-      alert('Something went wrong!');
-    } else if (res.status === 401) {
-      navigate("/login");
-    } else if (res.status === 200 || res.status === 204) {
-      alert('Success!');
-      return res.json();
-    } else {
-      alert('We have no idea what went wrong\n But its not error 400.');
+  await insert('competition', judgeData, () => navigate('/login')).catch(
+    (err) => {
+      console.error(err);
+      throw Error('Something went wrong!');
     }
-  });
+  );
 
-  for (const d of award_data) {
-    const awardRequestOptions: RequestInit = {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tableName: 'award', data: d })
-    };
-    await fetch(`${IP_ADDRESS}/insert`, awardRequestOptions).then((res) => {
-      if (res.status === 400) {
-        alert('Something went wrong!');
-      } else if (res.status === 401) {
-        navigate("/login");
-      } else if (res.status === 200 || res.status === 204) {
-        alert('Success!');
-        return res.json();
-      } else {
-        alert('We have no idea what went wrong\n But its not error 400.');
-      }
+  for (const d of awardData) {
+    await insert('award', d, () => navigate('/login')).catch((err) => {
+      console.error(err);
+      throw Error('Something went wrong!');
     });
   }
 
@@ -71,7 +45,9 @@ const AddCompetition = () => {
   const navigate = useNavigate();
   return (
     <CompetitionChangeForm
-      onSubmit={(e) => onSubmit(Number(params['experienceId']), navigate, e)}
+      onSubmit={(e) =>
+        onSubmit(Number(params['experienceId']), navigate, e).catch(alert)
+      }
     />
   );
 };

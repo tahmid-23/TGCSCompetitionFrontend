@@ -1,24 +1,26 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { Grade } from '../../experience';
-import { IP_ADDRESS } from '../../Global';
+import {
+  Category,
+  Experience,
+  ExperienceType,
+  Grade
+} from '../../api/model/experience';
 import Button from '../Button/Button';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
 import Dropdown from '../InputComponents/Dropdown';
-import AwardFilter from '../Search/AwardFilter';
-import GradeFilter from '../Search/GradeFilter';
-import ProgramFilter from '../Search/ProgramFilter';
+import AwardSelection from '../Search/AwardSelection';
+import GradeSelection from '../Search/GradeSelection';
+import ProgramSelection from '../Search/ProgramSelection';
 import SearchBox from '../Search/SearchBox';
-import TopicFilter from '../Search/TopicFilter';
+import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
+import { getExperiences, remove } from '../../api/api';
+import { Focus, Program, ProgramType } from '../../api/model/program';
 
-function createTopicFilter(topics: string[]) {
-  return (experience: Record<string, any>) => {
+function createTopicFilter(topics: Category[]): Filter {
+  return (experience: Experience) => {
     for (const categoryObject of experience.categories) {
-      if (
-        topics
-          .map((topic) => topic.toLowerCase())
-          .includes(categoryObject.category.toLowerCase())
-      ) {
+      if (topics.includes(categoryObject.category)) {
         return true;
       }
     }
@@ -27,14 +29,10 @@ function createTopicFilter(topics: string[]) {
   };
 }
 
-function createGradeFilter(grades: Grade[]) {
-  return (experience: Record<string, any>) => {
+function createGradeFilter(grades: Grade[]): Filter {
+  return (experience: Experience) => {
     for (const gradeObject of experience.grades) {
-      if (
-        grades.some(
-          (grade) => Grade[gradeObject.grade as keyof typeof Grade] === grade
-        )
-      ) {
+      if (grades.some((grade) => gradeObject.grade === grade)) {
         return true;
       }
     }
@@ -44,32 +42,32 @@ function createGradeFilter(grades: Grade[]) {
 }
 
 function createSearchFilter(keyword: string) {
-  return (experience: Record<string, any>) => {
-    return String(experience.name)
-      .toLowerCase()
-      .includes(keyword.toLowerCase());
+  return (experience: Experience) => {
+    return experience.name.toLowerCase().includes(keyword.toLowerCase());
   };
 }
 
-function createProgramFilter(programTypes: string[]) {
-  return (experience: Record<string, any>) => {
-    if (experience.type !== 'PROGRAM') {
+function createProgramFilter(programTypes: ProgramType[]) {
+  return (experience: Experience) => {
+    if (experience.type !== ExperienceType.PROGRAM) {
       return false;
     }
     return programTypes.some((type) => {
-      return type.toUpperCase() === experience.program_type;
+      return type === (experience as unknown as Program).program_type;
     });
   };
 }
-function createFocusFilter(programFocuses: string[]) {
-  return (experience: Record<string, any>) => {
-    if (experience.type !== 'PROGRAM') {
+
+function createFocusFilter(programFocuses: Focus[]) {
+  return (experience: Experience) => {
+    if (experience.type !== ExperienceType.PROGRAM) {
       return false;
     }
-    for (const focusObject of experience.program_focuses) {
+    for (const focusObject of (experience as unknown as Program)
+      .program_focuses) {
       if (
         programFocuses.some((focus) => {
-          return focus.toUpperCase() === focusObject.focus;
+          return focus === focusObject.focus;
         })
       ) {
         return true;
@@ -87,35 +85,24 @@ const Home = () => {
   const navigate = useNavigate();
   let inputComponent: ReactElement;
 
-  const [experienceData, setExperienceData] =
-    useState<Record<string, object>[]>();
+  const [experiences, setExperienceData] = useState<Experience[]>();
 
   const downloadData = useCallback(async () => {
-    return await fetch(`${IP_ADDRESS}/experiences`, {
-      credentials: 'include'
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          navigate("/login");
-          throw new Error();
-        } else {
-          return res;
-        }
-      })
-      .then((res) => res.json())
+    await getExperiences(() => navigate('/login'))
+      .then(setExperienceData)
       .catch((err) => {
-        alert('No Data Access');
+        alert('Something went wrong!');
         console.error(err);
       });
   }, [navigate]);
 
   useEffect(() => {
-    downloadData().then(setExperienceData);
-  }, []);
+    downloadData();
+  }, [downloadData]);
 
   if (filterType === 'grade') {
     inputComponent = (
-      <GradeFilter
+      <GradeSelection
         onGradeChange={(grades) => {
           setFilter(() => createGradeFilter(grades));
         }}
@@ -123,27 +110,25 @@ const Home = () => {
     );
   } else if (filterType === 'topic') {
     inputComponent = (
-      <TopicFilter
+      <TopicSelection
         onTopicChange={(topics) => {
           setFilter(() => createTopicFilter(topics));
         }}
       />
     );
   } else if (filterType === 'award') {
-    inputComponent = <AwardFilter />;
+    inputComponent = <AwardSelection />;
   } else if (filterType === 'program') {
     inputComponent = (
-      <ProgramFilter
+      <ProgramSelection
         onFocusChange={(focuses) => {
-          setFilter(() => createProgramFilter(focuses));
+          setFilter(() => createFocusFilter(focuses));
         }}
       />
     );
   } else {
     inputComponent = (
       <SearchBox
-        name="test"
-        id="test"
         onChange={(e) => {
           const keyword = e.currentTarget.value;
           setFilter(() => createSearchFilter(keyword));
@@ -157,38 +142,33 @@ const Home = () => {
       return;
     }
 
-    const requestOptions: RequestInit = {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tableName: 'experience',
-        rowName: 'experience_id',
-        rowId: highlightId
-      })
-    };
-    fetch(`${IP_ADDRESS}/remove`, requestOptions)
-      .then(() => {
-        setExperienceData(
-          experienceData?.filter(
-            (experience) => Number(experience.experience_id) !== highlightId
-          )
-        );
-      })
-      .finally(() => {
-        setHighlightId(undefined);
-      });
-  }, [experienceData, highlightId]);
+    remove('experience', 'experience_id', highlightId, () => {
+      navigate('/login');
+    }).finally(() => {
+      setHighlightId(undefined);
+    });
+  }, [navigate, highlightId]);
 
   return (
     <>
-      <Button text="Add" to="/add" />
-      <Button text="Edit" disabled={!highlightId} to={`/edit/${highlightId}`} />
-      <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-      <Button text="View" disabled={!highlightId} to={`/edit/${highlightId}`} />
+      <div>
+        <Button text="Add" to="/add" />
+        <Button
+          text="Edit"
+          disabled={!highlightId}
+          to={`/edit/${highlightId}`}
+        />
+        <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
+        <Button
+          text="View"
+          disabled={!highlightId}
+          to={`/view/${highlightId}`}
+        />
+      </div>
       <Dropdown
-        name="test"
-        id="test"
+        name="filter-by"
+        id="filter-by"
+        label="Filter by"
         items={['name', 'grade', 'topic', 'award', 'program']}
         onChange={(e) => {
           setFilterType(e.currentTarget.value);
@@ -207,7 +187,7 @@ const Home = () => {
       />
       {inputComponent}
       <ExperienceList
-        expData={experienceData || []}
+        experiences={experiences || []}
         filter={filter}
         highlightId={highlightId}
         onSelect={setHighlightId}

@@ -2,27 +2,16 @@ import { MouseEventHandler, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import BulletedList from '../BulletedList/BulletedList';
 import styles from './ExperienceList.module.css';
+import { Category, Experience } from '../../api/model/experience';
 
 interface ExperienceProps {
-  id: number;
-  url?: string;
-  fee: number;
-  participantCount?: number;
-  name: string;
-  originYear?: Date;
-  purpose?: string;
-  description?: string;
-  requiredItems?: string;
-  advice?: string;
-  category: string;
+  experience: Experience;
   highlight: boolean;
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-const Experience = ({
-  id,
-  name,
-  category,
+const ExperienceItem = ({
+  experience,
   highlight,
   onClick
 }: ExperienceProps) => {
@@ -31,54 +20,64 @@ const Experience = ({
     <div className={className} onClick={onClick}>
       <Link
         className={styles.experienceLink}
-        to={`/view/${id}`}
+        to={`/view/${experience.experience_id}`}
         target="_blank"
         rel="noreferrer"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        {name} <i>({category})</i>
+        {experience.name}
+        &nbsp; (
+        {experience.categories
+          .map((category) => Category[category.category])
+          .join(', ')}
+        )
       </Link>
     </div>
   );
 };
 
-export type Filter = (arg0: Record<string, any>) => boolean;
+export type Filter = (arg0: Experience) => boolean;
 
-interface ExpListProps {
-  expData: Record<string, any>[];
+interface ExperienceListProps {
+  experiences: Experience[];
   filter?: Filter;
   highlightId?: number;
-  onSelect?: (arg0: number) => void;
+  onSelect?: (arg0: number | undefined) => void;
 }
 
 const ExperienceList = ({
-  expData,
+  experiences,
   filter,
   highlightId,
   onSelect
-}: ExpListProps) => {
+}: ExperienceListProps) => {
   const validExp: ReactElement[] = [];
-  for (let i = 0; i < expData.length; ++i) {
-    const exp = expData[i];
-    if (!filter || filter(exp)) {
-      let categories = '';
-      for (const category of exp.categories) {
-        categories += String(category.category) + ', ';
+  for (let i = 0; i < experiences.length; ++i) {
+    const experience = experiences[i];
+    let shouldInclude;
+    if (!filter) {
+      shouldInclude = true;
+    } else if (filter(experience)) {
+      shouldInclude = true;
+    } else {
+      shouldInclude = false;
+      if (experience.experience_id === highlightId) {
+        onSelect?.(undefined);
       }
-      categories = categories.substring(0, categories.length - 2);
+    }
 
-      const highlight = exp.experience_id === highlightId;
+    if (shouldInclude) {
+      const highlight = experience.experience_id === highlightId;
       validExp.push(
-        <Experience
-          id={Number(exp.experience_id)}
-          key={i}
-          fee={Number(exp.fee)}
-          name={String(exp.name)}
-          category={categories}
+        <ExperienceItem
+          key={experience.experience_id}
+          experience={experience}
           highlight={highlight}
-          onClick={onSelect ? () => onSelect(exp.experience_id) : undefined}
+          onClick={
+            onSelect ? () => onSelect(experience.experience_id) : undefined
+          }
         />
       );
     }

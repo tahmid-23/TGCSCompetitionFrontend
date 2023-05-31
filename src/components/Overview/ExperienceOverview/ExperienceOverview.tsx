@@ -2,10 +2,11 @@ import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Experience,
-  ExperienceType,
   Grade,
-  ParticipantCount
-} from '../../../experience';
+  ParticipantCount,
+  getCategoryDisplay,
+  getExperienceTypeDisplay
+} from '../../../api/model/experience';
 import QuickNavigation from '../../QuickNavigation/QuickNavigation';
 import styles from '../Overview.module.css';
 
@@ -25,7 +26,9 @@ const ExperienceOverview = ({
         <h1 className={styles.title}>{experience.name}</h1>
       </div>
       <div className={styles.infoEntry}>
-        <p className={styles.info}>Type: {ExperienceType[experience.type]}</p>
+        <p className={styles.info}>
+          Type: {getExperienceTypeDisplay(experience.type)}
+        </p>
       </div>
       {experience.website_url && (
         <div className={styles.infoEntry}>
@@ -49,7 +52,7 @@ const ExperienceOverview = ({
         <p className={styles.info}>
           Categories:{' '}
           {experience.categories
-            .map((category) => category.category)
+            .map((category) => getCategoryDisplay(category.category))
             .join(', ')}
         </p>
       </div>

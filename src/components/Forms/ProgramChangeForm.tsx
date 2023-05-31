@@ -2,7 +2,7 @@ import { FormEventHandler } from 'react';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import MultipleSelect from '../InputComponents/MultipleSelect';
 import NumberBox from '../InputComponents/NumberBox';
-import { Focus, Program, ProgramType } from '../../program';
+import { Focus, Program, ProgramType } from '../../api/model/program';
 
 interface ProgramAddFormProps {
   program?: Program;
@@ -39,7 +39,8 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
       <br />
       <MultipleSelect
         name="theoretical_checkbox"
-        value="Theoretical"
+        value={Focus[Focus.THEORETICAL]}
+        label="Theoretical"
         defaultChecked={
           program?.program_focuses.find(
             (focus) => focus.focus === Focus.THEORETICAL
@@ -48,7 +49,8 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
       />
       <MultipleSelect
         name="practical_checkbox"
-        value="Practical"
+        value={Focus[Focus.PRACTICAL]}
+        label="Practical"
         defaultChecked={
           program?.program_focuses.find(
             (focus) => focus.focus === Focus.PRACTICAL

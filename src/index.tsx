@@ -15,6 +15,7 @@ import EditProgram from './components/Edit/EditProgram';
 import Login from './components/Login/Login';
 import Admin from './components/Admin/Admin';
 import Token from './components/Login/Token';
+import { Header } from './components/Header/Header';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,24 +24,27 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add" element={<Add />} />
-        <Route path="/edit/:experienceId" element={<Edit />} />
-        <Route path="/view/:experienceId" element={<OverviewWrapper />} />
-        <Route path="/add-competition" element={<AddCompetition />} />
-        <Route path="/add-program" element={<AddProgram />} />
-        <Route
-          path="/edit-competition/:competitionId"
-          element={<EditCompetition />}
-        />
-        <Route path="/edit-program/:programId" element={<EditProgram />} />
-        <Route path="/feedback" element={<FeedbackForm />} />
-        <Route path="/recommendation" element={<RecommendationWrapper />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/token" element={<Token />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+      <div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/edit/:experienceId" element={<Edit />} />
+          <Route path="/view/:experienceId" element={<OverviewWrapper />} />
+          <Route path="/add-competition" element={<AddCompetition />} />
+          <Route path="/add-program" element={<AddProgram />} />
+          <Route
+            path="/edit-competition/:competitionId"
+            element={<EditCompetition />}
+          />
+          <Route path="/edit-program/:programId" element={<EditProgram />} />
+          <Route path="/feedback" element={<FeedbackForm />} />
+          <Route path="/recommendation" element={<RecommendationWrapper />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/token" element={<Token />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   </React.StrictMode>
 );

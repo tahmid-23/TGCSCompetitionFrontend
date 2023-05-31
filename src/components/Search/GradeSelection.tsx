@@ -1,8 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import { Grade } from '../../experience';
+import { Grade } from '../../api/model/experience';
 import MultipleSelect from '../InputComponents/MultipleSelect';
 
-interface GradeFilterProps {
+interface GradeSelectionProps {
   checkedA?: boolean;
   checkedB?: boolean;
   checkedC?: boolean;
@@ -10,13 +10,13 @@ interface GradeFilterProps {
   onGradeChange?: (arg0: Grade[]) => void;
 }
 
-const GradeFilter = ({
+const GradeSelection = ({
   checkedA,
   checkedB,
   checkedC,
   checkedD,
   onGradeChange
-}: GradeFilterProps) => {
+}: GradeSelectionProps) => {
   const [grades, setGrades] = useState<Grade[]>([]);
 
   const onChange = useCallback(
@@ -45,25 +45,29 @@ const GradeFilter = ({
     <>
       <MultipleSelect
         name="bucket1"
-        value="K-2"
+        value={Grade[Grade['K-2']]}
+        label="K-2"
         defaultChecked={checkedA}
         onChange={onChange}
       />
       <MultipleSelect
         name="bucket2"
-        value="3-5"
+        value={Grade[Grade['3-5']]}
+        label="3-5"
         defaultChecked={checkedB}
         onChange={onChange}
       />
       <MultipleSelect
         name="bucket3"
-        value="6-8"
+        value={Grade[Grade['6-8']]}
+        label="6-8"
         defaultChecked={checkedC}
         onChange={onChange}
       />
       <MultipleSelect
         name="bucket4"
-        value="9-12"
+        value={Grade[Grade['9-12']]}
+        label="9-12"
         defaultChecked={checkedD}
         onChange={onChange}
       />
@@ -71,4 +75,4 @@ const GradeFilter = ({
   );
 };
 
-export default GradeFilter;
+export default GradeSelection;

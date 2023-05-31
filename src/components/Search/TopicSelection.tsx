@@ -1,8 +1,9 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import MultipleSelect from '../InputComponents/MultipleSelect';
+import { Category } from '../../api/model/experience';
 
-interface TopicFilterProps {
-  onTopicChange?: (arg0: string[]) => void;
+interface TopicSelectionProps {
+  onTopicChange?: (arg0: Category[]) => void;
   technology?: boolean;
   science?: boolean;
   biology?: boolean;
@@ -28,7 +29,7 @@ interface TopicFilterProps {
   other?: boolean;
 }
 
-const TopicFilter = ({
+const TopicSelection = ({
   onTopicChange,
   technology,
   science,
@@ -53,18 +54,23 @@ const TopicFilter = ({
   chess,
   research,
   other
-}: TopicFilterProps) => {
-  const [topics, setTopics] = useState<string[]>([]);
+}: TopicSelectionProps) => {
+  const [topics, setTopics] = useState<Category[]>([]);
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newTopics;
       if (e.currentTarget.checked) {
-        setTopics((newTopics = topics.concat(e.currentTarget.value)));
+        setTopics(
+          (newTopics = topics.concat(
+            Category[e.currentTarget.value as keyof typeof Category]
+          ))
+        );
       } else {
         setTopics(
           (newTopics = topics.filter(
-            (topic) => topic !== e.currentTarget.value
+            (topic) =>
+              topic !== Category[e.currentTarget.value as keyof typeof Category]
           ))
         );
       }
@@ -78,141 +84,164 @@ const TopicFilter = ({
     <>
       <MultipleSelect
         name="technology"
-        value="Technology"
+        value={Category[Category.TECHNOLOGY]}
+        label="Technology"
         defaultChecked={technology}
         onChange={onChange}
       />
       <MultipleSelect
         name="science"
-        value="Science"
+        value={Category[Category.SCIENCE]}
+        label="Science"
         defaultChecked={science}
         onChange={onChange}
       />
       <MultipleSelect
         name="bio"
-        value="Biology"
+        value={Category[Category.BIOLOGY]}
+        label="Biology"
         defaultChecked={biology}
         onChange={onChange}
       />
       <MultipleSelect
         name="chem"
-        value="Chemistry"
+        value={Category[Category.CHEMISTRY]}
+        label="Chemistry"
         defaultChecked={chemistry}
         onChange={onChange}
       />
       <MultipleSelect
         name="physics"
-        value="Physics"
+        value={Category[Category.PHYSICS]}
+        label="Physics"
         defaultChecked={physics}
         onChange={onChange}
       />
       <MultipleSelect
         name="math"
-        value="Math"
+        value={Category[Category.MATH]}
+        label="Math"
         defaultChecked={math}
         onChange={onChange}
       />
       <MultipleSelect
         name="engineering"
-        value="Engineering"
+        value={Category[Category.ENGINEERING]}
+        label="Engineering"
         defaultChecked={engineering}
         onChange={onChange}
       />
       <MultipleSelect
         name="business"
-        value="Business"
+        value={Category[Category.BUSINESS]}
+        label="Business"
         defaultChecked={business}
         onChange={onChange}
       />
       <br />
       <MultipleSelect
         name="medical"
-        value="Medical"
+        value={Category[Category.MEDICAL]}
+        label="Medical"
         defaultChecked={medical}
         onChange={onChange}
       />
       <MultipleSelect
         name="culinary"
-        value="Culinary"
+        value={Category[Category.CULINARY]}
+        label="Culinary"
         defaultChecked={culinary}
         onChange={onChange}
       />
       <MultipleSelect
         name="music"
-        value="Music"
+        value={Category[Category.MUSIC]}
+        label="Music"
         defaultChecked={music}
         onChange={onChange}
       />
       <MultipleSelect
         name="sports"
-        value="Athletics"
+        value={Category[Category.ATHLETICS]}
+        label="Athletics"
         defaultChecked={athletics}
         onChange={onChange}
       />
       <MultipleSelect
         name="art"
-        value="Art"
+        value={Category[Category.ART]}
+        label="Art"
         defaultChecked={art}
         onChange={onChange}
       />
       <MultipleSelect
         name="theater"
-        value="Theater"
+        value={Category[Category.THEATER]}
+        label="Theater"
         defaultChecked={theater}
         onChange={onChange}
       />
       <MultipleSelect
         name="dance"
-        value="Dance"
+        value={Category[Category.DANCE]}
+        label="Dance"
         defaultChecked={dance}
         onChange={onChange}
       />
       <MultipleSelect
         name="english"
-        value="Language Arts"
+        value={Category[Category['LANGUAGE ARTS']]}
+        label="Language Arts"
         defaultChecked={languageArts}
         onChange={onChange}
       />
       <br />
       <MultipleSelect
         name="geo"
-        value="Geography"
+        value={Category[Category.GEOGRAPHY]}
+        label="Geography"
         defaultChecked={geography}
         onChange={onChange}
       />
       <MultipleSelect
         name="spelling"
-        value="Spelling"
+        value={Category[Category.SPELLING]}
+        label="Spelling"
         defaultChecked={spelling}
         onChange={onChange}
       />
       <MultipleSelect
         name="history"
-        value="History"
+        value={Category[Category.HISTORY]}
+        label="History"
         defaultChecked={history}
         onChange={onChange}
       />
       <MultipleSelect
         name="foreign"
-        value="Foreign Language"
+        value={Category[Category['FOREIGN LANGUAGE']]}
+        label="Foreign Language"
         defaultChecked={foreignLanguage}
         onChange={onChange}
       />
       <MultipleSelect
         name="chess"
-        value="Chess"
+        value={Category[Category.CHESS]}
+        label="Chess"
         defaultChecked={chess}
         onChange={onChange}
       />
       <MultipleSelect
         name="research"
-        value="Research"
+        value={Category[Category.RESEARCH]}
+        label="Research"
         defaultChecked={research}
         onChange={onChange}
       />
       <MultipleSelect
         name="other"
-        value="Other"
+        value={Category[Category.OTHER]}
+        label="Other"
         defaultChecked={other}
         onChange={onChange}
       />
@@ -220,4 +249,4 @@ const TopicFilter = ({
   );
 };
 
-export default TopicFilter;
+export default TopicSelection;

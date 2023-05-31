@@ -1,4 +1,4 @@
-import { Program } from '../../../program';
+import { Program } from '../../../api/model/program';
 import styles from '../Overview.module.css';
 
 export interface ProgramOverviewProps {

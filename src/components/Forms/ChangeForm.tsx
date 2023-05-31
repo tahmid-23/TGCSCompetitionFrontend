@@ -6,15 +6,15 @@ import MultipleChoice from '../InputComponents/MultipleChoice';
 import NumberBox from '../InputComponents/NumberBox';
 import TextBox from '../InputComponents/TextBox';
 import URLBox from '../InputComponents/URLBox';
-import GradeFilter from '../Search/GradeFilter';
-import TopicFilter from '../Search/TopicFilter';
+import GradeSelection from '../Search/GradeSelection';
+import TopicSelection from '../Search/TopicSelection';
 import {
   Category,
   Experience,
   ExperienceType,
   Grade,
   ParticipantCount
-} from '../../experience';
+} from '../../api/model/experience';
 
 export interface ChangeFormProps {
   experience?: Experience;
@@ -42,6 +42,7 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         <Dropdown
           name="Participant Count"
           id="participant_count"
+          label="Participant Count"
           value={
             experience?.participant_count &&
             ParticipantCount[experience.participant_count]
@@ -146,7 +147,7 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         />
         <br />
         <p>Grades</p>
-        <GradeFilter
+        <GradeSelection
           checkedA={experience?.grades.some(
             (grade) => grade.grade === Grade['K-2']
           )}
@@ -162,7 +163,7 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         />
         <br />
         <p>Categories</p>
-        <TopicFilter
+        <TopicSelection
           technology={experience?.categories.some(
             (category) => category.category === Category.TECHNOLOGY
           )}

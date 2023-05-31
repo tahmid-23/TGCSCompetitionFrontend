@@ -1,5 +1,7 @@
-import React from 'react';
-import { Competition } from '../../../competition';
+import {
+  Competition,
+  getAwardTypeDisplay
+} from '../../../api/model/competition';
 import styles from '../Overview.module.css';
 import competitionStyles from './CompetitionOverview.module.css';
 
@@ -7,11 +9,7 @@ interface CompetitionOverviewProps {
   competition: Competition;
 }
 
-const CompetitionOverview = (
-  {
-    competition
-  }: CompetitionOverviewProps
-) => {
+const CompetitionOverview = ({ competition }: CompetitionOverviewProps) => {
   return (
     <>
       {competition.judges_description && (
@@ -36,7 +34,7 @@ const CompetitionOverview = (
               return (
                 <li key={index} className={styles.infoEntry}>
                   <p className={styles.info}>
-                    {award.type}: {award.description}
+                    {getAwardTypeDisplay(award.type)}: {award.description}
                   </p>
                 </li>
               );

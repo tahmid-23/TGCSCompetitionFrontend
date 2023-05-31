@@ -1,16 +1,8 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IP_ADDRESS } from '../../Global';
 import ChangeForm from '../Forms/ChangeForm';
-import {
-  Category,
-  Experience,
-  ExperienceCategory,
-  ExperienceGrade,
-  ExperienceType,
-  Grade,
-  ParticipantCount
-} from '../../experience';
+import { Experience } from '../../api/model/experience';
+import { getExperience, insert, remove, update } from '../../api/api';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -31,7 +23,7 @@ const Edit = () => {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const type: string = getValue(event, 'Type');
-      const experience_data = {
+      const experienceData = {
         website_url: getValue(event, 'url'),
         entry_fee: getValue(event, 'fee'),
         participant_count: getValue(event, 'participant_count'),
@@ -51,20 +43,10 @@ const Edit = () => {
         prerequisite_description: getValue(event, 'prerequisite_description'),
         entry_description: getValue(event, 'entry_description')
       };
-      const experienceRequestOptions: RequestInit = {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tableName: 'experience',
-          rowId: experienceId,
-          data: experience_data
-        })
-      };
-      const selected_grades = [];
+      const selectedGrades = [];
       for (let i = 1; i <= 4; i++) {
         if (event.currentTarget[`bucket${i}`].checked) {
-          selected_grades.push(getValue(event, `bucket${i}`));
+          selectedGrades.push(getValue(event, `bucket${i}`));
         }
       }
       const topics = [
@@ -95,116 +77,58 @@ const Edit = () => {
       const selected_topics = [];
       for (const topic of topics) {
         if (event.currentTarget[topic].checked) {
-          selected_topics.push(String(getValue(event, topic)).toUpperCase());
+          selected_topics.push(String(getValue(event, topic)));
         }
       }
 
       try {
-        await fetch(`${IP_ADDRESS}/update`, experienceRequestOptions).then(
-          (res) => {
-            if (res.status === 400) {
-              throw new Error('Something went wrong!');
-            } else if (res.status === 401) {
-              navigate("/login");
-            } else if (res.status !== 200 && res.status !== 204) {
-              throw new Error(
-                'We have no idea what went wrong\n But its not error 400.'
-              );
-            }
-          }
+        await update('experience', experienceId, experienceData, () =>
+          navigate('/login')
         );
       } catch (err) {
-        alert(err);
+        console.error(err);
+        alert('Something went wrong!');
         return;
       }
 
       try {
-        await fetch(`${IP_ADDRESS}/remove`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tableName: 'experience_grade',
-            rowName: 'experience_id',
-            rowId: experienceId
-          })
-        });
-        await fetch(`${IP_ADDRESS}/remove`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tableName: 'experience_category',
-            rowName: 'experience_id',
-            rowId: experienceId
-          })
-        });
+        await remove('experience_grade', 'experience_id', experienceId, () =>
+          navigate('/login')
+        );
+        await remove('experience_category', 'experience_id', experienceId, () =>
+          navigate('/login')
+        );
       } catch (err) {
-        alert(err);
+        console.error(err);
+        alert('Something went wrong!');
         return;
       }
 
       const promises = [];
-      for (const g of selected_grades) {
-        const grade_data = {
+      for (const g of selectedGrades) {
+        const gradeData = {
           experience_id: experienceId,
           grade: g
         };
-        const gradeRequestOptions: RequestInit = {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tableName: 'experience_grade',
-            data: grade_data
-          })
-        };
-        const gradePromise = fetch(
-          `${IP_ADDRESS}/insert`,
-          gradeRequestOptions
-        ).then((res) => {
-          if (res.status === 400) {
-            throw new Error('Something went wrong!');
-          } else if (res.status === 200 || res.status === 204) {
-            return 'Success!';
-          } else {
-            throw new Error(
-              'We have no idea what went wrong\n But its not error 400.'
-            );
-          }
+        const gradePromise = insert('experience_grade', gradeData, () =>
+          navigate('/login')
+        ).catch((err) => {
+          console.error(err);
+          throw new Error('Something went wrong!');
         });
         promises.push(gradePromise);
       }
 
       for (const t of selected_topics) {
-        const topic_data = {
+        const topicData = {
           experience_id: experienceId,
           category: t
         };
-        const topicRequestOptions: RequestInit = {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tableName: 'experience_category',
-            data: topic_data
-          })
-        };
-        const topicPromise = fetch(
-          `${IP_ADDRESS}/insert`,
-          topicRequestOptions
-        ).then((res) => {
-          if (res.status === 400) {
-            throw new Error('Something went wrong!');
-          } else if (res.status === 401) {
-            navigate("/login");
-          } else if (res.status === 200 || res.status === 204) {
-            return res.json();
-          } else {
-            throw new Error(
-              'We have no idea what went wrong\n But its not error 400.'
-            );
-          }
+        const topicPromise = insert('experience_category', topicData, () =>
+          navigate('/login')
+        ).catch((err) => {
+          console.error(err);
+          throw new Error('Something went wrong!');
         });
         promises.push(topicPromise);
       }
@@ -220,39 +144,9 @@ const Edit = () => {
   );
 
   const downloadData = useCallback(async () => {
-    await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
-      credentials: 'include',
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          navigate("/login");
-        }
-        return res;
-      })
-      .then((res) => res.json())
-      .then((res) => {
-        const experience = res as unknown as any;
-        experience.type =
-          ExperienceType[experience.type as keyof typeof ExperienceType];
-        experience.participant_count =
-          ParticipantCount[
-            experience.participant_count as keyof typeof ParticipantCount
-          ];
-        const newGrades: ExperienceGrade[] = [];
-        for (const grade of experience.grades) {
-          newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });
-        }
-        experience.grades = newGrades;
-        const newCategories: ExperienceCategory[] = [];
-        for (const category of experience.categories) {
-          newCategories.push({
-            category: Category[category.category as keyof typeof Category]
-          });
-        }
-        experience.categories = newCategories;
-
-        setExperience(experience);
-      });
+    await getExperience(experienceId, () => navigate('/login')).then(
+      setExperience
+    );
   }, [experienceId, navigate]);
 
   useEffect(() => {
