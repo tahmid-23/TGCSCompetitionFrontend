@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { IP_ADDRESS } from '../../global';
+import { API_BASE_URL } from '../../global';
 import Button from '../Button/Button';
 import TopicSelection from '../Search/TopicSelection';
 import { Category } from '../../api/model/experience';
@@ -39,7 +39,7 @@ const Recommendation = ({
 }: RecommendationProps) => {
   const [topics, setTopics] = useState<Category[]>([]);
   const onGenerateRecommendations = useCallback(() => {
-    fetch(`${IP_ADDRESS}/recommendations`, {
+    fetch(`${API_BASE_URL}/recommendations`, {
       headers: {
         'Content-Type': 'application/json'
       },

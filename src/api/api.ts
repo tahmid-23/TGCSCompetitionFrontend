@@ -1,4 +1,4 @@
-import { IP_ADDRESS } from '../global';
+import { API_BASE_URL } from '../global';
 import { Award, AwardType } from './model/competition';
 import {
   ExperienceType,
@@ -17,7 +17,7 @@ export interface LoginResponse {
 }
 
 export async function checkLogin(): Promise<LoginResponse> {
-  const response = await fetch(`${IP_ADDRESS}/check-login`, {
+  const response = await fetch(`${API_BASE_URL}/check-login`, {
     credentials: 'include'
   });
 
@@ -74,7 +74,7 @@ function createExperienceFromJson(json: unknown): Experience {
 export async function getExperiences(
   onRequiresAuthentication: () => unknown | undefined
 ): Promise<Experience[]> {
-  const response = await fetch(`${IP_ADDRESS}/experiences`, {
+  const response = await fetch(`${API_BASE_URL}/experiences`, {
     credentials: 'include'
   });
 
@@ -91,7 +91,7 @@ export async function getExperience(
   experienceId: number,
   onRequiresAuthentication: () => unknown | undefined
 ) {
-  const response = await fetch(`${IP_ADDRESS}/experience/${experienceId}`, {
+  const response = await fetch(`${API_BASE_URL}/experience/${experienceId}`, {
     credentials: 'include'
   });
 
@@ -120,7 +120,7 @@ export async function remove(
     })
   };
 
-  const response = await fetch(`${IP_ADDRESS}/remove`, requestOptions);
+  const response = await fetch(`${API_BASE_URL}/remove`, requestOptions);
   if (response.status === 401) {
     onRequiresAuthentication();
     throw new Error('Authentication is required.');
@@ -139,7 +139,7 @@ export async function insert(
     body: JSON.stringify({ tableName: tableName, data: data })
   };
 
-  const response = await fetch(`${IP_ADDRESS}/insert`, requestOptions);
+  const response = await fetch(`${API_BASE_URL}/insert`, requestOptions);
 
   if (response.status === 401) {
     onRequiresAuthentication();
@@ -166,7 +166,7 @@ export async function update(
     })
   };
 
-  const response = await fetch(`${IP_ADDRESS}/update`, requestOptions);
+  const response = await fetch(`${API_BASE_URL}/update`, requestOptions);
 
   if (response.status === 401) {
     onRequiresAuthentication();

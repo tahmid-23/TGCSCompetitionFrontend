@@ -1,5 +1,5 @@
+import { Typography } from '@mui/material';
 import { Program } from '../../../api/model/program';
-import styles from '../Overview.module.css';
 
 export interface ProgramOverviewProps {
   program: Program;
@@ -8,22 +8,20 @@ export interface ProgramOverviewProps {
 const ProgramOverview = ({ program }: ProgramOverviewProps) => {
   return (
     <>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>Program Type: {program.program_type}</p>
+      <div>
+        <Typography>Program Type: {program.program_type}</Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>Monthly Fee: ${program.monthly_fee}</p>
+      <div>
+        <Typography>Monthly Fee: ${program.monthly_fee}</Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
+      <div>
+        <Typography>
           Focuses:{' '}
           {program.program_focuses.map((focus) => focus.focus).join(', ')}
-        </p>
+        </Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
-          Time commitment: {program.time_commitment}
-        </p>
+      <div>
+        <Typography>Time commitment: {program.time_commitment}</Typography>
       </div>
     </>
   );

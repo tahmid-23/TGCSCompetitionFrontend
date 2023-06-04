@@ -1,9 +1,9 @@
+import { Typography } from '@mui/material';
 import {
   Competition,
   getAwardTypeDisplay
 } from '../../../api/model/competition';
-import styles from '../Overview.module.css';
-import competitionStyles from './CompetitionOverview.module.css';
+import styles from './CompetitionOverview.module.css';
 
 interface CompetitionOverviewProps {
   competition: Competition;
@@ -13,29 +13,29 @@ const CompetitionOverview = ({ competition }: CompetitionOverviewProps) => {
   return (
     <>
       {competition.judges_description && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>
+        <div>
+          <Typography>
             Judge Description: {competition.judges_description}
-          </p>
+          </Typography>
         </div>
       )}
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
+      <div>
+        <Typography>
           Judging Criteria: {competition.judging_criteria}
-        </p>
+        </Typography>
       </div>
       {competition.awards && competition.awards.length !== 0 && (
         <>
-          <div className={styles.infoEntry}>
-            <p className={styles.info}>Awards: </p>
+          <div>
+            <Typography>Awards: </Typography>
           </div>
-          <ul className={competitionStyles.awardList}>
+          <ul className={styles.awardList}>
             {competition.awards.map((award) => {
               return (
-                <li key={award.award_id} className={styles.infoEntry}>
-                  <p className={styles.info}>
+                <li key={award.award_id}>
+                  <Typography>
                     {getAwardTypeDisplay(award.type)}: {award.description}
-                  </p>
+                  </Typography>
                 </li>
               );
             })}

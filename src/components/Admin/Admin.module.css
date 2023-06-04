@@ -1,0 +1,7 @@
+.emailWrapper {
+  display: flex
+}
+
+.emailEnd {
+  align-self: flex-end;
+}

@@ -5,9 +5,8 @@ import {
   ExperienceType,
   Grade
 } from '../../api/model/experience';
-import Button from '../Button/Button';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
-import Dropdown from '../InputComponents/Dropdown';
+import Dropdown from '../InputComponents/Dropdown/Dropdown';
 import AwardSelection from '../Search/AwardSelection';
 import GradeSelection from '../Search/GradeSelection';
 import ProgramSelection from '../Search/ProgramSelection';
@@ -25,6 +24,8 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setAdmin } from '../../features/login';
 import { AwardType, Competition } from '../../api/model/competition';
+import { FormControl } from '@mui/material';
+import styles from './Home.module.css';
 
 function createTopicFilter(topics: Category[]): Filter {
   return (experience: Experience) => {
@@ -88,7 +89,7 @@ const Home = () => {
   const [filterType, setFilterType] = useState<string>('name');
   const [highlightId, setHighlightId] = useState<number>();
   const navigate = useNavigate();
-  const adminState = useAppSelector(selectLogin);
+  const loginState = useAppSelector(selectLogin);
   const dispatch = useAppDispatch();
   let inputComponent: ReactElement;
 
@@ -167,71 +168,66 @@ const Home = () => {
     );
   }
 
-  const onDelete = useCallback(() => {
-    if (!highlightId) {
-      return;
-    }
+  const onDelete = useCallback(
+    (deleteId: number) => {
+      if (window.confirm('Are you sure you want to delete this competition?')) {
+        remove('experience', 'experience_id', deleteId, () => {
+          navigate('/login');
+        }).finally(() => {
+          if (highlightId === deleteId) {
+            setHighlightId(undefined);
+          }
+        });
+      }
+    },
+    [navigate, highlightId]
+  );
 
-    remove('experience', 'experience_id', highlightId, () => {
-      navigate('/login');
-    }).finally(() => {
-      setHighlightId(undefined);
-    });
-  }, [navigate, highlightId]);
-
-  if (adminState.hasAccess === undefined) {
+  if (loginState.hasAccess === undefined) {
     return <></>;
-  } else if (!adminState.hasAccess) {
+  } else if (!loginState.hasAccess) {
     navigate('/login');
   }
 
   return (
-    <>
-      <div>
-        {adminState.admin && (
-          <>
-            <Button text="Add" to="/add" />
-            <Button
-              text="Edit"
-              disabled={!highlightId}
-              to={highlightId ? `/edit/${highlightId}` : undefined}
-            />
-            <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-          </>
-        )}
-        <Button
-          text="View"
-          disabled={!highlightId}
-          to={highlightId ? `/view/${highlightId}` : undefined}
+    <div className={styles.wrapper}>
+      <FormControl>
+        <div style={{ marginBottom: '1vh' }}>
+          <Dropdown
+            id="filter-by"
+            label="Filter by"
+            items={['Name', 'Grade', 'Topic', 'Award', 'Program']}
+            defaultChoice="Name"
+            onChange={(e) => {
+              setFilterType(e.target.value);
+              switch (e.target.value) {
+                case 'Name':
+                  setFilter(() => createSearchFilter(''));
+                  break;
+                case 'Grade':
+                  setFilter(() => createGradeFilter([]));
+                  break;
+                case 'Topic':
+                  setFilter(() => createTopicFilter([]));
+                  break;
+                case 'Program':
+                  setFilter(() => createProgramFilter([]));
+                  break;
+                case 'Award':
+                  setFilter(() => createAwardFilter([]));
+                  break;
+              }
+            }}
+          />
+        </div>
+        <ExperienceList
+          experiences={experiences || []}
+          filter={filter}
+          highlightId={highlightId}
+          onSelect={setHighlightId}
+          onDelete={onDelete}
         />
-      </div>
-      <Dropdown
-        name="filter-by"
-        id="filter-by"
-        label="Filter by"
-        items={['name', 'grade', 'topic', 'award', 'program']}
-        onChange={(e) => {
-          setFilterType(e.currentTarget.value);
-          switch (e.currentTarget.value) {
-            case 'name':
-              setFilter(() => createSearchFilter(''));
-              break;
-            case 'grade':
-              setFilter(() => createGradeFilter([]));
-              break;
-            case 'topic':
-              setFilter(() => createTopicFilter([]));
-              break;
-            case 'program':
-              setFilter(() => createProgramFilter([]));
-              break;
-            case 'award':
-              setFilter(() => createAwardFilter([]));
-              break;
-          }
-        }}
-      />
-      {inputComponent}
+        {/* {inputComponent}
       <ExperienceList
         experiences={experiences || []}
         filter={filter}
@@ -241,8 +237,9 @@ const Home = () => {
       <Button text="Add" to="/add" />
       <Button text="Edit" disabled={!highlightId} to={`/edit/${highlightId}`} />
       <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-      <Button text="View" disabled={!highlightId} to={`/view/${highlightId}`} />
-    </>
+      <Button text="View" disabled={!highlightId} to={`/view/${highlightId}`} /> */}
+      </FormControl>
+    </div>
   );
 };
 

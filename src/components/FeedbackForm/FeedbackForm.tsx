@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { IP_ADDRESS } from '../../global';
+import { API_BASE_URL } from '../../global';
 
 const FeedbackForm = () => {
   const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ const FeedbackForm = () => {
         }
       })
     };
-    fetch(`${IP_ADDRESS}/insert`, feedbackOptions)
+    fetch(`${API_BASE_URL}/insert`, feedbackOptions)
       .then((res) => {
         if (res.status === 400) {
           alert('Something went wrong!');

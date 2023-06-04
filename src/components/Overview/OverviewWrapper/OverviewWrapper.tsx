@@ -10,6 +10,7 @@ import { Competition } from '../../../api/model/competition';
 import { getExperience } from '../../../api/api';
 import { useAppSelector } from '../../../hooks/redux-hooks';
 import { selectLogin } from '../../../features/login';
+import { Typography, useTheme } from '@mui/material';
 
 const OverviewWrapper = () => {
   const loginState = useAppSelector(selectLogin);
@@ -18,6 +19,7 @@ const OverviewWrapper = () => {
   const [data, setData] = useState<
     (Experience & Competition) | (Experience & Program)
   >();
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const experienceId = Number(params['experienceId']);
@@ -49,18 +51,26 @@ const OverviewWrapper = () => {
       return;
     }
     downloadData();
-  }, [downloadData, loginState.hasAccess, navigate]);
+  }, [downloadData, loginState, loginState.hasAccess, navigate]);
 
   if (!experienceId) {
-    return <>You must specify a valid experience id.</>;
+    return (
+      <Typography color={theme.palette.error.main}>
+        You must specify a valid experience id.
+      </Typography>
+    );
   }
 
   if (!loaded) {
-    return <>Loading...</>;
+    return <Typography>Loading...</Typography>;
   }
 
   if (!data) {
-    return <>Failed to load data.</>;
+    return (
+      <Typography color={theme.palette.error.main}>
+        Failed to load data.
+      </Typography>
+    );
   }
 
   let extra: ReactNode;

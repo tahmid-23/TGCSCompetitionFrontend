@@ -1,42 +1,6 @@
-import { MouseEventHandler, ReactElement } from 'react';
-import { Link } from 'react-router-dom';
-import BulletedList from '../BulletedList/BulletedList';
-import styles from './ExperienceList.module.css';
-import { Category, Experience } from '../../api/model/experience';
-
-interface ExperienceProps {
-  experience: Experience;
-  highlight: boolean;
-  onClick?: MouseEventHandler<HTMLDivElement> | undefined;
-}
-
-const ExperienceItem = ({
-  experience,
-  highlight,
-  onClick
-}: ExperienceProps) => {
-  const className = highlight ? styles.highlight : undefined;
-  return (
-    <div className={className} onClick={onClick}>
-      <Link
-        className={styles.experienceLink}
-        to={`/view/${experience.experience_id}`}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        {experience.name}
-        &nbsp; (
-        {experience.categories
-          .map((category) => Category[category.category])
-          .join(', ')}
-        )
-      </Link>
-    </div>
-  );
-};
+import { Experience } from '../../api/model/experience';
+import { List, Typography, useTheme } from '@mui/material';
+import ExperienceItem from '../ExperienceItem/ExperienceItem';
 
 export type Filter = (arg0: Experience) => boolean;
 
@@ -45,43 +9,56 @@ interface ExperienceListProps {
   filter?: Filter;
   highlightId?: number;
   onSelect?: (arg0: number | undefined) => void;
+  onDelete?: (arg0: number) => void;
 }
 
 const ExperienceList = ({
   experiences,
   filter,
   highlightId,
-  onSelect
+  onSelect,
+  onDelete
 }: ExperienceListProps) => {
-  const validExp: ReactElement[] = [];
-  for (let i = 0; i < experiences.length; ++i) {
-    const experience = experiences[i];
-    let shouldInclude;
-    if (!filter) {
-      shouldInclude = true;
-    } else if (filter(experience)) {
-      shouldInclude = true;
-    } else {
-      shouldInclude = false;
-      if (experience.experience_id === highlightId) {
-        onSelect?.(undefined);
-      }
+  const theme = useTheme();
+
+  const filteredExperiences = experiences.filter((experience, index) => {
+    if (!filter || filter(experience)) {
+      return true;
     }
 
-    if (shouldInclude) {
-      const highlight = experience.experience_id === highlightId;
-      validExp.push(
-        <ExperienceItem
-          key={experience.experience_id}
-          experience={experience}
-          highlight={highlight}
-          onClick={
-            onSelect ? () => onSelect(experience.experience_id) : undefined
-          }
-        />
-      );
+    if (experience.experience_id === index) {
+      onSelect?.(undefined);
     }
+
+    return false;
+  });
+
+  if (filteredExperiences.length === 0) {
+    return <Typography>No matches found.</Typography>;
   }
-  return <BulletedList>{validExp}</BulletedList>;
+
+  return (
+    <List
+      sx={{
+        // backgroundColor: theme.palette.primary.light,
+        padding: 0,
+        border: `0.5vh solid ${theme.palette.primary.dark}`
+      }}
+    >
+      {filteredExperiences.map((experience) => {
+        return (
+          <ExperienceItem
+            key={experience.experience_id}
+            experience={experience}
+            highlightId={highlightId}
+            onSelect={(selected) =>
+              onSelect?.(selected ? experience.experience_id : undefined)
+            }
+            onDelete={() => onDelete?.(experience.experience_id)}
+          />
+        );
+      })}
+    </List>
+  );
 };
 export default ExperienceList;

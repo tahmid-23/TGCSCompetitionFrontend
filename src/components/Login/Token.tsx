@@ -1,5 +1,5 @@
 import { FormEvent, useCallback } from 'react';
-import { IP_ADDRESS } from '../../global';
+import { API_BASE_URL } from '../../global';
 import { useNavigate } from 'react-router-dom';
 
 const Token = () => {
@@ -8,7 +8,7 @@ const Token = () => {
   const onLogin = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      fetch(`${IP_ADDRESS}/token`, {
+      fetch(`${API_BASE_URL}/token`, {
         method: 'POST',
         credentials: 'include',
         headers: {

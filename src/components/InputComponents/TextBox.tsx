@@ -1,3 +1,5 @@
+import { TextField } from '@mui/material';
+
 interface TextBoxProps {
   name: string;
   id: string;
@@ -5,13 +7,7 @@ interface TextBoxProps {
 }
 
 const TextBox = ({ name, id, value }: TextBoxProps) => {
-  return (
-    <>
-      <label htmlFor={id}>{name}</label>
-      &nbsp;
-      <input type="text" name={name} id={id} defaultValue={value} />
-    </>
-  );
+  return <TextField id={id} label={name} variant="outlined" value={value} />;
 };
 
 export default TextBox;

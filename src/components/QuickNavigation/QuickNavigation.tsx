@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const QuickNavigation = () => {
@@ -5,23 +6,23 @@ const QuickNavigation = () => {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+        variant="contained"
         onClick={() => {
           navigate('/');
         }}
       >
         Home
-      </button>
+      </Button>
       &nbsp;
-      <button
-        type="button"
+      <Button
+        variant="contained"
         onClick={() => {
           navigate(-1);
         }}
       >
         Back
-      </button>
+      </Button>
     </>
   );
 };

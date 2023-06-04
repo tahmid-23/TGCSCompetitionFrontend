@@ -1,7 +1,7 @@
 import { FormEventHandler } from 'react';
 import CheckBox from '../InputComponents/CheckBox';
 import DateBox from '../InputComponents/DateBox';
-import Dropdown from '../InputComponents/Dropdown';
+import Dropdown from '../InputComponents/Dropdown/Dropdown';
 import MultipleChoice from '../InputComponents/MultipleChoice';
 import NumberBox from '../InputComponents/NumberBox';
 import TextBox from '../InputComponents/TextBox';
@@ -39,7 +39,7 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
           value={experience?.entry_fee}
         />
         <br />
-        <Dropdown
+        {/* <Dropdown
           name="Participant Count"
           id="participant_count"
           label="Participant Count"
@@ -53,7 +53,7 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             ParticipantCount[ParticipantCount['51-99']],
             ParticipantCount[ParticipantCount['100+']]
           ]}
-        />
+        /> */}
         <br />
         <NumberBox
           name="Origin Year"

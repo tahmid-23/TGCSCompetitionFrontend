@@ -1,2 +1,4 @@
-const ZAMAN_PC_ID = '8';
-export const IP_ADDRESS = `http://192.168.1.${ZAMAN_PC_ID}:3000`;
+export const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://localhost:3000'
+    : 'http://localhost:3000';

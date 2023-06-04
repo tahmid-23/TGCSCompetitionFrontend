@@ -1,10 +1,19 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import { IP_ADDRESS } from '../../global';
+import { API_BASE_URL } from '../../global';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
 import { useNavigate } from 'react-router-dom';
-import Button from '../Button/Button';
 import { useRefreshLoginState } from '../../hooks/login-hooks';
+import {
+  Button,
+  Divider,
+  FormControl,
+  IconButton,
+  TextField,
+  Typography
+} from '@mui/material';
+import styles from './Admin.module.css';
+import { ContentCopy } from '@mui/icons-material';
 
 function genToken(length: number) {
   let result = '';
@@ -21,8 +30,8 @@ function genToken(length: number) {
 const Admin = () => {
   const loginState = useAppSelector(selectLogin);
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>('');
-  const [displayedToken, setDislpayedToken] = useState<string>('');
+  const [email, setEmail] = useState<string>();
+  const [displayedToken, setDisplayedToken] = useState<string>();
   const refreshed = useRefreshLoginState();
 
   const onTokenGen = useCallback(async () => {
@@ -37,9 +46,9 @@ const Admin = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     };
-    await fetch(`${IP_ADDRESS}/create-user`, options).then((res) => {
+    await fetch(`${API_BASE_URL}/create-user`, options).then((res) => {
       if (res.status === 200) {
-        setDislpayedToken(token);
+        setDisplayedToken(token);
       } else {
         alert('Something went wrong!\nPlease regenerate token!');
         console.error(res.status);
@@ -55,8 +64,9 @@ const Admin = () => {
   );
 
   const onCopy = useCallback(() => {
-    navigator.clipboard.writeText(displayedToken);
-    alert('Token copied to clipboard!');
+    if (displayedToken) {
+      navigator.clipboard.writeText(displayedToken);
+    }
   }, [displayedToken]);
 
   if (!refreshed) {
@@ -70,36 +80,32 @@ const Admin = () => {
 
   return (
     <>
-      <h1>Admin Only Interface</h1>
+      <Typography variant="h3">Admin Only Interface</Typography>
+      <Divider />
       <br />
-      <br />
-      <label htmlFor="email">Email</label>
-      <br />
-      <input type="text" id="email" onChange={onChange} />
-      <label htmlFor="email">@giftedchildsociety.org</label>
-      <br />
-      <br />
-      <p>Token: {displayedToken}</p>
-      {displayedToken && (
-        <button title="Copy to Clipboard" onClick={onCopy}>
-          <svg
-            width="5%"
-            height="5%"
-            viewBox="0 0 18 18"
-            preserveAspectRatio="xMidYMid meet"
-            focusable="false"
+      <FormControl>
+        <Typography variant="h5">Token Generator</Typography>
+        <div className={styles.emailWrapper}>
+          <TextField
+            id="email"
+            label="Email"
+            variant="standard"
+            onChange={onChange}
+          />
+          <span className={styles.emailEnd}>@giftedchildsociety.org</span>
+        </div>
+        <br />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography>Token: {displayedToken}</Typography>
+          &nbsp;
+          <IconButton
+            sx={{ visibility: displayedToken ? 'visible' : 'hidden' }}
+            onClick={onCopy}
           >
-            <path
-              d="M8 7v7h5V7H8zM3.99 2h7.942v2H4.985v8H3V2.995A1 1 0 0 1 3.99 2zM6 5.996c0-.55.446-.996.998-.996h7.004c.55 0 .998.445.998.996v9.008c0 .55-.446.996-.998.996H6.998A.996.996 0 0 1 6 15.004V5.996z"
-              fillRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
-      <br />
-      <button onClick={onTokenGen}> Generate Token</button>
-      <br />
-      <Button text="View Database" to="/" />
+            <ContentCopy />
+          </IconButton>
+        </div>
+      </FormControl>
     </>
   );
 };

@@ -8,7 +8,8 @@ import {
   getExperienceTypeDisplay
 } from '../../../api/model/experience';
 import QuickNavigation from '../../QuickNavigation/QuickNavigation';
-import styles from '../Overview.module.css';
+import styles from './ExperienceOverview.module.css';
+import { Stack, Typography } from '@mui/material';
 
 interface ExperienceOverviewProps {
   experience: Experience;
@@ -21,85 +22,83 @@ const ExperienceOverview = ({
   const navigate = useNavigate();
 
   return (
-    <>
-      <div className={styles.infoEntry}>
-        <h1 className={styles.title}>{experience.name}</h1>
+    <Stack className={styles.wrapper} spacing={1} sx={{ margin: 0 }}>
+      <div>
+        <Typography variant="h3">{experience.name}</Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
+      <div>
+        <Typography>
           Type: {getExperienceTypeDisplay(experience.type)}
-        </p>
+        </Typography>
       </div>
       {experience.website_url && (
-        <div className={styles.infoEntry}>
-          <span className={styles.info}>Website URL:</span>
+        <div>
+          <Typography component="span">Website URL:</Typography>
           &nbsp;
-          <a className={styles.info} href={experience.website_url}>
+          <Typography component="a" href={experience.website_url}>
             {experience.website_url}
-          </a>
+          </Typography>
         </div>
       )}
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>Entry Fee: ${experience.entry_fee}</p>
+      <div>
+        <Typography>Entry Fee: ${experience.entry_fee}</Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
+      <div>
+        <Typography>
           Grades:{' '}
           {experience.grades.map((grade) => Grade[grade.grade]).join(', ')}
-        </p>
+        </Typography>
       </div>
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>
+      <div>
+        <Typography>
           Categories:{' '}
           {experience.categories
             .map((category) => getCategoryDisplay(category.category))
             .join(', ')}
-        </p>
+        </Typography>
       </div>
       {experience.participant_count && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>
+        <div>
+          <Typography>
             Participant count: {ParticipantCount[experience.participant_count]}
-          </p>
+          </Typography>
         </div>
       )}
       {experience.origin_year && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>Origin Year: {experience.origin_year}</p>
+        <div>
+          <Typography>Origin Year: {experience.origin_year}</Typography>
         </div>
       )}
       {experience.purpose && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>Purpose: {experience.purpose}</p>
+        <div>
+          <Typography>Purpose: {experience.purpose}</Typography>
         </div>
       )}
-      <div className={styles.infoEntry}>
-        <p className={styles.info}>Description: {experience.description}</p>
+      <div>
+        <Typography>Description: {experience.description}</Typography>
       </div>
       {experience.required_items && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>
-            Required Items: {experience.required_items}
-          </p>
+        <div>
+          <Typography>Required Items: {experience.required_items}</Typography>
         </div>
       )}
       {experience.advice && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>Advice: {experience.advice}</p>
+        <div>
+          <Typography>Advice: {experience.advice}</Typography>
         </div>
       )}
       {experience.virtual !== undefined && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>
+        <div>
+          <Typography>
             Virtual: {experience.virtual ? 'True' : 'False'}
-          </p>
+          </Typography>
         </div>
       )}
       {experience.entry_description && (
-        <div className={styles.infoEntry}>
-          <p className={styles.info}>
+        <div>
+          <Typography>
             Entry Description: {experience.entry_description}
-          </p>
+          </Typography>
         </div>
       )}
       {children}
@@ -115,7 +114,7 @@ const ExperienceOverview = ({
           Submit Feedback
         </button>
       </div>
-    </>
+    </Stack>
   );
 };
 

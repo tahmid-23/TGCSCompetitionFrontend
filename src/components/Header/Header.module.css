@@ -1,3 +1,7 @@
-.tgcsHeader {
-  text-align: center;
+.toolbar {
+  gap: 2vw;
+}
+
+.title {
+  flex-grow: 1;
 }
