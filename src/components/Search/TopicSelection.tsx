@@ -83,10 +83,10 @@ const TopicSelection = ({
   return (
     <div>
       <FormControlLabel
-        name="technology"
         label={getCategoryDisplay(Category.TECHNOLOGY)}
         control={
           <Checkbox
+            name="technology"
             value={Category[Category.TECHNOLOGY]}
             defaultChecked={technology}
             onChange={onChange}
@@ -94,10 +94,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="science"
         label={getCategoryDisplay(Category.SCIENCE)}
         control={
           <Checkbox
+            name="science"
             value={Category[Category.SCIENCE]}
             defaultChecked={science}
             onChange={onChange}
@@ -105,10 +105,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="biology"
         label={getCategoryDisplay(Category.BIOLOGY)}
         control={
           <Checkbox
+            name="biology"
             value={Category[Category.BIOLOGY]}
             defaultChecked={biology}
             onChange={onChange}
@@ -116,10 +116,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="chemistry"
         label={getCategoryDisplay(Category.CHEMISTRY)}
         control={
           <Checkbox
+            name="chemistry"
             value={Category[Category.CHEMISTRY]}
             defaultChecked={chemistry}
             onChange={onChange}
@@ -127,10 +127,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="physics"
         label={getCategoryDisplay(Category.PHYSICS)}
         control={
           <Checkbox
+            name="physics"
             value={Category[Category.PHYSICS]}
             defaultChecked={physics}
             onChange={onChange}
@@ -138,10 +138,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="math"
         label={getCategoryDisplay(Category.MATH)}
         control={
           <Checkbox
+            name="math"
             value={Category[Category.MATH]}
             defaultChecked={math}
             onChange={onChange}
@@ -149,10 +149,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="engineering"
         label={getCategoryDisplay(Category.ENGINEERING)}
         control={
           <Checkbox
+            name="engineering"
             value={Category[Category.ENGINEERING]}
             defaultChecked={engineering}
             onChange={onChange}
@@ -160,10 +160,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="business"
         label={getCategoryDisplay(Category.BUSINESS)}
         control={
           <Checkbox
+            name="business"
             value={Category[Category.BUSINESS]}
             defaultChecked={business}
             onChange={onChange}
@@ -171,10 +171,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="medical"
         label={getCategoryDisplay(Category.MEDICAL)}
         control={
           <Checkbox
+            name="medical"
             value={Category[Category.MEDICAL]}
             defaultChecked={medical}
             onChange={onChange}
@@ -182,10 +182,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="culinary"
         label={getCategoryDisplay(Category.CULINARY)}
         control={
           <Checkbox
+            name="culinary"
             value={Category[Category.CULINARY]}
             defaultChecked={culinary}
             onChange={onChange}
@@ -193,10 +193,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="music"
         label={getCategoryDisplay(Category.MUSIC)}
         control={
           <Checkbox
+            name="music"
             value={Category[Category.MUSIC]}
             defaultChecked={music}
             onChange={onChange}
@@ -204,10 +204,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="athletics"
         label={getCategoryDisplay(Category.ATHLETICS)}
         control={
           <Checkbox
+            name="athletics"
             value={Category[Category.ATHLETICS]}
             defaultChecked={athletics}
             onChange={onChange}
@@ -215,10 +215,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="art"
         label={getCategoryDisplay(Category.ART)}
         control={
           <Checkbox
+            name="art"
             value={Category[Category.ART]}
             defaultChecked={art}
             onChange={onChange}
@@ -226,10 +226,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="theater"
         label={getCategoryDisplay(Category.THEATER)}
         control={
           <Checkbox
+            name="theater"
             value={Category[Category.THEATER]}
             defaultChecked={theater}
             onChange={onChange}
@@ -237,10 +237,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="dance"
         label={getCategoryDisplay(Category.DANCE)}
         control={
           <Checkbox
+            name="dance"
             value={Category[Category.DANCE]}
             defaultChecked={dance}
             onChange={onChange}
@@ -248,10 +248,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="languageArts"
         label={getCategoryDisplay(Category['LANGUAGE ARTS'])}
         control={
           <Checkbox
+            name="languageArts"
             value={Category[Category['LANGUAGE ARTS']]}
             defaultChecked={languageArts}
             onChange={onChange}
@@ -259,10 +259,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="geography"
         label={getCategoryDisplay(Category.GEOGRAPHY)}
         control={
           <Checkbox
+            name="geography"
             value={Category[Category.GEOGRAPHY]}
             defaultChecked={geography}
             onChange={onChange}
@@ -270,10 +270,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="spelling"
         label={getCategoryDisplay(Category.SPELLING)}
         control={
           <Checkbox
+            name="spelling"
             value={Category[Category.SPELLING]}
             defaultChecked={spelling}
             onChange={onChange}
@@ -281,10 +281,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="history"
         label={getCategoryDisplay(Category.HISTORY)}
         control={
           <Checkbox
+            name="history"
             value={Category[Category.HISTORY]}
             defaultChecked={history}
             onChange={onChange}
@@ -292,10 +292,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="foreignLanguage"
         label={getCategoryDisplay(Category['FOREIGN LANGUAGE'])}
         control={
           <Checkbox
+            name="foreignLanguage"
             value={Category[Category['FOREIGN LANGUAGE']]}
             defaultChecked={foreignLanguage}
             onChange={onChange}
@@ -303,10 +303,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="chess"
         label={getCategoryDisplay(Category.CHESS)}
         control={
           <Checkbox
+            name="chess"
             value={Category[Category.CHESS]}
             defaultChecked={chess}
             onChange={onChange}
@@ -314,10 +314,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="research"
         label={getCategoryDisplay(Category.RESEARCH)}
         control={
           <Checkbox
+            name="research"
             value={Category[Category.RESEARCH]}
             defaultChecked={research}
             onChange={onChange}
@@ -325,10 +325,10 @@ const TopicSelection = ({
         }
       />
       <FormControlLabel
-        name="other"
         label={getCategoryDisplay(Category.OTHER)}
         control={
           <Checkbox
+            name="other"
             value={Category[Category.OTHER]}
             defaultChecked={other}
             onChange={onChange}

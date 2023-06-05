@@ -2,37 +2,46 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 interface LoginState {
-  admin: boolean;
-  hasAccess?: boolean;
+  admin?: number;
+  hasAccess?: number;
 }
 
 const initialState: LoginState = {
-  admin: false,
+  admin: undefined,
   hasAccess: undefined
 };
 
-export const adminSlice = createSlice({
-  name: 'admin',
+export const loginSlice = createSlice({
+  name: 'login',
   initialState,
   reducers: {
     setAdmin: (state) => {
-      state.admin = true;
+      state.admin = Date.now();
     },
     setNotAdmin: (state) => {
-      state.admin = false;
+      state.admin = undefined;
     },
     setHasAccess: (state) => {
-      state.hasAccess = true;
+      state.hasAccess = Date.now();
     },
     setNotHasAccess: (state) => {
-      state.hasAccess = false;
+      state.hasAccess = undefined;
     }
   }
 });
 
 export const { setAdmin, setNotAdmin, setHasAccess, setNotHasAccess } =
-  adminSlice.actions;
+  loginSlice.actions;
 
-export const selectLogin = (state: RootState) => state.admin;
+export const selectLogin = (state: RootState) => {
+  return {
+    admin: state.login.admin
+      ? Date.now() - state.login.admin <= 24 * 60 * 60 * 1000
+      : false,
+    hasAccess: state.login.hasAccess
+      ? Date.now() - state.login.hasAccess <= 24 * 60 * 60 * 1000
+      : false
+  };
+};
 
-export default adminSlice.reducer;
+export default loginSlice.reducer;

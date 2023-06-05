@@ -45,10 +45,10 @@ const GradeSelection = ({
   return (
     <>
       <FormControlLabel
-        name="bucket1"
         label="K-2"
         control={
           <Checkbox
+            name="bucket1"
             value={Grade[Grade['K-2']]}
             defaultChecked={checkedA}
             onChange={onChange}
@@ -56,10 +56,10 @@ const GradeSelection = ({
         }
       />
       <FormControlLabel
-        name="bucket2"
         label="3-5"
         control={
           <Checkbox
+            name="bucket2"
             value={Grade[Grade['3-5']]}
             defaultChecked={checkedB}
             onChange={onChange}
@@ -67,10 +67,10 @@ const GradeSelection = ({
         }
       />
       <FormControlLabel
-        name="bucket3"
         label="6-8"
         control={
           <Checkbox
+            name="bucket3"
             value={Grade[Grade['6-8']]}
             defaultChecked={checkedC}
             onChange={onChange}
@@ -78,10 +78,10 @@ const GradeSelection = ({
         }
       />
       <FormControlLabel
-        name="bucket4"
         label="9-12"
         control={
           <Checkbox
+            name="bucket4"
             value={Grade[Grade['9-12']]}
             defaultChecked={checkedD}
             onChange={onChange}

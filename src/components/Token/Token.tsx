@@ -2,9 +2,12 @@ import { FormEvent, useCallback } from 'react';
 import { API_BASE_URL } from '../../global';
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
+import { useAppDispatch } from '../../hooks/redux-hooks';
+import { setHasAccess } from '../../features/login';
 
 const Token = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onLogin = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
@@ -24,10 +27,11 @@ const Token = () => {
           return;
         }
 
+        dispatch(setHasAccess);
         navigate('/');
       });
     },
-    [navigate]
+    [dispatch, navigate]
   );
 
   return (

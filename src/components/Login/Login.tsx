@@ -1,12 +1,7 @@
 import { GoogleLogin } from '@react-oauth/google';
 import { API_BASE_URL } from '../../global';
 import { useAppDispatch } from '../../hooks/redux-hooks';
-import {
-  setAdmin,
-  setHasAccess,
-  setNotAdmin,
-  setNotHasAccess
-} from '../../features/login';
+import { setAdmin, setHasAccess, setNotAdmin } from '../../features/login';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -34,25 +29,29 @@ const Login = () => {
               credential: response.credential
             })
           })
-            .then((res) => res.json())
-            .then((loginData) => {
-              if (loginData.admin) {
-                dispatch(setAdmin);
-              } else {
-                dispatch(setNotAdmin);
-              }
+            .then((res) => {
+              if (res.status === 200) {
+                res.json().then((loginData) => {
+                  if (loginData.admin) {
+                    dispatch(setHasAccess());
+                    dispatch(setAdmin());
+                  } else {
+                    dispatch(setNotAdmin());
+                  }
 
-              if (loginData.hasAccess) {
-                dispatch(setHasAccess);
+                  if (loginData.admin) {
+                    navigate('/admin');
+                  } else {
+                    navigate('/token');
+                  }
+                });
               } else {
-                dispatch(setNotHasAccess);
+                alert('Something went wrong!');
               }
-
-              if (loginData.admin) {
-                navigate('/admin');
-              } else {
-                navigate('/token');
-              }
+            })
+            .catch((err) => {
+              console.error(err);
+              alert('Something went wrong!');
             });
         }}
       />

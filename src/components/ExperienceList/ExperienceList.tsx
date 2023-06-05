@@ -59,12 +59,12 @@ const ExperienceList = ({
 }: ExperienceListProps) => {
   const theme = useTheme();
 
-  const filteredExperiences = experiences.filter((experience, index) => {
+  const filteredExperiences = experiences.filter((experience) => {
     if (!filter || filter(experience)) {
       return true;
     }
 
-    if (experience.experience_id === index) {
+    if (experience.experience_id === highlightId) {
       onSelect?.(undefined);
     }
 

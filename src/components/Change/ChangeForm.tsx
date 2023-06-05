@@ -1,11 +1,4 @@
 import { FormEventHandler } from 'react';
-import CheckBox from '../InputComponents/CheckBox';
-import DateBox from '../InputComponents/DateBox';
-import Dropdown from '../InputComponents/Dropdown/Dropdown';
-import MultipleChoice from '../InputComponents/MultipleChoice';
-import NumberBox from '../InputComponents/NumberBox';
-import TextBox from '../InputComponents/TextBox';
-import URLBox from '../InputComponents/URLBox';
 import GradeSelection from '../Search/GradeSelection';
 import TopicSelection from '../Search/TopicSelection';
 import {
@@ -15,6 +8,17 @@ import {
   Grade,
   ParticipantCount
 } from '../../api/model/experience';
+import Dropdown from '../InputComponents/Dropdown/Dropdown';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material';
 
 export interface ChangeFormProps {
   experience?: Experience;
@@ -22,147 +26,210 @@ export interface ChangeFormProps {
 }
 
 const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
-  const d: Date = new Date();
-  const year = String(d.getFullYear());
-
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <TextBox name="Name" id="name" value={experience?.name} />
-        <br />
-        <URLBox name="Website URL" id="url" value={experience?.website_url} />
-        <br />
-        <NumberBox
-          name="Entry Fee"
+    <form onSubmit={onSubmit}>
+      <Stack spacing={1} sx={{ alignItems: 'flex-start' }}>
+        <TextField
+          id="Name"
+          label="Name"
+          variant="standard"
+          value={experience?.name}
+        />
+        <TextField
+          id="url"
+          label="Website URL"
+          variant="standard"
+          type="url"
+          value={experience?.website_url}
+        />
+        <TextField
           id="fee"
-          min="0"
+          label="Entry Fee"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: { min: 0, defaultValue: experience?.entry_fee }
+          }}
           value={experience?.entry_fee}
         />
-        <br />
-        {/* <Dropdown
-          name="Participant Count"
-          id="participant_count"
-          label="Participant Count"
-          value={
-            experience?.participant_count &&
-            ParticipantCount[experience.participant_count]
-          }
-          items={[
-            ParticipantCount[ParticipantCount['1-10']],
-            ParticipantCount[ParticipantCount['11-50']],
-            ParticipantCount[ParticipantCount['51-99']],
-            ParticipantCount[ParticipantCount['100+']]
-          ]}
-        /> */}
-        <br />
-        <NumberBox
-          name="Origin Year"
+        <div>
+          <Dropdown
+            id="participant_count"
+            label="Participant Count"
+            minWidth="15vw"
+            defaultChoice={
+              experience?.participant_count &&
+              ParticipantCount[experience.participant_count]
+            }
+            items={[
+              ParticipantCount[ParticipantCount['1-10']],
+              ParticipantCount[ParticipantCount['11-50']],
+              ParticipantCount[ParticipantCount['51-99']],
+              ParticipantCount[ParticipantCount['100+']]
+            ]}
+          />
+        </div>
+        <TextField
           id="origin_year"
-          min="1700"
-          max={year}
-          interval="1"
+          label="Origin Year"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: {
+              min: 1700,
+              interval: '1',
+              defaultValue: experience?.origin_year
+            }
+          }}
           value={experience?.origin_year}
         />
-        <br />
-        <TextBox name="Purpose" id="purpose" value={experience?.purpose} />
-        <br />
-        <TextBox
-          name="Description"
-          id="description"
+        <TextField
+          id="purpose"
+          label="Purpose"
+          variant="standard"
+          value={experience?.name}
+        />
+        <TextField
+          id="purpose"
+          label="Description"
+          variant="standard"
           value={experience?.description}
         />
-        <br />
-        <TextBox
-          name="Required Items"
+        <TextField
           id="required_items"
+          label="Required Items"
+          variant="standard"
           value={experience?.required_items}
         />
-        <br />
-        <TextBox name="Advice" id="advice" value={experience?.advice} />
-        <br />
-        <NumberBox
-          name="Time Score"
+        <TextField
+          id="advice"
+          label="Advice"
+          variant="standard"
+          value={experience?.advice}
+        />
+        <TextField
           id="time_score"
-          min="0"
-          max="10"
-          interval="1"
+          label="Time Score"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: {
+              min: 0,
+              max: 10,
+              interval: '1',
+              defaultValue: experience?.score_time
+            }
+          }}
           value={experience?.score_time}
         />
-        <br />
-        <NumberBox
-          name="Difficulty Score"
+        <TextField
           id="difficulty_score"
-          min="0"
-          max="10"
-          interval="1"
+          label="Difficulty Score"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: {
+              min: 0,
+              max: 10,
+              interval: '1',
+              defaultValue: experience?.score_difficulty
+            }
+          }}
           value={experience?.score_difficulty}
         />
-        <br />
-        <NumberBox
-          name="Benefit Score"
+        <TextField
           id="benefit_score"
-          min="0"
-          max="10"
-          interval="1"
+          label="Benefit Score"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: {
+              min: 0,
+              max: 10,
+              interval: '1',
+              defaultValue: experience?.score_benefit
+            }
+          }}
           value={experience?.score_benefit}
         />
-        <br />
-        <NumberBox
-          name="Management Score"
+        <TextField
           id="management_score"
-          min="0"
-          max="10"
-          interval="1"
+          label="Management Score"
+          variant="standard"
+          type="number"
+          InputProps={{
+            inputProps: {
+              min: 0,
+              max: 10,
+              interval: '1',
+              defaultValue: experience?.score_mgmt
+            }
+          }}
           value={experience?.score_mgmt}
         />
-        <br />
-        <p>Type</p>
-        <MultipleChoice
+        <Typography>Type</Typography>
+        <RadioGroup
           name="Type"
-          value="Competition"
-          id="competition_button"
-          checked={experience?.type === ExperienceType.COMPETITION}
+          defaultValue={
+            experience?.type !== undefined
+              ? experience.type === ExperienceType.COMPETITION
+                ? 'Competition'
+                : 'Program'
+              : undefined
+          }
+          row
+        >
+          <FormControlLabel
+            label="Competition"
+            control={<Radio id="competition_button" value="Competition" />}
+          />
+          <FormControlLabel
+            label="Program"
+            control={<Radio id="program_button" value="Program" />}
+          />
+        </RadioGroup>
+        <FormControlLabel
+          label="Virtual"
+          control={
+            <Checkbox name="virtual" defaultChecked={experience?.virtual} />
+          }
         />
-        <MultipleChoice
-          name="Type"
-          value="Program"
-          id="program_button"
-          checked={experience?.type === ExperienceType.PROGRAM}
+        <TextField
+          id="address"
+          label="Address"
+          variant="standard"
+          value={experience?.address}
         />
-        <br />
-        <CheckBox name="Virtual" id="virtual" checked={experience?.virtual} />
-        <br />
-        <TextBox name="Address" id="address" value={experience?.address} />
-        <br />
-        <TextBox
-          name="Prerequisite Description"
+        <TextField
           id="prerequisite_description"
+          label="Prerequisite Description"
+          variant="standard"
           value={experience?.prerequisite_description}
         />
-        <br />
-        <TextBox
-          name="Entry Description"
+        <TextField
           id="entry_description"
+          label="Entry Description"
+          variant="standard"
           value={experience?.entry_description}
         />
-        <br />
-        <p>Grades</p>
-        <GradeSelection
-          checkedA={experience?.grades.some(
-            (grade) => grade.grade === Grade['K-2']
-          )}
-          checkedB={experience?.grades.some(
-            (grade) => grade.grade === Grade['3-5']
-          )}
-          checkedC={experience?.grades.some(
-            (grade) => grade.grade === Grade['6-8']
-          )}
-          checkedD={experience?.grades.some(
-            (grade) => grade.grade === Grade['9-12']
-          )}
-        />
-        <br />
-        <p>Categories</p>
+        <Typography>Grades</Typography>
+        <div>
+          <GradeSelection
+            checkedA={experience?.grades.some(
+              (grade) => grade.grade === Grade['K-2']
+            )}
+            checkedB={experience?.grades.some(
+              (grade) => grade.grade === Grade['3-5']
+            )}
+            checkedC={experience?.grades.some(
+              (grade) => grade.grade === Grade['6-8']
+            )}
+            checkedD={experience?.grades.some(
+              (grade) => grade.grade === Grade['9-12']
+            )}
+          />
+        </div>
+        <Typography>Categories</Typography>
         <TopicSelection
           technology={experience?.categories.some(
             (category) => category.category === Category.TECHNOLOGY
@@ -234,15 +301,11 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             (category) => category.category === Category.OTHER
           )}
         />
-        <br />
-        <br />
-        <DateBox name="Important Dates" id="important_dates" />
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <br />
-        <br />
-        <input type="submit" value="Next" />
-      </form>
-    </>
+        <Button type="submit" variant="contained">
+          Next
+        </Button>
+      </Stack>
+    </form>
   );
 };
 

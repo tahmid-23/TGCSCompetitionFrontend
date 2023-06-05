@@ -12,18 +12,12 @@ import GradeSelection from '../Search/GradeSelection';
 import ProgramSelection from '../Search/ProgramSelection';
 import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
-import { checkLogin, getExperiences, remove } from '../../api/api';
+import { getExperiences, remove } from '../../api/api';
 import { Program, ProgramType } from '../../api/model/program';
-import {
-  selectLogin,
-  setHasAccess,
-  setNotAdmin,
-  setNotHasAccess
-} from '../../features/login';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import { setAdmin } from '../../features/login';
+import { selectLogin } from '../../features/login';
+import { useAppSelector } from '../../hooks/redux-hooks';
 import { AwardType, Competition } from '../../api/model/competition';
-import { FormControl, InputAdornment, TextField } from '@mui/material';
+import { Button, InputAdornment, Stack, TextField } from '@mui/material';
 import styles from './Home.module.css';
 import { Search } from '@mui/icons-material';
 
@@ -86,59 +80,13 @@ function createAwardFilter(awardTypes: AwardType[]) {
 
 const Home = () => {
   const [filter, setFilter] = useState<Filter>();
-  const [filterType, setFilterType] = useState<string>('name');
+  const [filterType, setFilterType] = useState<string>('Name');
   const [highlightId, setHighlightId] = useState<number>();
   const navigate = useNavigate();
   const loginState = useAppSelector(selectLogin);
-  const dispatch = useAppDispatch();
   let inputComponent: ReactElement;
 
   const [experiences, setExperienceData] = useState<Experience[]>();
-
-  const onDelete = useCallback(
-    (deleteId: number) => {
-      if (window.confirm('Are you sure you want to delete this competition?')) {
-        remove('experience', 'experience_id', deleteId, () => {
-          navigate('/login');
-        }).finally(() => {
-          if (highlightId === deleteId) {
-            setHighlightId(undefined);
-          }
-        });
-      }
-    },
-    [navigate, highlightId]
-  );
-
-  const downloadData = useCallback(async () => {
-    await getExperiences(() => navigate('/login'))
-      .then(setExperienceData)
-      .catch((err) => {
-        alert('Something went wrong!');
-        console.error(err);
-      });
-  }, [navigate]);
-
-  const updateAdminState = useCallback(async () => {
-    await checkLogin().then((login) => {
-      if (login.admin) {
-        dispatch(setAdmin());
-      } else {
-        dispatch(setNotAdmin());
-      }
-
-      if (login.hasAccess) {
-        dispatch(setHasAccess());
-      } else {
-        dispatch(setNotHasAccess());
-      }
-    });
-  }, [dispatch]);
-
-  useEffect(() => {
-    downloadData();
-    updateAdminState();
-  }, [downloadData, updateAdminState]);
 
   if (filterType === 'Grade') {
     inputComponent = (
@@ -191,55 +139,90 @@ const Home = () => {
     );
   }
 
-  if (loginState.hasAccess === undefined) {
+  const onDelete = useCallback(
+    (deleteId: number) => {
+      if (window.confirm('Are you sure you want to delete this competition?')) {
+        remove('experience', 'experience_id', deleteId, () => {
+          navigate('/login');
+        }).finally(() => {
+          if (highlightId === deleteId) {
+            setHighlightId(undefined);
+          }
+        });
+      }
+    },
+    [navigate, highlightId]
+  );
+
+  const downloadData = useCallback(async () => {
+    await getExperiences(() => navigate('/login'))
+      .then(setExperienceData)
+      .catch((err) => {
+        alert('Something went wrong!');
+        console.error(err);
+      });
+  }, [navigate]);
+
+  useEffect(() => {
+    if (loginState.hasAccess) {
+      downloadData();
+    } else {
+      navigate('/login');
+    }
+  }, [downloadData, loginState.hasAccess, navigate]);
+
+  if (!loginState.hasAccess) {
     return <></>;
-  } else if (!loginState.hasAccess) {
-    navigate('/login');
   }
 
   return (
-    <div className={styles.wrapper}>
-      <FormControl sx={{ width: '100%' }}>
-        <div style={{ display: 'flex', marginBottom: '1vh' }}>
-          <Dropdown
-            id="filter-by"
-            style={{ alignSelf: 'center' }}
-            label="Filter by"
-            items={['Name', 'Grade', 'Topic', 'Award', 'Program']}
-            defaultChoice="Name"
-            onChange={(e) => {
-              setFilterType(e.target.value);
-              switch (e.target.value) {
-                case 'Name':
-                  setFilter(() => createSearchFilter(''));
-                  break;
-                case 'Grade':
-                  setFilter(() => createGradeFilter([]));
-                  break;
-                case 'Topic':
-                  setFilter(() => createTopicFilter([]));
-                  break;
-                case 'Award':
-                  setFilter(() => createAwardFilter([]));
-                  break;
-                case 'Program':
-                  setFilter(() => createProgramFilter([]));
-                  break;
-              }
-            }}
-          />
-          &nbsp;
-          {inputComponent}
-        </div>
-        <ExperienceList
-          experiences={experiences || []}
-          filter={filter}
-          highlightId={highlightId}
-          onSelect={setHighlightId}
-          onDelete={onDelete}
+    <Stack className={styles.wrapper} spacing={1}>
+      <div style={{ display: 'flex' }}>
+        <Dropdown
+          id="filter-by"
+          style={{ alignSelf: 'center' }}
+          label="Filter by"
+          items={['Name', 'Grade', 'Topic', 'Award', 'Program']}
+          defaultChoice="Name"
+          onChange={(e) => {
+            setFilterType(e.target.value);
+            switch (e.target.value) {
+              case 'Name':
+                setFilter(() => createSearchFilter(''));
+                break;
+              case 'Grade':
+                setFilter(() => createGradeFilter([]));
+                break;
+              case 'Topic':
+                setFilter(() => createTopicFilter([]));
+                break;
+              case 'Award':
+                setFilter(() => createAwardFilter([]));
+                break;
+              case 'Program':
+                setFilter(() => createProgramFilter([]));
+                break;
+            }
+          }}
         />
-      </FormControl>
-    </div>
+        &nbsp;
+        {inputComponent}
+      </div>
+      {loginState.admin && (
+        <div>
+          <Button variant="contained" onClick={() => navigate('/add')}>
+            Add Competition
+          </Button>
+        </div>
+      )}
+      <ExperienceList
+        experiences={experiences || []}
+        filter={filter}
+        highlightId={highlightId}
+        onSelect={setHighlightId}
+        onDelete={onDelete}
+      />
+    </Stack>
   );
 };
 

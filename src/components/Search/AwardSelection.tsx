@@ -37,51 +37,63 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
   return (
     <FormGroup>
       <FormControlLabel
-        name="trophy"
         label={getAwardTypeDisplay(AwardType.TROPHY)}
         control={
-          <Checkbox value={AwardType[AwardType.TROPHY]} onChange={onChange} />
+          <Checkbox
+            name="trophy"
+            value={AwardType[AwardType.TROPHY]}
+            onChange={onChange}
+          />
         }
       />
       <FormControlLabel
-        name="medal"
         label={getAwardTypeDisplay(AwardType.MEDAL)}
         control={
-          <Checkbox value={AwardType[AwardType.MEDAL]} onChange={onChange} />
+          <Checkbox
+            name="medal"
+            value={AwardType[AwardType.MEDAL]}
+            onChange={onChange}
+          />
         }
       />
       <FormControlLabel
-        name="money"
         label={getAwardTypeDisplay(AwardType.MONEY)}
         control={
-          <Checkbox value={AwardType[AwardType.MONEY]} onChange={onChange} />
+          <Checkbox
+            name="money"
+            value={AwardType[AwardType.MONEY]}
+            onChange={onChange}
+          />
         }
       />
       <FormControlLabel
-        name="certificate"
         label={getAwardTypeDisplay(AwardType.CERTIFICATE)}
         control={
           <Checkbox
+            name="certificate"
             value={AwardType[AwardType.CERTIFICATE]}
             onChange={onChange}
           />
         }
       />
       <FormControlLabel
-        name="recognition"
         label={getAwardTypeDisplay(AwardType.RECOGNITION)}
         control={
           <Checkbox
+            name="recognition"
             value={AwardType[AwardType.RECOGNITION]}
             onChange={onChange}
           />
         }
       />
       <FormControlLabel
-        name="other"
         label={getAwardTypeDisplay(AwardType.OTHER)}
         control={
-          <Checkbox value={AwardType[AwardType.OTHER]} onChange={onChange} />
+          <Checkbox
+            name="other"
+            value={AwardType[AwardType.OTHER]}
+            onChange={onChange}
+          />
         }
       />
     </FormGroup>

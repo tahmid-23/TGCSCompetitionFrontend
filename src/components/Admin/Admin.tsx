@@ -1,9 +1,8 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { API_BASE_URL } from '../../global';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
 import { useNavigate } from 'react-router-dom';
-import { useRefreshLoginState } from '../../hooks/login-hooks';
 import {
   Button,
   Divider,
@@ -31,7 +30,6 @@ const Admin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>();
   const [displayedToken, setDisplayedToken] = useState<string>();
-  const refreshed = useRefreshLoginState();
 
   const onTokenGen = useCallback(async () => {
     const token = genToken(16);
@@ -68,18 +66,19 @@ const Admin = () => {
     }
   }, [displayedToken]);
 
-  if (!refreshed) {
-    return <></>;
-  }
+  useEffect(() => {
+    if (!loginState.admin) {
+      navigate('/');
+    }
+  }, [loginState.admin, navigate]);
 
   if (!loginState.admin) {
-    navigate('/');
     return <></>;
   }
 
   return (
     <>
-      <Typography variant="h3">Admin Only Interface</Typography>
+      <Typography variant="h3">Admin-Only Interface</Typography>
       <Divider />
       <br />
       <Typography variant="h5">Token Generator</Typography>

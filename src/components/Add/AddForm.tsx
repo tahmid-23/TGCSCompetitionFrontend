@@ -1,10 +1,10 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import ChangeForm from '../Change/ChangeForm';
 import { insert } from '../../api/api';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
-import { useRefreshLoginState } from '../../hooks/login-hooks';
+import { Typography } from '@mui/material';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -138,22 +138,22 @@ async function onSubmit(
 }
 
 const AddForm = () => {
-  const adminState = useAppSelector(selectLogin);
+  const loginState = useAppSelector(selectLogin);
   const navigate = useNavigate();
-  const refreshed = useRefreshLoginState();
 
-  if (!refreshed) {
-    return <></>;
-  }
+  useEffect(() => {
+    if (!loginState.admin) {
+      navigate('/');
+    }
+  });
 
-  if (!adminState.admin) {
-    navigate('/');
+  if (!loginState.admin) {
     return <></>;
   }
 
   return (
     <>
-      <h1>Add</h1>
+      <Typography variant="h3">Add</Typography>
       <ChangeForm onSubmit={(e) => onSubmit(navigate, e)} />
     </>
   );

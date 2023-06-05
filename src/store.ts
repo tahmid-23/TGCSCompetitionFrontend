@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import adminReducer from './features/login';
+import loginReducer from './features/login';
 
 export const store = configureStore({
   reducer: {
-    admin: adminReducer
+    login: loginReducer
   },
   preloadedState: loadState()
 });

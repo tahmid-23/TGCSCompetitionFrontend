@@ -38,40 +38,40 @@ const ProgramSelection = ({
   return (
     <>
       <FormControlLabel
-        name="intern"
         label={getProgramTypeDisplay(ProgramType.INTERN)}
         control={
           <Checkbox
+            name="intern"
             value={ProgramType[ProgramType.INTERN]}
             onChange={onChange}
           />
         }
       />
       <FormControlLabel
-        name="academic"
         label={getProgramTypeDisplay(ProgramType.ACADEMIC)}
         control={
           <Checkbox
+            name="academic"
             value={ProgramType[ProgramType.ACADEMIC]}
             onChange={onChange}
           />
         }
       />
       <FormControlLabel
-        name="presentation"
         label={getProgramTypeDisplay(ProgramType.PRESENTATION)}
         control={
           <Checkbox
+            name="presentation"
             value={ProgramType[ProgramType.PRESENTATION]}
             onChange={onChange}
           />
         }
       />
       <FormControlLabel
-        name="research"
         label={getProgramTypeDisplay(ProgramType.RESEARCH)}
         control={
           <Checkbox
+            name="research"
             value={ProgramType[ProgramType.RESEARCH]}
             onChange={onChange}
           />

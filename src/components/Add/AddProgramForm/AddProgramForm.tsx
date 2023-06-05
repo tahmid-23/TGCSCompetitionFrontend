@@ -5,7 +5,6 @@ import ProgramChangeForm from '../../Change/ProgramChangeForm';
 import { insert } from '../../../api/api';
 import { useAppSelector } from '../../../hooks/redux-hooks';
 import { selectLogin } from '../../../features/login';
-import { useRefreshLoginState } from '../../../hooks/login-hooks';
 
 async function onSubmit(
   experienceId: number,
@@ -62,11 +61,6 @@ const AddProgramForm = () => {
   const loginState = useAppSelector(selectLogin);
   const params = useParams();
   const navigate = useNavigate();
-  const refreshed = useRefreshLoginState();
-
-  if (!refreshed) {
-    return <></>;
-  }
 
   if (!loginState.admin) {
     navigate('/');

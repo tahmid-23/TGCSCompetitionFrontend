@@ -5,7 +5,6 @@ import { Competition } from '../../../api/model/competition';
 import { getExperience, insert, remove, update } from '../../../api/api';
 import { useAppSelector } from '../../../hooks/redux-hooks';
 import { selectLogin } from '../../../features/login';
-import { useRefreshLoginState } from '../../../hooks/login-hooks';
 
 const EditCompetitionForm = () => {
   const loginState = useAppSelector(selectLogin);
@@ -13,7 +12,6 @@ const EditCompetitionForm = () => {
   const navigate = useNavigate();
   const competitionId = Number(params['competitionId']);
   const [competition, setCompetition] = useState<Competition>();
-  const refreshed = useRefreshLoginState();
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -65,17 +63,14 @@ const EditCompetitionForm = () => {
   }, [competitionId, navigate]);
 
   useEffect(() => {
-    if (refreshed) {
+    if (loginState.admin) {
       downloadData();
+    } else {
+      navigate('/');
     }
-  }, [downloadData, loginState.admin, navigate, refreshed]);
-
-  if (!refreshed) {
-    return <></>;
-  }
+  }, [downloadData, loginState.admin, navigate]);
 
   if (!loginState.admin) {
-    navigate('/');
     return <></>;
   }
 

@@ -7,6 +7,7 @@ interface DropdownProps<
 > {
   id: string;
   style?: CSSProperties;
+  minWidth?: string;
   label: string;
   items: T[];
   defaultChoice?: T;
@@ -18,6 +19,7 @@ const Dropdown = <
 >({
   id,
   style,
+  minWidth,
   label,
   items,
   defaultChoice,
@@ -39,7 +41,8 @@ const Dropdown = <
         id={id}
         className={styles.dropdown}
         label={label}
-        value={choice}
+        value={choice ? choice : ''}
+        sx={{ minWidth: minWidth }}
         select
         onChange={onChangeChoice}
       >
