@@ -1,75 +1,93 @@
+import { FormEvent, MouseEventHandler, useCallback, useState } from 'react';
 import {
-  FormEventHandler,
-  Fragment,
-  MouseEventHandler,
-  useCallback,
-  useState
-} from 'react';
-import MultipleChoice from '../../InputComponents/MultipleChoice';
-import TextBox from '../../InputComponents/TextBox';
-import Button from '../../Button/Button';
-import { Competition, Award, AwardType } from '../../../api/model/competition';
+  Competition,
+  Award,
+  AwardType,
+  getAwardTypeDisplay
+} from '../../../api/model/competition';
+import {
+  Button,
+  FormControlLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField
+} from '@mui/material';
+import { Close } from '@mui/icons-material';
 
 interface CompetitionAddFormProps {
   competition?: Competition;
-  onSubmit: FormEventHandler<HTMLFormElement>;
+  onSubmit: (event: FormEvent<HTMLFormElement>, uuids: string[]) => void;
 }
 
 interface AwardInputProps {
-  index: number;
+  index: string;
   award?: Award;
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 const AwardInput = ({ index, award, onClick }: AwardInputProps) => {
+  let awardTypeValue;
+  switch (award?.type) {
+    case AwardType.TROPHY:
+      awardTypeValue = AwardType[AwardType.TROPHY];
+      break;
+    case AwardType.MEDAL:
+      awardTypeValue = AwardType[AwardType.MEDAL];
+      break;
+    case AwardType.MONEY:
+      awardTypeValue = AwardType[AwardType.MONEY];
+      break;
+    case AwardType.CERTIFICATE:
+      awardTypeValue = AwardType[AwardType.CERTIFICATE];
+      break;
+    case AwardType.RECOGNITION:
+      awardTypeValue = AwardType[AwardType.RECOGNITION];
+      break;
+    case AwardType.OTHER:
+      awardTypeValue = AwardType[AwardType.OTHER];
+      break;
+  }
+
   return (
-    <Fragment>
-      <MultipleChoice
-        name={`award${index}`}
-        value="Trophy"
-        id={`trophy${index}`}
-        checked={award?.type === AwardType.TROPHY}
-      />
-      <MultipleChoice
-        name={`award${index}`}
-        value="Medal"
-        id={`medal${index}`}
-        checked={award?.type === AwardType.MEDAL}
-      />
-      <MultipleChoice
-        name={`award${index}`}
-        value="Money"
-        id={`money${index}`}
-        checked={award?.type === AwardType.MONEY}
-      />
-      <MultipleChoice
-        name={`award${index}`}
-        value="Certificate"
-        id={`certificate${index}`}
-        checked={award?.type === AwardType.CERTIFICATE}
-      />
-      <MultipleChoice
-        name={`award${index}`}
-        value="Recognition"
-        id={`recognition${index}`}
-        checked={award?.type === AwardType.RECOGNITION}
-      />
-      <MultipleChoice
-        name={`award${index}`}
-        value="Other"
-        id={`other${index}`}
-        checked={award?.type === AwardType.OTHER}
-      />
-      &nbsp; &nbsp;
-      <TextBox
-        name="Description"
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <RadioGroup name={`award${index}`} defaultValue={awardTypeValue} row>
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.TROPHY]} required />}
+          label={getAwardTypeDisplay(AwardType.TROPHY)}
+        />
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.MEDAL]} required />}
+          label={getAwardTypeDisplay(AwardType.MEDAL)}
+        />
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.MONEY]} required />}
+          label={getAwardTypeDisplay(AwardType.MONEY)}
+        />
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.CERTIFICATE]} required />}
+          label={getAwardTypeDisplay(AwardType.CERTIFICATE)}
+        />
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.RECOGNITION]} required />}
+          label={getAwardTypeDisplay(AwardType.RECOGNITION)}
+        />
+        <FormControlLabel
+          control={<Radio value={AwardType[AwardType.OTHER]} required />}
+          label={getAwardTypeDisplay(AwardType.OTHER)}
+        />
+      </RadioGroup>
+      <TextField
         id={`award_description${index}`}
-        value={award?.description}
+        label="Description"
+        defaultValue={award?.description}
       />
-      &nbsp;
-      <Button text="X" onClick={onClick} />
-      <br />
-    </Fragment>
+
+      <IconButton onClick={onClick}>
+        <Close />
+      </IconButton>
+    </div>
   );
 };
 
@@ -77,8 +95,10 @@ const CompetitionChangeForm = ({
   competition,
   onSubmit
 }: CompetitionAddFormProps) => {
-  const [awards, setAwards] = useState<(Award | undefined)[]>(
-    competition ? [...competition.awards] : []
+  const [awards, setAwards] = useState<[Award | undefined, string][]>(
+    competition
+      ? competition.awards.map((award) => [award, crypto.randomUUID()])
+      : []
   );
 
   const removeAward = useCallback(
@@ -90,65 +110,55 @@ const CompetitionChangeForm = ({
     [awards]
   );
 
-  let maxId = -Infinity;
-  let undefinedCount = 0;
-  for (let i = 0; i < awards.length; ++i) {
-    const awardId = awards[i]?.award_id;
-    if (awardId) {
-      if (awardId > maxId) {
-        maxId = awardId;
-      }
-    } else {
-      undefinedCount += 1;
-    }
-  }
-  if (maxId === -Infinity) {
-    maxId = -1;
-  }
-
   const awardInputs = awards.map((award, i) => {
-    let key;
-    if (award?.award_id) {
-      key = award.award_id;
-    } else {
-      key = maxId + undefinedCount--;
-    }
-
     return (
       <AwardInput
-        key={key}
-        index={i}
-        award={award}
+        key={award[1]}
+        index={award[1]}
+        award={award[0]}
         onClick={() => removeAward(i)}
       />
     );
   });
 
   const onAddAward = useCallback(() => {
-    setAwards([...awards, undefined]);
+    setAwards([...awards, [undefined, crypto.randomUUID()]]);
   }, [awards]);
 
+  const onFormSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      onSubmit?.(
+        e,
+        awards.map((award) => award[1])
+      );
+    },
+    [awards, onSubmit]
+  );
+
   return (
-    <form onSubmit={onSubmit}>
-      <TextBox
-        name="Judge Description"
-        id="judge_description"
-        value={competition?.judges_description}
-      />
-      <br />
-      <TextBox
-        name="Judging Criteria"
-        id="judge_criteria"
-        value={competition?.judging_criteria}
-      />
-      <br />
-      {awardInputs}
-      <br />
-      <button type="button" onClick={onAddAward}>
-        Add Award
-      </button>
-      <br />
-      <input type="submit" value="Add Competition" />
+    <form onSubmit={onFormSubmit}>
+      <Stack sx={{ alignItems: 'flex-start' }} spacing={1}>
+        <TextField
+          id="judge_description"
+          label="Judge Description"
+          variant="standard"
+          defaultValue={competition?.judges_description}
+        />
+        <TextField
+          id="judge_criteria"
+          label="Judging Criteria"
+          variant="standard"
+          defaultValue={competition?.judging_criteria}
+          required
+        />
+        {awardInputs}
+        <Button variant="contained" onClick={onAddAward}>
+          Add Award
+        </Button>
+        <Button type="submit" variant="contained">
+          Finish
+        </Button>
+      </Stack>
     </form>
   );
 };

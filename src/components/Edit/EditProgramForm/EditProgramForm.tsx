@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavigateFunction, useParams } from 'react-router-dom';
-import ProgramChangeForm from '../../Change/ProgramChangeForm';
+import ProgramChangeForm from '../../Change/ProgramChangeForm/ProgramChangeForm';
 import { Program } from '../../../api/model/program';
 import { getExperience, insert, remove, update } from '../../../api/api';
 import { useAppSelector } from '../../../hooks/redux-hooks';

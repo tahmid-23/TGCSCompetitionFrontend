@@ -5,6 +5,7 @@ import { Experience } from '../../api/model/experience';
 import { getExperience, insert, remove, update } from '../../api/api';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
+import { Typography } from '@mui/material';
 
 function getValue(event: FormEvent<HTMLFormElement>, id: string) {
   const value = event.currentTarget[id].value;
@@ -40,8 +41,8 @@ const EditForm = () => {
         score_difficulty: getValue(event, 'difficulty_score'),
         score_benefit: getValue(event, 'benefit_score'),
         score_mgmt: getValue(event, 'management_score'),
-        type: type.toUpperCase(),
-        virtual: getValue(event, 'virtual') === 'on',
+        type: type,
+        virtual: event.currentTarget['virtual'].checked,
         address: getValue(event, 'address'),
         prerequisite_description: getValue(event, 'prerequisite_description'),
         entry_description: getValue(event, 'entry_description')
@@ -64,12 +65,12 @@ const EditForm = () => {
         'medical',
         'culinary',
         'music',
-        'sports',
+        'athletics',
         'art',
         'theater',
         'dance',
         'languageArts',
-        'geo',
+        'geography',
         'spelling',
         'history',
         'foreignLanguage',
@@ -169,7 +170,7 @@ const EditForm = () => {
 
   return (
     <>
-      <h1>Edit</h1>
+      <Typography variant="h3">Edit</Typography>
       <ChangeForm experience={experience} onSubmit={onSubmit} />
     </>
   );

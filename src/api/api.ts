@@ -38,6 +38,7 @@ function createExperienceFromJson(json: unknown): Experience {
     newGrades.push({ grade: Grade[grade.grade as keyof typeof Grade] });
   }
   experience.grades = newGrades;
+  experience.virtual = experience.virtual ? true : false;
   const newCategories: ExperienceCategory[] = [];
   for (const category of experience.categories) {
     newCategories.push({
@@ -48,7 +49,7 @@ function createExperienceFromJson(json: unknown): Experience {
 
   if (experience.type === ExperienceType.COMPETITION) {
     const newAwards: Award[] = [];
-    for (const award of experience.awards) {
+    for (const award of experience.awards || []) {
       newAwards.push({
         award_id: award.award_id,
         type: AwardType[award.type as keyof typeof AwardType],
@@ -60,7 +61,7 @@ function createExperienceFromJson(json: unknown): Experience {
     experience.program_type =
       ProgramType[experience.program_type as keyof typeof ProgramType];
     const newProgramFocuses: ProgramFocus[] = [];
-    for (const programFocus of experience.program_focuses) {
+    for (const programFocus of experience.program_focuses || []) {
       newProgramFocuses.push({
         focus: Focus[programFocus.focus as keyof typeof Focus]
       });

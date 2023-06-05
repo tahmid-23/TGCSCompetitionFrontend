@@ -30,17 +30,18 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
     <form onSubmit={onSubmit}>
       <Stack spacing={1} sx={{ alignItems: 'flex-start' }}>
         <TextField
-          id="Name"
+          id="name"
           label="Name"
           variant="standard"
-          value={experience?.name}
+          defaultValue={experience?.name}
+          required
         />
         <TextField
           id="url"
           label="Website URL"
           variant="standard"
           type="url"
-          value={experience?.website_url}
+          defaultValue={experience?.website_url}
         />
         <TextField
           id="fee"
@@ -48,27 +49,27 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
           variant="standard"
           type="number"
           InputProps={{
-            inputProps: { min: 0, defaultValue: experience?.entry_fee }
+            inputProps: { min: 0 }
           }}
-          value={experience?.entry_fee}
+          defaultValue={experience?.entry_fee ?? 0}
+          required
         />
-        <div>
-          <Dropdown
-            id="participant_count"
-            label="Participant Count"
-            minWidth="15vw"
-            defaultChoice={
-              experience?.participant_count &&
-              ParticipantCount[experience.participant_count]
-            }
-            items={[
-              ParticipantCount[ParticipantCount['1-10']],
-              ParticipantCount[ParticipantCount['11-50']],
-              ParticipantCount[ParticipantCount['51-99']],
-              ParticipantCount[ParticipantCount['100+']]
-            ]}
-          />
-        </div>
+        <Dropdown
+          id="participant_count"
+          name="participant_count"
+          label="Participant Count"
+          minWidth="15vw"
+          defaultChoice={
+            experience?.participant_count &&
+            ParticipantCount[experience.participant_count]
+          }
+          items={[
+            ParticipantCount[ParticipantCount['1-10']],
+            ParticipantCount[ParticipantCount['11-50']],
+            ParticipantCount[ParticipantCount['51-99']],
+            ParticipantCount[ParticipantCount['100+']]
+          ]}
+        />
         <TextField
           id="origin_year"
           label="Origin Year"
@@ -77,35 +78,35 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
           InputProps={{
             inputProps: {
               min: 1700,
-              interval: '1',
-              defaultValue: experience?.origin_year
+              interval: '1'
             }
           }}
-          value={experience?.origin_year}
+          defaultValue={experience?.origin_year}
         />
         <TextField
           id="purpose"
           label="Purpose"
           variant="standard"
-          value={experience?.name}
+          defaultValue={experience?.name}
         />
         <TextField
-          id="purpose"
+          id="description"
           label="Description"
           variant="standard"
-          value={experience?.description}
+          defaultValue={experience?.description}
+          required
         />
         <TextField
           id="required_items"
           label="Required Items"
           variant="standard"
-          value={experience?.required_items}
+          defaultValue={experience?.required_items}
         />
         <TextField
           id="advice"
           label="Advice"
           variant="standard"
-          value={experience?.advice}
+          defaultValue={experience?.advice}
         />
         <TextField
           id="time_score"
@@ -116,11 +117,11 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             inputProps: {
               min: 0,
               max: 10,
-              interval: '1',
-              defaultValue: experience?.score_time
+              interval: '1'
             }
           }}
-          value={experience?.score_time}
+          defaultValue={experience?.score_time}
+          required
         />
         <TextField
           id="difficulty_score"
@@ -131,11 +132,11 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             inputProps: {
               min: 0,
               max: 10,
-              interval: '1',
-              defaultValue: experience?.score_difficulty
+              interval: '1'
             }
           }}
-          value={experience?.score_difficulty}
+          defaultValue={experience?.score_difficulty}
+          required
         />
         <TextField
           id="benefit_score"
@@ -146,11 +147,11 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             inputProps: {
               min: 0,
               max: 10,
-              interval: '1',
-              defaultValue: experience?.score_benefit
+              interval: '1'
             }
           }}
-          value={experience?.score_benefit}
+          defaultValue={experience?.score_benefit}
+          required
         />
         <TextField
           id="management_score"
@@ -161,11 +162,11 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
             inputProps: {
               min: 0,
               max: 10,
-              interval: '1',
-              defaultValue: experience?.score_mgmt
+              interval: '1'
             }
           }}
-          value={experience?.score_mgmt}
+          defaultValue={experience?.score_mgmt}
+          required
         />
         <Typography>Type</Typography>
         <RadioGroup
@@ -181,11 +182,13 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         >
           <FormControlLabel
             label="Competition"
-            control={<Radio id="competition_button" value="Competition" />}
+            control={
+              <Radio id="competition_button" value="Competition" required />
+            }
           />
           <FormControlLabel
             label="Program"
-            control={<Radio id="program_button" value="Program" />}
+            control={<Radio id="program_button" value="Program" required />}
           />
         </RadioGroup>
         <FormControlLabel
@@ -198,19 +201,19 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
           id="address"
           label="Address"
           variant="standard"
-          value={experience?.address}
+          defaultValue={experience?.address}
         />
         <TextField
           id="prerequisite_description"
           label="Prerequisite Description"
           variant="standard"
-          value={experience?.prerequisite_description}
+          defaultValue={experience?.prerequisite_description}
         />
         <TextField
           id="entry_description"
           label="Entry Description"
           variant="standard"
-          value={experience?.entry_description}
+          defaultValue={experience?.entry_description}
         />
         <Typography>Grades</Typography>
         <div>

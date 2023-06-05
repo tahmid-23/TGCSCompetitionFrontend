@@ -6,6 +6,7 @@ interface DropdownProps<
   T extends string | ReadonlyArray<string> | number | undefined
 > {
   id: string;
+  name?: string;
   style?: CSSProperties;
   minWidth?: string;
   label: string;
@@ -18,6 +19,7 @@ const Dropdown = <
   T extends string | ReadonlyArray<string> | number | undefined
 >({
   id,
+  name,
   style,
   minWidth,
   label,
@@ -39,6 +41,7 @@ const Dropdown = <
     <div style={style}>
       <TextField
         id={id}
+        name={name}
         className={styles.dropdown}
         label={label}
         value={choice ? choice : ''}

@@ -86,7 +86,7 @@ const Home = () => {
   const loginState = useAppSelector(selectLogin);
   let inputComponent: ReactElement;
 
-  const [experiences, setExperienceData] = useState<Experience[]>();
+  const [experiences, setExperiences] = useState<Experience[]>();
 
   if (filterType === 'Grade') {
     inputComponent = (
@@ -144,19 +144,30 @@ const Home = () => {
       if (window.confirm('Are you sure you want to delete this competition?')) {
         remove('experience', 'experience_id', deleteId, () => {
           navigate('/login');
-        }).finally(() => {
-          if (highlightId === deleteId) {
-            setHighlightId(undefined);
-          }
-        });
+        })
+          .then(() => {
+            if (highlightId === deleteId) {
+              setHighlightId(undefined);
+            }
+
+            setExperiences(
+              experiences?.filter(
+                (experience) => experience.experience_id !== deleteId
+              )
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+            alert('An error occurred!');
+          });
       }
     },
-    [navigate, highlightId]
+    [navigate, highlightId, experiences]
   );
 
   const downloadData = useCallback(async () => {
     await getExperiences(() => navigate('/login'))
-      .then(setExperienceData)
+      .then(setExperiences)
       .catch((err) => {
         alert('Something went wrong!');
         console.error(err);
@@ -211,7 +222,7 @@ const Home = () => {
       {loginState.admin && (
         <div>
           <Button variant="contained" onClick={() => navigate('/add')}>
-            Add Competition
+            Add Experience
           </Button>
         </div>
       )}

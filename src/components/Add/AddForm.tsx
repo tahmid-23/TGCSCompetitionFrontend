@@ -35,7 +35,7 @@ async function onSubmit(
     score_difficulty: getValue(event, 'difficulty_score'),
     score_benefit: getValue(event, 'benefit_score'),
     score_mgmt: getValue(event, 'management_score'),
-    type: type.toUpperCase(),
+    type: type,
     virtual: getValue(event, 'virtual') === 'on',
     address: getValue(event, 'address'),
     prerequisite_description: getValue(event, 'prerequisite_description'),
@@ -60,7 +60,7 @@ async function onSubmit(
     'medical',
     'culinary',
     'music',
-    'sports',
+    'athletics',
     'art',
     'theater',
     'dance',
@@ -97,15 +97,6 @@ async function onSubmit(
       experience_id: experienceId,
       grade: g
     };
-    try {
-      experienceId = await insert('experience', experienceData, () => {
-        navigate('/login');
-      });
-    } catch (err) {
-      alert('Something went wrong!');
-      console.error(err);
-      return;
-    }
     const gradePromise = insert('experience_grade', gradeData, () => {
       navigate('/login');
     }).catch((err) => {
