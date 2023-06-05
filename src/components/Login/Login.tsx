@@ -16,7 +16,7 @@ const Login = () => {
 
   return (
     <>
-      <Typography variant="body1">
+      <Typography>
         Please log in to your TGCS email account. You will then be prompted for
         your authentication token. The database remains accessible for 24 hours
         after entering the token.

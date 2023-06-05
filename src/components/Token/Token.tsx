@@ -1,6 +1,7 @@
 import { FormEvent, useCallback } from 'react';
 import { API_BASE_URL } from '../../global';
 import { useNavigate } from 'react-router-dom';
+import { Button, TextField, Typography } from '@mui/material';
 
 const Token = () => {
   const navigate = useNavigate();
@@ -31,16 +32,25 @@ const Token = () => {
 
   return (
     <>
-      <h1>Token Verification</h1>
-      <p>Signed in as </p>
+      <Typography variant="h3">Token Verification</Typography>
+      <br />
       <form onSubmit={onLogin}>
-        <label htmlFor="token">Enter Token Here:</label>
-        <input type="text" id="token" />
-        <input type="submit" value="Verify" />
+        <div style={{ display: 'flex' }}>
+          <TextField
+            id="token"
+            label="Token"
+            InputLabelProps={{ shrink: true }}
+            placeholder="Enter token here"
+          />
+          &nbsp;
+          <Button variant="contained" type="submit">
+            Verify
+          </Button>
+        </div>
       </form>
-      <p>
+      <Typography>
         Don't have a token? Click <a href="https://doubleknot.com">here</a>
-      </p>
+      </Typography>
     </>
   );
 };

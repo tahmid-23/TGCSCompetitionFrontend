@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import MultipleSelect from '../InputComponents/MultipleSelect';
-import { Category } from '../../api/model/experience';
+import { Category, getCategoryDisplay } from '../../api/model/experience';
+import { FormControlLabel, Checkbox } from '@mui/material';
 
 interface TopicSelectionProps {
   onTopicChange?: (arg0: Category[]) => void;
@@ -81,171 +81,261 @@ const TopicSelection = ({
   );
 
   return (
-    <>
-      <MultipleSelect
+    <div>
+      <FormControlLabel
         name="technology"
-        value={Category[Category.TECHNOLOGY]}
-        label="Technology"
-        defaultChecked={technology}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.TECHNOLOGY)}
+        control={
+          <Checkbox
+            value={Category[Category.TECHNOLOGY]}
+            defaultChecked={technology}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="science"
-        value={Category[Category.SCIENCE]}
-        label="Science"
-        defaultChecked={science}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.SCIENCE)}
+        control={
+          <Checkbox
+            value={Category[Category.SCIENCE]}
+            defaultChecked={science}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
-        name="bio"
-        value={Category[Category.BIOLOGY]}
-        label="Biology"
-        defaultChecked={biology}
-        onChange={onChange}
+      <FormControlLabel
+        name="biology"
+        label={getCategoryDisplay(Category.BIOLOGY)}
+        control={
+          <Checkbox
+            value={Category[Category.BIOLOGY]}
+            defaultChecked={biology}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
-        name="chem"
-        value={Category[Category.CHEMISTRY]}
-        label="Chemistry"
-        defaultChecked={chemistry}
-        onChange={onChange}
+      <FormControlLabel
+        name="chemistry"
+        label={getCategoryDisplay(Category.CHEMISTRY)}
+        control={
+          <Checkbox
+            value={Category[Category.CHEMISTRY]}
+            defaultChecked={chemistry}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="physics"
-        value={Category[Category.PHYSICS]}
-        label="Physics"
-        defaultChecked={physics}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.PHYSICS)}
+        control={
+          <Checkbox
+            value={Category[Category.PHYSICS]}
+            defaultChecked={physics}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="math"
-        value={Category[Category.MATH]}
-        label="Math"
-        defaultChecked={math}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.MATH)}
+        control={
+          <Checkbox
+            value={Category[Category.MATH]}
+            defaultChecked={math}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="engineering"
-        value={Category[Category.ENGINEERING]}
-        label="Engineering"
-        defaultChecked={engineering}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.ENGINEERING)}
+        control={
+          <Checkbox
+            value={Category[Category.ENGINEERING]}
+            defaultChecked={engineering}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="business"
-        value={Category[Category.BUSINESS]}
-        label="Business"
-        defaultChecked={business}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.BUSINESS)}
+        control={
+          <Checkbox
+            value={Category[Category.BUSINESS]}
+            defaultChecked={business}
+            onChange={onChange}
+          />
+        }
       />
-      <br />
-      <MultipleSelect
+      <FormControlLabel
         name="medical"
-        value={Category[Category.MEDICAL]}
-        label="Medical"
-        defaultChecked={medical}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.MEDICAL)}
+        control={
+          <Checkbox
+            value={Category[Category.MEDICAL]}
+            defaultChecked={medical}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="culinary"
-        value={Category[Category.CULINARY]}
-        label="Culinary"
-        defaultChecked={culinary}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.CULINARY)}
+        control={
+          <Checkbox
+            value={Category[Category.CULINARY]}
+            defaultChecked={culinary}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="music"
-        value={Category[Category.MUSIC]}
-        label="Music"
-        defaultChecked={music}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.MUSIC)}
+        control={
+          <Checkbox
+            value={Category[Category.MUSIC]}
+            defaultChecked={music}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
-        name="sports"
-        value={Category[Category.ATHLETICS]}
-        label="Athletics"
-        defaultChecked={athletics}
-        onChange={onChange}
+      <FormControlLabel
+        name="athletics"
+        label={getCategoryDisplay(Category.ATHLETICS)}
+        control={
+          <Checkbox
+            value={Category[Category.ATHLETICS]}
+            defaultChecked={athletics}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="art"
-        value={Category[Category.ART]}
-        label="Art"
-        defaultChecked={art}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.ART)}
+        control={
+          <Checkbox
+            value={Category[Category.ART]}
+            defaultChecked={art}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="theater"
-        value={Category[Category.THEATER]}
-        label="Theater"
-        defaultChecked={theater}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.THEATER)}
+        control={
+          <Checkbox
+            value={Category[Category.THEATER]}
+            defaultChecked={theater}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="dance"
-        value={Category[Category.DANCE]}
-        label="Dance"
-        defaultChecked={dance}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.DANCE)}
+        control={
+          <Checkbox
+            value={Category[Category.DANCE]}
+            defaultChecked={dance}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
-        name="english"
-        value={Category[Category['LANGUAGE ARTS']]}
-        label="Language Arts"
-        defaultChecked={languageArts}
-        onChange={onChange}
+      <FormControlLabel
+        name="languageArts"
+        label={getCategoryDisplay(Category['LANGUAGE ARTS'])}
+        control={
+          <Checkbox
+            value={Category[Category['LANGUAGE ARTS']]}
+            defaultChecked={languageArts}
+            onChange={onChange}
+          />
+        }
       />
-      <br />
-      <MultipleSelect
-        name="geo"
-        value={Category[Category.GEOGRAPHY]}
-        label="Geography"
-        defaultChecked={geography}
-        onChange={onChange}
+      <FormControlLabel
+        name="geography"
+        label={getCategoryDisplay(Category.GEOGRAPHY)}
+        control={
+          <Checkbox
+            value={Category[Category.GEOGRAPHY]}
+            defaultChecked={geography}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="spelling"
-        value={Category[Category.SPELLING]}
-        label="Spelling"
-        defaultChecked={spelling}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.SPELLING)}
+        control={
+          <Checkbox
+            value={Category[Category.SPELLING]}
+            defaultChecked={spelling}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="history"
-        value={Category[Category.HISTORY]}
-        label="History"
-        defaultChecked={history}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.HISTORY)}
+        control={
+          <Checkbox
+            value={Category[Category.HISTORY]}
+            defaultChecked={history}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
-        name="foreign"
-        value={Category[Category['FOREIGN LANGUAGE']]}
-        label="Foreign Language"
-        defaultChecked={foreignLanguage}
-        onChange={onChange}
+      <FormControlLabel
+        name="foreignLanguage"
+        label={getCategoryDisplay(Category['FOREIGN LANGUAGE'])}
+        control={
+          <Checkbox
+            value={Category[Category['FOREIGN LANGUAGE']]}
+            defaultChecked={foreignLanguage}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="chess"
-        value={Category[Category.CHESS]}
-        label="Chess"
-        defaultChecked={chess}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.CHESS)}
+        control={
+          <Checkbox
+            value={Category[Category.CHESS]}
+            defaultChecked={chess}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="research"
-        value={Category[Category.RESEARCH]}
-        label="Research"
-        defaultChecked={research}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.RESEARCH)}
+        control={
+          <Checkbox
+            value={Category[Category.RESEARCH]}
+            defaultChecked={research}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="other"
-        value={Category[Category.OTHER]}
-        label="Other"
-        defaultChecked={other}
-        onChange={onChange}
+        label={getCategoryDisplay(Category.OTHER)}
+        control={
+          <Checkbox
+            value={Category[Category.OTHER]}
+            defaultChecked={other}
+            onChange={onChange}
+          />
+        }
       />
-    </>
+    </div>
   );
 };
 

@@ -5,7 +5,7 @@ const QuickNavigation = () => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div>
       <Button
         variant="contained"
         onClick={() => {
@@ -23,7 +23,7 @@ const QuickNavigation = () => {
       >
         Back
       </Button>
-    </>
+    </div>
   );
 };
 

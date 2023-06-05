@@ -10,7 +10,6 @@ import Dropdown from '../InputComponents/Dropdown/Dropdown';
 import AwardSelection from '../Search/AwardSelection';
 import GradeSelection from '../Search/GradeSelection';
 import ProgramSelection from '../Search/ProgramSelection';
-import SearchBox from '../Search/SearchBox';
 import TopicSelection from '../Search/TopicSelection';
 import { useNavigate } from 'react-router-dom';
 import { checkLogin, getExperiences, remove } from '../../api/api';
@@ -24,8 +23,9 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setAdmin } from '../../features/login';
 import { AwardType, Competition } from '../../api/model/competition';
-import { FormControl } from '@mui/material';
+import { FormControl, InputAdornment, TextField } from '@mui/material';
 import styles from './Home.module.css';
+import { Search } from '@mui/icons-material';
 
 function createTopicFilter(topics: Category[]): Filter {
   return (experience: Experience) => {
@@ -95,6 +95,21 @@ const Home = () => {
 
   const [experiences, setExperienceData] = useState<Experience[]>();
 
+  const onDelete = useCallback(
+    (deleteId: number) => {
+      if (window.confirm('Are you sure you want to delete this competition?')) {
+        remove('experience', 'experience_id', deleteId, () => {
+          navigate('/login');
+        }).finally(() => {
+          if (highlightId === deleteId) {
+            setHighlightId(undefined);
+          }
+        });
+      }
+    },
+    [navigate, highlightId]
+  );
+
   const downloadData = useCallback(async () => {
     await getExperiences(() => navigate('/login'))
       .then(setExperienceData)
@@ -125,7 +140,7 @@ const Home = () => {
     updateAdminState();
   }, [downloadData, updateAdminState]);
 
-  if (filterType === 'grade') {
+  if (filterType === 'Grade') {
     inputComponent = (
       <GradeSelection
         onGradeChange={(grades) => {
@@ -133,7 +148,7 @@ const Home = () => {
         }}
       />
     );
-  } else if (filterType === 'topic') {
+  } else if (filterType === 'Topic') {
     inputComponent = (
       <TopicSelection
         onTopicChange={(topics) => {
@@ -141,7 +156,7 @@ const Home = () => {
         }}
       />
     );
-  } else if (filterType === 'award') {
+  } else if (filterType === 'Award') {
     inputComponent = (
       <AwardSelection
         onAwardChange={(awards) => {
@@ -149,7 +164,7 @@ const Home = () => {
         }}
       />
     );
-  } else if (filterType === 'program') {
+  } else if (filterType === 'Program') {
     inputComponent = (
       <ProgramSelection
         onProgramTypeChange={(focuses) => {
@@ -159,29 +174,22 @@ const Home = () => {
     );
   } else {
     inputComponent = (
-      <SearchBox
+      <TextField
+        variant="standard"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          )
+        }}
+        sx={{ alignSelf: 'center' }}
         onChange={(e) => {
-          const keyword = e.currentTarget.value;
-          setFilter(() => createSearchFilter(keyword));
+          setFilter(() => createSearchFilter(e.target.value));
         }}
       />
     );
   }
-
-  const onDelete = useCallback(
-    (deleteId: number) => {
-      if (window.confirm('Are you sure you want to delete this competition?')) {
-        remove('experience', 'experience_id', deleteId, () => {
-          navigate('/login');
-        }).finally(() => {
-          if (highlightId === deleteId) {
-            setHighlightId(undefined);
-          }
-        });
-      }
-    },
-    [navigate, highlightId]
-  );
 
   if (loginState.hasAccess === undefined) {
     return <></>;
@@ -191,10 +199,11 @@ const Home = () => {
 
   return (
     <div className={styles.wrapper}>
-      <FormControl>
-        <div style={{ marginBottom: '1vh' }}>
+      <FormControl sx={{ width: '100%' }}>
+        <div style={{ display: 'flex', marginBottom: '1vh' }}>
           <Dropdown
             id="filter-by"
+            style={{ alignSelf: 'center' }}
             label="Filter by"
             items={['Name', 'Grade', 'Topic', 'Award', 'Program']}
             defaultChoice="Name"
@@ -210,15 +219,17 @@ const Home = () => {
                 case 'Topic':
                   setFilter(() => createTopicFilter([]));
                   break;
-                case 'Program':
-                  setFilter(() => createProgramFilter([]));
-                  break;
                 case 'Award':
                   setFilter(() => createAwardFilter([]));
+                  break;
+                case 'Program':
+                  setFilter(() => createProgramFilter([]));
                   break;
               }
             }}
           />
+          &nbsp;
+          {inputComponent}
         </div>
         <ExperienceList
           experiences={experiences || []}
@@ -227,17 +238,6 @@ const Home = () => {
           onSelect={setHighlightId}
           onDelete={onDelete}
         />
-        {/* {inputComponent}
-      <ExperienceList
-        experiences={experiences || []}
-        filter={filter}
-        highlightId={highlightId}
-        onSelect={setHighlightId}
-      />
-      <Button text="Add" to="/add" />
-      <Button text="Edit" disabled={!highlightId} to={`/edit/${highlightId}`} />
-      <Button text="Delete" disabled={!highlightId} onClick={onDelete} />
-      <Button text="View" disabled={!highlightId} to={`/view/${highlightId}`} /> */}
       </FormControl>
     </div>
   );

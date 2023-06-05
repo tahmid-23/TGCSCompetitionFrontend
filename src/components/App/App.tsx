@@ -10,7 +10,7 @@ import FeedbackForm from '../FeedbackForm/FeedbackForm';
 import { Header } from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
-import Token from '../Login/Token';
+import Token from '../Token/Token';
 import OverviewWrapper from '../Overview/OverviewWrapper/OverviewWrapper';
 import RecommendationWrapper from '../Recommendation/RecommendationWrapper';
 import styles from './App.module.css';

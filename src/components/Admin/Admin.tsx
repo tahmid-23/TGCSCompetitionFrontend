@@ -7,7 +7,6 @@ import { useRefreshLoginState } from '../../hooks/login-hooks';
 import {
   Button,
   Divider,
-  FormControl,
   IconButton,
   TextField,
   Typography
@@ -83,29 +82,30 @@ const Admin = () => {
       <Typography variant="h3">Admin Only Interface</Typography>
       <Divider />
       <br />
-      <FormControl>
-        <Typography variant="h5">Token Generator</Typography>
-        <div className={styles.emailWrapper}>
-          <TextField
-            id="email"
-            label="Email"
-            variant="standard"
-            onChange={onChange}
-          />
-          <span className={styles.emailEnd}>@giftedchildsociety.org</span>
-        </div>
-        <br />
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography>Token: {displayedToken}</Typography>
-          &nbsp;
-          <IconButton
-            sx={{ visibility: displayedToken ? 'visible' : 'hidden' }}
-            onClick={onCopy}
-          >
-            <ContentCopy />
-          </IconButton>
-        </div>
-      </FormControl>
+      <Typography variant="h5">Token Generator</Typography>
+      <div className={styles.emailWrapper}>
+        <TextField
+          id="email"
+          label="Email"
+          variant="standard"
+          onChange={onChange}
+        />
+        <span className={styles.emailEnd}>@giftedchildsociety.org</span>
+      </div>
+      <br />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography>Token: {displayedToken}</Typography>
+        &nbsp;
+        <IconButton
+          sx={{ visibility: displayedToken ? 'visible' : 'hidden' }}
+          onClick={onCopy}
+        >
+          <ContentCopy />
+        </IconButton>
+      </div>
+      <Button onClick={onTokenGen} variant="contained">
+        Generate Token
+      </Button>
     </>
   );
 };

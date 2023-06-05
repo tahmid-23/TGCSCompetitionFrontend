@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Button,
-  Link,
-  Toolbar,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { AppBar, Link, Toolbar, Typography, useTheme } from '@mui/material';
 import styles from './Header.module.css';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux-hooks';

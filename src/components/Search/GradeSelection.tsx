@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { Grade } from '../../api/model/experience';
-import MultipleSelect from '../InputComponents/MultipleSelect';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 interface GradeSelectionProps {
   checkedA?: boolean;
@@ -41,35 +41,52 @@ const GradeSelection = ({
     },
     [onGradeChange, grades]
   );
+
   return (
     <>
-      <MultipleSelect
+      <FormControlLabel
         name="bucket1"
-        value={Grade[Grade['K-2']]}
         label="K-2"
-        defaultChecked={checkedA}
-        onChange={onChange}
+        control={
+          <Checkbox
+            value={Grade[Grade['K-2']]}
+            defaultChecked={checkedA}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="bucket2"
-        value={Grade[Grade['3-5']]}
         label="3-5"
-        defaultChecked={checkedB}
-        onChange={onChange}
+        control={
+          <Checkbox
+            value={Grade[Grade['3-5']]}
+            defaultChecked={checkedB}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="bucket3"
-        value={Grade[Grade['6-8']]}
         label="6-8"
-        defaultChecked={checkedC}
-        onChange={onChange}
+        control={
+          <Checkbox
+            value={Grade[Grade['6-8']]}
+            defaultChecked={checkedC}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="bucket4"
-        value={Grade[Grade['9-12']]}
         label="9-12"
-        defaultChecked={checkedD}
-        onChange={onChange}
+        control={
+          <Checkbox
+            value={Grade[Grade['9-12']]}
+            defaultChecked={checkedD}
+            onChange={onChange}
+          />
+        }
       />
     </>
   );

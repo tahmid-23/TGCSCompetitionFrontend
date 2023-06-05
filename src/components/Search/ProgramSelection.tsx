@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import MultipleSelect from '../InputComponents/MultipleSelect';
-import { ProgramType } from '../../api/model/program';
+import { ProgramType, getProgramTypeDisplay } from '../../api/model/program';
+import { FormControlLabel, Checkbox } from '@mui/material';
 
 interface ProgramSelectionProps {
   onProgramTypeChange?: (arg0: ProgramType[]) => void;
@@ -37,29 +37,45 @@ const ProgramSelection = ({
   );
   return (
     <>
-      <MultipleSelect
+      <FormControlLabel
         name="intern"
-        value={ProgramType[ProgramType.INTERN]}
-        label="Internship"
-        onChange={onChange}
+        label={getProgramTypeDisplay(ProgramType.INTERN)}
+        control={
+          <Checkbox
+            value={ProgramType[ProgramType.INTERN]}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="academic"
-        value={ProgramType[ProgramType.ACADEMIC]}
-        label="Academic"
-        onChange={onChange}
+        label={getProgramTypeDisplay(ProgramType.ACADEMIC)}
+        control={
+          <Checkbox
+            value={ProgramType[ProgramType.ACADEMIC]}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="presentation"
-        value={ProgramType[ProgramType.PRESENTATION]}
-        label="Presentation"
-        onChange={onChange}
+        label={getProgramTypeDisplay(ProgramType.PRESENTATION)}
+        control={
+          <Checkbox
+            value={ProgramType[ProgramType.PRESENTATION]}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="research"
-        value={ProgramType[ProgramType.RESEARCH]}
-        label="Research"
-        onChange={onChange}
+        label={getProgramTypeDisplay(ProgramType.RESEARCH)}
+        control={
+          <Checkbox
+            value={ProgramType[ProgramType.RESEARCH]}
+            onChange={onChange}
+          />
+        }
       />
     </>
   );

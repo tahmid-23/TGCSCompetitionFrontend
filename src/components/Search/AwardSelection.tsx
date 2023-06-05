@@ -1,6 +1,7 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { AwardType } from '../../api/model/competition';
-import MultipleSelect from '../InputComponents/MultipleSelect';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { getAwardTypeDisplay } from '../../api/model/competition';
 
 interface AwardSelectionProps {
   onAwardChange?: (awards: AwardType[]) => void;
@@ -34,44 +35,56 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
   );
 
   return (
-    <>
-      <MultipleSelect
+    <FormGroup>
+      <FormControlLabel
         name="trophy"
-        value={AwardType[AwardType.TROPHY]}
-        label="Trophy"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.TROPHY)}
+        control={
+          <Checkbox value={AwardType[AwardType.TROPHY]} onChange={onChange} />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="medal"
-        value={AwardType[AwardType.MEDAL]}
-        label="Medal"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.MEDAL)}
+        control={
+          <Checkbox value={AwardType[AwardType.MEDAL]} onChange={onChange} />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="money"
-        value={AwardType[AwardType.MONEY]}
-        label="Money"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.MONEY)}
+        control={
+          <Checkbox value={AwardType[AwardType.MONEY]} onChange={onChange} />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="certificate"
-        value={AwardType[AwardType.CERTIFICATE]}
-        label="Certificate"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.CERTIFICATE)}
+        control={
+          <Checkbox
+            value={AwardType[AwardType.CERTIFICATE]}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="recognition"
-        value={AwardType[AwardType.RECOGNITION]}
-        label="Recognition"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.RECOGNITION)}
+        control={
+          <Checkbox
+            value={AwardType[AwardType.RECOGNITION]}
+            onChange={onChange}
+          />
+        }
       />
-      <MultipleSelect
+      <FormControlLabel
         name="other"
-        value={AwardType[AwardType.OTHER]}
-        label="Other"
-        onChange={onChange}
+        label={getAwardTypeDisplay(AwardType.OTHER)}
+        control={
+          <Checkbox value={AwardType[AwardType.OTHER]} onChange={onChange} />
+        }
       />
-    </>
+    </FormGroup>
   );
 };
 

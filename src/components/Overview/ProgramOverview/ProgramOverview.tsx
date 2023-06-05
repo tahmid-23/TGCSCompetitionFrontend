@@ -1,5 +1,9 @@
 import { Typography } from '@mui/material';
-import { Program } from '../../../api/model/program';
+import {
+  Program,
+  getFocusDisplay,
+  getProgramTypeDisplay
+} from '../../../api/model/program';
 
 export interface ProgramOverviewProps {
   program: Program;
@@ -9,7 +13,9 @@ const ProgramOverview = ({ program }: ProgramOverviewProps) => {
   return (
     <>
       <div>
-        <Typography>Program Type: {program.program_type}</Typography>
+        <Typography>
+          Program Type: {getProgramTypeDisplay(program.program_type)}
+        </Typography>
       </div>
       <div>
         <Typography>Monthly Fee: ${program.monthly_fee}</Typography>
@@ -17,7 +23,9 @@ const ProgramOverview = ({ program }: ProgramOverviewProps) => {
       <div>
         <Typography>
           Focuses:{' '}
-          {program.program_focuses.map((focus) => focus.focus).join(', ')}
+          {program.program_focuses
+            .map((focus) => getFocusDisplay(focus.focus))
+            .join(', ')}
         </Typography>
       </div>
       <div>

@@ -1,5 +1,4 @@
 import { PropsWithChildren } from 'react';
-import { useNavigate } from 'react-router';
 import {
   Experience,
   Grade,
@@ -19,8 +18,6 @@ const ExperienceOverview = ({
   experience,
   children
 }: PropsWithChildren<ExperienceOverviewProps>) => {
-  const navigate = useNavigate();
-
   return (
     <Stack className={styles.wrapper} spacing={1} sx={{ margin: 0 }}>
       <div>
@@ -102,18 +99,7 @@ const ExperienceOverview = ({
         </div>
       )}
       {children}
-      <div>
-        <QuickNavigation />
-        &nbsp;
-        <button
-          type="button"
-          onClick={() =>
-            navigate(`/feedback?experienceId=${experience.experience_id}`)
-          }
-        >
-          Submit Feedback
-        </button>
-      </div>
+      <QuickNavigation />
     </Stack>
   );
 };

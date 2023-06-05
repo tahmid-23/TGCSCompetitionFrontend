@@ -1,21 +1,23 @@
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { MenuItem, TextField } from '@mui/material';
+import { CSSProperties, ChangeEvent, useCallback, useState } from 'react';
 import styles from './Dropdown.module.css';
 
 interface DropdownProps<
   T extends string | ReadonlyArray<string> | number | undefined
 > {
   id: string;
+  style?: CSSProperties;
   label: string;
   items: T[];
   defaultChoice?: T;
-  onChange?: (e: SelectChangeEvent<T>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Dropdown = <
   T extends string | ReadonlyArray<string> | number | undefined
 >({
   id,
+  style,
   label,
   items,
   defaultChoice,
@@ -24,7 +26,7 @@ const Dropdown = <
   const [choice, setChoice] = useState(defaultChoice);
 
   const onChangeChoice = useCallback(
-    (e: SelectChangeEvent<T>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setChoice(e.target.value as T);
       onChange?.(e);
     },
@@ -32,14 +34,13 @@ const Dropdown = <
   );
 
   return (
-    <>
-      <InputLabel id={id + '-label'}>{label}</InputLabel>
-      <Select
+    <div style={style}>
+      <TextField
         id={id}
         className={styles.dropdown}
-        labelId={id + '-label'}
         label={label}
         value={choice}
+        select
         onChange={onChangeChoice}
       >
         {items.map((item, index) => {
@@ -49,8 +50,8 @@ const Dropdown = <
             </MenuItem>
           );
         })}
-      </Select>
-    </>
+      </TextField>
+    </div>
   );
 };
 export default Dropdown;
