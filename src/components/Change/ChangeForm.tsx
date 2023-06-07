@@ -1,4 +1,4 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 import GradeSelection from '../Search/GradeSelection';
 import TopicSelection from '../Search/TopicSelection';
 import {
@@ -20,12 +20,19 @@ import {
   Typography
 } from '@mui/material';
 
-export interface ChangeFormProps {
+interface ChangeFormProps {
   experience?: Experience;
   onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
 const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
+  const [grades, setGrades] = useState<Grade[]>(
+    experience?.grades.map((grade) => grade.grade) || []
+  );
+  const [topics, setTopics] = useState<Category[]>(
+    experience?.categories.map((category) => category.category) || []
+  );
+
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={1} sx={{ alignItems: 'flex-start' }}>
@@ -217,93 +224,10 @@ const ChangeForm = ({ experience, onSubmit }: ChangeFormProps) => {
         />
         <Typography>Grades</Typography>
         <div>
-          <GradeSelection
-            checkedA={experience?.grades.some(
-              (grade) => grade.grade === Grade['K-2']
-            )}
-            checkedB={experience?.grades.some(
-              (grade) => grade.grade === Grade['3-5']
-            )}
-            checkedC={experience?.grades.some(
-              (grade) => grade.grade === Grade['6-8']
-            )}
-            checkedD={experience?.grades.some(
-              (grade) => grade.grade === Grade['9-12']
-            )}
-          />
+          <GradeSelection grades={grades} onGradeChange={setGrades} />
         </div>
         <Typography>Categories</Typography>
-        <TopicSelection
-          technology={experience?.categories.some(
-            (category) => category.category === Category.TECHNOLOGY
-          )}
-          science={experience?.categories.some(
-            (category) => category.category === Category.SCIENCE
-          )}
-          biology={experience?.categories.some(
-            (category) => category.category === Category.BIOLOGY
-          )}
-          chemistry={experience?.categories.some(
-            (category) => category.category === Category.CHEMISTRY
-          )}
-          physics={experience?.categories.some(
-            (category) => category.category === Category.PHYSICS
-          )}
-          math={experience?.categories.some(
-            (category) => category.category === Category.MATH
-          )}
-          engineering={experience?.categories.some(
-            (category) => category.category === Category.ENGINEERING
-          )}
-          business={experience?.categories.some(
-            (category) => category.category === Category.BUSINESS
-          )}
-          medical={experience?.categories.some(
-            (category) => category.category === Category.MEDICAL
-          )}
-          culinary={experience?.categories.some(
-            (category) => category.category === Category.CULINARY
-          )}
-          music={experience?.categories.some(
-            (category) => category.category === Category.MUSIC
-          )}
-          athletics={experience?.categories.some(
-            (category) => category.category === Category.ATHLETICS
-          )}
-          art={experience?.categories.some(
-            (category) => category.category === Category.ART
-          )}
-          theater={experience?.categories.some(
-            (category) => category.category === Category.THEATER
-          )}
-          dance={experience?.categories.some(
-            (category) => category.category === Category.DANCE
-          )}
-          languageArts={experience?.categories.some(
-            (category) => category.category === Category['LANGUAGE ARTS']
-          )}
-          geography={experience?.categories.some(
-            (category) => category.category === Category.GEOGRAPHY
-          )}
-          spelling={experience?.categories.some(
-            (category) => category.category === Category.SPELLING
-          )}
-          history={experience?.categories.some(
-            (category) => category.category === Category.HISTORY
-          )}
-          foreignLanguage={experience?.categories.some(
-            (category) => category.category === Category['FOREIGN LANGUAGE']
-          )}
-          chess={experience?.categories.some(
-            (category) => category.category === Category.CHESS
-          )}
-          research={experience?.categories.some(
-            (category) => category.category === Category.RESEARCH
-          )}
-          other={experience?.categories.some(
-            (category) => category.category === Category.OTHER
-          )}
-        />
+        <TopicSelection topics={topics} onTopicChange={setTopics} />
         <Button type="submit" variant="contained">
           Next
         </Button>

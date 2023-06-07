@@ -11,19 +11,6 @@ import {
 } from './model/experience';
 import { Focus, ProgramFocus, ProgramType } from './model/program';
 
-export interface LoginResponse {
-  admin: boolean;
-  hasAccess: boolean;
-}
-
-export async function checkLogin(): Promise<LoginResponse> {
-  const response = await fetch(`${API_BASE_URL}/check-login`, {
-    credentials: 'include'
-  });
-
-  return await response.json();
-}
-
 function createExperienceFromJson(json: unknown): Experience {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const experience = json as any;
@@ -173,4 +160,27 @@ export async function update(
     onRequiresAuthentication();
     throw new Error('Authentication is required.');
   }
+}
+
+export async function refreshRecommendations(
+  topics: Category[],
+  onRequiresAuthentication: () => void
+): Promise<Record<number, number>> {
+  const requestOptions: RequestInit = {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  };
+
+  const response = await fetch(
+    `${API_BASE_URL}/recommendations`,
+    requestOptions
+  );
+  if (response.status === 401) {
+    onRequiresAuthentication();
+    throw new Error('Authentication is required.');
+  }
+
+  return response.json();
 }

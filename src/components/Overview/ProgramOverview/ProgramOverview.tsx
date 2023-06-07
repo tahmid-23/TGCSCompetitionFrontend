@@ -5,7 +5,7 @@ import {
   getProgramTypeDisplay
 } from '../../../api/model/program';
 
-export interface ProgramOverviewProps {
+interface ProgramOverviewProps {
   program?: Program;
 }
 

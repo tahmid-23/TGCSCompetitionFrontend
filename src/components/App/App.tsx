@@ -7,18 +7,23 @@ import EditCompetitionForm from '../Edit/EditCompetitionForm/EditCompetitionForm
 import EditForm from '../Edit/EditForm';
 import EditProgramForm from '../Edit/EditProgramForm/EditProgramForm';
 import FeedbackForm from '../FeedbackForm/FeedbackForm';
-import { Header } from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
 import Token from '../Token/Token';
 import OverviewWrapper from '../Overview/OverviewWrapper/OverviewWrapper';
-import RecommendationWrapper from '../Recommendation/RecommendationWrapper';
 import styles from './App.module.css';
+import { PaletteMode } from '@mui/material';
+import Header from '../Header/Header';
 
-const App = () => {
+interface AppProps {
+  mode: PaletteMode;
+  setMode: (mode: PaletteMode) => void;
+}
+
+const App = ({ mode, setMode }: AppProps) => {
   return (
     <BrowserRouter>
-      <Header />
+      <Header mode={mode} setMode={setMode} />
       <div className={styles.content}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -39,7 +44,6 @@ const App = () => {
             element={<EditProgramForm />}
           />
           <Route path="/feedback" element={<FeedbackForm />} />
-          <Route path="/recommendation" element={<RecommendationWrapper />} />
           <Route path="/login" element={<Login />} />
           <Route path="/token" element={<Token />} />
           <Route path="/admin" element={<Admin />} />

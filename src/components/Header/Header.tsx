@@ -1,10 +1,24 @@
-import { AppBar, Link, Toolbar, Typography, useTheme } from '@mui/material';
+import {
+  AppBar,
+  IconButton,
+  Link,
+  PaletteMode,
+  Toolbar,
+  Typography,
+  useTheme
+} from '@mui/material';
 import styles from './Header.module.css';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { selectLogin } from '../../features/login';
+import { DarkMode, LightMode } from '@mui/icons-material';
 
-export const Header = () => {
+interface HeaderProps {
+  mode: PaletteMode;
+  setMode: (mode: PaletteMode) => void;
+}
+
+const Header = ({ mode, setMode }: HeaderProps) => {
   const theme = useTheme();
   const loginState = useAppSelector(selectLogin);
 
@@ -14,6 +28,11 @@ export const Header = () => {
         <Typography className={styles.title} variant="h4">
           TGCS Competition Viewer
         </Typography>
+        <IconButton
+          onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+        >
+          {mode === 'light' ? <DarkMode /> : <LightMode />}
+        </IconButton>
         {loginState.hasAccess && (
           <div>
             <Link component={RouterLink} to="/">
@@ -36,3 +55,5 @@ export const Header = () => {
     </AppBar>
   );
 };
+
+export default Header;

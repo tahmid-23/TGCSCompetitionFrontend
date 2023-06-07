@@ -1,31 +1,25 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { AwardType } from '../../api/model/competition';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { getAwardTypeDisplay } from '../../api/model/competition';
 
 interface AwardSelectionProps {
+  awards: AwardType[];
   onAwardChange?: (awards: AwardType[]) => void;
 }
 
-const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
-  const [awards, setAwards] = useState<AwardType[]>([]);
-
+const AwardSelection = ({ awards, onAwardChange }: AwardSelectionProps) => {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newAwards;
       if (e.currentTarget.checked) {
-        setAwards(
-          (newAwards = awards.concat(
-            AwardType[e.currentTarget.value as keyof typeof AwardType]
-          ))
+        newAwards = awards.concat(
+          AwardType[e.currentTarget.value as keyof typeof AwardType]
         );
       } else {
-        setAwards(
-          (newAwards = awards.filter(
-            (award) =>
-              award !==
-              AwardType[e.currentTarget.value as keyof typeof AwardType]
-          ))
+        newAwards = awards.filter(
+          (award) =>
+            award !== AwardType[e.currentTarget.value as keyof typeof AwardType]
         );
       }
 
@@ -35,13 +29,14 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
   );
 
   return (
-    <FormGroup>
+    <FormGroup row>
       <FormControlLabel
         label={getAwardTypeDisplay(AwardType.TROPHY)}
         control={
           <Checkbox
             name="trophy"
             value={AwardType[AwardType.TROPHY]}
+            checked={awards.includes(AwardType.TROPHY)}
             onChange={onChange}
           />
         }
@@ -52,6 +47,7 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
           <Checkbox
             name="medal"
             value={AwardType[AwardType.MEDAL]}
+            checked={awards.includes(AwardType.MEDAL)}
             onChange={onChange}
           />
         }
@@ -62,6 +58,7 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
           <Checkbox
             name="money"
             value={AwardType[AwardType.MONEY]}
+            checked={awards.includes(AwardType.MONEY)}
             onChange={onChange}
           />
         }
@@ -72,6 +69,7 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
           <Checkbox
             name="certificate"
             value={AwardType[AwardType.CERTIFICATE]}
+            checked={awards.includes(AwardType.CERTIFICATE)}
             onChange={onChange}
           />
         }
@@ -82,6 +80,7 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
           <Checkbox
             name="recognition"
             value={AwardType[AwardType.RECOGNITION]}
+            checked={awards.includes(AwardType.RECOGNITION)}
             onChange={onChange}
           />
         }
@@ -92,6 +91,7 @@ const AwardSelection = ({ onAwardChange }: AwardSelectionProps) => {
           <Checkbox
             name="other"
             value={AwardType[AwardType.OTHER]}
+            checked={awards.includes(AwardType.OTHER)}
             onChange={onChange}
           />
         }

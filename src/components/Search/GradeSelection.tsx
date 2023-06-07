@@ -1,39 +1,24 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { Grade } from '../../api/model/experience';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
 interface GradeSelectionProps {
-  checkedA?: boolean;
-  checkedB?: boolean;
-  checkedC?: boolean;
-  checkedD?: boolean;
+  grades: Grade[];
   onGradeChange?: (arg0: Grade[]) => void;
 }
 
-const GradeSelection = ({
-  checkedA,
-  checkedB,
-  checkedC,
-  checkedD,
-  onGradeChange
-}: GradeSelectionProps) => {
-  const [grades, setGrades] = useState<Grade[]>([]);
-
+const GradeSelection = ({ grades, onGradeChange }: GradeSelectionProps) => {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newGrades;
       if (e.currentTarget.checked) {
-        setGrades(
-          (newGrades = grades.concat(
-            Grade[e.currentTarget.value as keyof typeof Grade]
-          ))
+        newGrades = grades.concat(
+          Grade[e.currentTarget.value as keyof typeof Grade]
         );
       } else {
-        setGrades(
-          (newGrades = grades.filter(
-            (grade) =>
-              grade !== Grade[e.currentTarget.value as keyof typeof Grade]
-          ))
+        newGrades = grades.filter(
+          (grade) =>
+            grade !== Grade[e.currentTarget.value as keyof typeof Grade]
         );
       }
 
@@ -43,14 +28,14 @@ const GradeSelection = ({
   );
 
   return (
-    <>
+    <FormGroup row>
       <FormControlLabel
         label="K-2"
         control={
           <Checkbox
             name="bucket1"
             value={Grade[Grade['K-2']]}
-            defaultChecked={checkedA}
+            checked={grades.includes(Grade['K-2'])}
             onChange={onChange}
           />
         }
@@ -61,7 +46,7 @@ const GradeSelection = ({
           <Checkbox
             name="bucket2"
             value={Grade[Grade['3-5']]}
-            defaultChecked={checkedB}
+            checked={grades.includes(Grade['3-5'])}
             onChange={onChange}
           />
         }
@@ -72,7 +57,7 @@ const GradeSelection = ({
           <Checkbox
             name="bucket3"
             value={Grade[Grade['6-8']]}
-            defaultChecked={checkedC}
+            checked={grades.includes(Grade['6-8'])}
             onChange={onChange}
           />
         }
@@ -83,12 +68,12 @@ const GradeSelection = ({
           <Checkbox
             name="bucket4"
             value={Grade[Grade['9-12']]}
-            defaultChecked={checkedD}
+            checked={grades.includes(Grade['9-12'])}
             onChange={onChange}
           />
         }
       />
-    </>
+    </FormGroup>
   );
 };
 

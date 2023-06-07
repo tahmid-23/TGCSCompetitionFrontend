@@ -1,77 +1,24 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { Category, getCategoryDisplay } from '../../api/model/experience';
 import { FormControlLabel, Checkbox } from '@mui/material';
 
 interface TopicSelectionProps {
+  topics: Category[];
   onTopicChange?: (arg0: Category[]) => void;
-  technology?: boolean;
-  science?: boolean;
-  biology?: boolean;
-  chemistry?: boolean;
-  physics?: boolean;
-  math?: boolean;
-  engineering?: boolean;
-  business?: boolean;
-  medical?: boolean;
-  culinary?: boolean;
-  music?: boolean;
-  athletics?: boolean;
-  art?: boolean;
-  theater?: boolean;
-  dance?: boolean;
-  languageArts?: boolean;
-  geography?: boolean;
-  spelling?: boolean;
-  history?: boolean;
-  foreignLanguage?: boolean;
-  chess?: boolean;
-  research?: boolean;
-  other?: boolean;
 }
 
-const TopicSelection = ({
-  onTopicChange,
-  technology,
-  science,
-  biology,
-  chemistry,
-  physics,
-  math,
-  engineering,
-  business,
-  medical,
-  culinary,
-  music,
-  athletics,
-  art,
-  theater,
-  dance,
-  languageArts,
-  geography,
-  spelling,
-  history,
-  foreignLanguage,
-  chess,
-  research,
-  other
-}: TopicSelectionProps) => {
-  const [topics, setTopics] = useState<Category[]>([]);
-
+const TopicSelection = ({ topics, onTopicChange }: TopicSelectionProps) => {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newTopics;
       if (e.currentTarget.checked) {
-        setTopics(
-          (newTopics = topics.concat(
-            Category[e.currentTarget.value as keyof typeof Category]
-          ))
+        newTopics = topics.concat(
+          Category[e.currentTarget.value as keyof typeof Category]
         );
       } else {
-        setTopics(
-          (newTopics = topics.filter(
-            (topic) =>
-              topic !== Category[e.currentTarget.value as keyof typeof Category]
-          ))
+        newTopics = topics.filter(
+          (topic) =>
+            topic !== Category[e.currentTarget.value as keyof typeof Category]
         );
       }
 
@@ -88,7 +35,7 @@ const TopicSelection = ({
           <Checkbox
             name="technology"
             value={Category[Category.TECHNOLOGY]}
-            defaultChecked={technology}
+            checked={topics.includes(Category.TECHNOLOGY)}
             onChange={onChange}
           />
         }
@@ -99,7 +46,7 @@ const TopicSelection = ({
           <Checkbox
             name="science"
             value={Category[Category.SCIENCE]}
-            defaultChecked={science}
+            checked={topics.includes(Category.SCIENCE)}
             onChange={onChange}
           />
         }
@@ -110,7 +57,7 @@ const TopicSelection = ({
           <Checkbox
             name="biology"
             value={Category[Category.BIOLOGY]}
-            defaultChecked={biology}
+            checked={topics.includes(Category.BIOLOGY)}
             onChange={onChange}
           />
         }
@@ -121,7 +68,7 @@ const TopicSelection = ({
           <Checkbox
             name="chemistry"
             value={Category[Category.CHEMISTRY]}
-            defaultChecked={chemistry}
+            checked={topics.includes(Category.CHEMISTRY)}
             onChange={onChange}
           />
         }
@@ -132,7 +79,7 @@ const TopicSelection = ({
           <Checkbox
             name="physics"
             value={Category[Category.PHYSICS]}
-            defaultChecked={physics}
+            checked={topics.includes(Category.PHYSICS)}
             onChange={onChange}
           />
         }
@@ -143,7 +90,7 @@ const TopicSelection = ({
           <Checkbox
             name="math"
             value={Category[Category.MATH]}
-            defaultChecked={math}
+            checked={topics.includes(Category.MATH)}
             onChange={onChange}
           />
         }
@@ -154,7 +101,7 @@ const TopicSelection = ({
           <Checkbox
             name="engineering"
             value={Category[Category.ENGINEERING]}
-            defaultChecked={engineering}
+            checked={topics.includes(Category.ENGINEERING)}
             onChange={onChange}
           />
         }
@@ -165,7 +112,7 @@ const TopicSelection = ({
           <Checkbox
             name="business"
             value={Category[Category.BUSINESS]}
-            defaultChecked={business}
+            checked={topics.includes(Category.BUSINESS)}
             onChange={onChange}
           />
         }
@@ -176,7 +123,7 @@ const TopicSelection = ({
           <Checkbox
             name="medical"
             value={Category[Category.MEDICAL]}
-            defaultChecked={medical}
+            checked={topics.includes(Category.MEDICAL)}
             onChange={onChange}
           />
         }
@@ -187,7 +134,7 @@ const TopicSelection = ({
           <Checkbox
             name="culinary"
             value={Category[Category.CULINARY]}
-            defaultChecked={culinary}
+            checked={topics.includes(Category.CULINARY)}
             onChange={onChange}
           />
         }
@@ -198,7 +145,7 @@ const TopicSelection = ({
           <Checkbox
             name="music"
             value={Category[Category.MUSIC]}
-            defaultChecked={music}
+            checked={topics.includes(Category.MUSIC)}
             onChange={onChange}
           />
         }
@@ -209,7 +156,7 @@ const TopicSelection = ({
           <Checkbox
             name="athletics"
             value={Category[Category.ATHLETICS]}
-            defaultChecked={athletics}
+            checked={topics.includes(Category.ATHLETICS)}
             onChange={onChange}
           />
         }
@@ -220,7 +167,7 @@ const TopicSelection = ({
           <Checkbox
             name="art"
             value={Category[Category.ART]}
-            defaultChecked={art}
+            checked={topics.includes(Category.ART)}
             onChange={onChange}
           />
         }
@@ -231,7 +178,7 @@ const TopicSelection = ({
           <Checkbox
             name="theater"
             value={Category[Category.THEATER]}
-            defaultChecked={theater}
+            checked={topics.includes(Category.THEATER)}
             onChange={onChange}
           />
         }
@@ -242,7 +189,7 @@ const TopicSelection = ({
           <Checkbox
             name="dance"
             value={Category[Category.DANCE]}
-            defaultChecked={dance}
+            checked={topics.includes(Category.DANCE)}
             onChange={onChange}
           />
         }
@@ -253,7 +200,7 @@ const TopicSelection = ({
           <Checkbox
             name="languageArts"
             value={Category[Category['LANGUAGE ARTS']]}
-            defaultChecked={languageArts}
+            checked={topics.includes(Category['LANGUAGE ARTS'])}
             onChange={onChange}
           />
         }
@@ -264,7 +211,7 @@ const TopicSelection = ({
           <Checkbox
             name="geography"
             value={Category[Category.GEOGRAPHY]}
-            defaultChecked={geography}
+            checked={topics.includes(Category.GEOGRAPHY)}
             onChange={onChange}
           />
         }
@@ -275,7 +222,7 @@ const TopicSelection = ({
           <Checkbox
             name="spelling"
             value={Category[Category.SPELLING]}
-            defaultChecked={spelling}
+            checked={topics.includes(Category.SPELLING)}
             onChange={onChange}
           />
         }
@@ -286,7 +233,7 @@ const TopicSelection = ({
           <Checkbox
             name="history"
             value={Category[Category.HISTORY]}
-            defaultChecked={history}
+            checked={topics.includes(Category.HISTORY)}
             onChange={onChange}
           />
         }
@@ -297,7 +244,7 @@ const TopicSelection = ({
           <Checkbox
             name="foreignLanguage"
             value={Category[Category['FOREIGN LANGUAGE']]}
-            defaultChecked={foreignLanguage}
+            checked={topics.includes(Category['FOREIGN LANGUAGE'])}
             onChange={onChange}
           />
         }
@@ -308,7 +255,7 @@ const TopicSelection = ({
           <Checkbox
             name="chess"
             value={Category[Category.CHESS]}
-            defaultChecked={chess}
+            checked={topics.includes(Category.CHESS)}
             onChange={onChange}
           />
         }
@@ -319,7 +266,7 @@ const TopicSelection = ({
           <Checkbox
             name="research"
             value={Category[Category.RESEARCH]}
-            defaultChecked={research}
+            checked={topics.includes(Category.RESEARCH)}
             onChange={onChange}
           />
         }
@@ -330,7 +277,7 @@ const TopicSelection = ({
           <Checkbox
             name="other"
             value={Category[Category.OTHER]}
-            defaultChecked={other}
+            checked={topics.includes(Category.OTHER)}
             onChange={onChange}
           />
         }

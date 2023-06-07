@@ -44,7 +44,9 @@ const MemoizedExperienceItemWrapper = memo(ExperienceItemWrapper);
 
 interface ExperienceListProps {
   experiences: Experience[];
+  recommendations?: Record<number, number>;
   filter?: Filter;
+  keyword?: string;
   highlightId?: number;
   onSelect?: (arg0: number | undefined) => void;
   onDelete?: (arg0: number) => void;
@@ -52,7 +54,9 @@ interface ExperienceListProps {
 
 const ExperienceList = ({
   experiences,
+  recommendations,
   filter,
+  keyword,
   highlightId,
   onSelect,
   onDelete
@@ -60,7 +64,11 @@ const ExperienceList = ({
   const theme = useTheme();
 
   const filteredExperiences = experiences.filter((experience) => {
-    if (!filter || filter(experience)) {
+    if (
+      (!keyword ||
+        experience.name.toLowerCase().includes(keyword?.toLowerCase())) &&
+      (!filter || filter(experience))
+    ) {
       return true;
     }
 
@@ -74,6 +82,24 @@ const ExperienceList = ({
   if (filteredExperiences.length === 0) {
     return <Typography>No matches found.</Typography>;
   }
+
+  filteredExperiences.sort((experienceA, experienceB) => {
+    const ratingA = recommendations
+      ? recommendations[experienceA.experience_id] ?? 5
+      : 5;
+    const ratingB = recommendations
+      ? recommendations[experienceB.experience_id] ?? 5
+      : 5;
+
+    if (ratingA < ratingB) {
+      return -1;
+    }
+    if (ratingA === ratingB) {
+      return 0;
+    }
+
+    return 1;
+  });
 
   const listItems: ReactElement[] = [];
   for (const experience of filteredExperiences) {
@@ -93,9 +119,8 @@ const ExperienceList = ({
   return (
     <List
       sx={{
-        // backgroundColor: theme.palette.primary.light,
         padding: 0,
-        border: `0.5vh solid ${theme.palette.primary.dark}`
+        border: `0.25vh solid ${theme.palette.primary.dark}`
       }}
     >
       {listItems}

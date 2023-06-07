@@ -22,7 +22,6 @@ const AddCompetitionForm = () => {
       };
       const awardData = [];
       for (const uuid of uuids) {
-        console.log(e.currentTarget[`award${uuid}`]);
         awardData.push({
           competition_id: competitionId,
           type: e.currentTarget[`award${uuid}`].value,

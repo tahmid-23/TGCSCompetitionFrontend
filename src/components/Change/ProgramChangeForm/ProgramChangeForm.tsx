@@ -43,44 +43,24 @@ const ProgramChangeForm = ({ program, onSubmit }: ProgramAddFormProps) => {
       <Stack sx={{ alignItems: 'flex-start' }} spacing={1}>
         <RadioGroup name="Type" defaultValue={defaultProgramTypeValue} row>
           <FormControlLabel
-            control={
-              <Radio
-                value={ProgramType[ProgramType.INTERN]}
-                defaultChecked={program?.program_type === ProgramType.INTERN}
-                required
-              />
-            }
+            control={<Radio value={ProgramType[ProgramType.INTERN]} required />}
             label={getProgramTypeDisplay(ProgramType.INTERN)}
           />
           <FormControlLabel
             control={
-              <Radio
-                value={ProgramType[ProgramType.PRESENTATION]}
-                defaultChecked={
-                  program?.program_type === ProgramType.PRESENTATION
-                }
-                required
-              />
+              <Radio value={ProgramType[ProgramType.PRESENTATION]} required />
             }
             label={getProgramTypeDisplay(ProgramType.PRESENTATION)}
           />
           <FormControlLabel
             control={
-              <Radio
-                value={ProgramType[ProgramType.RESEARCH]}
-                defaultChecked={program?.program_type === ProgramType.RESEARCH}
-                required
-              />
+              <Radio value={ProgramType[ProgramType.RESEARCH]} required />
             }
             label={getProgramTypeDisplay(ProgramType.RESEARCH)}
           />
           <FormControlLabel
             control={
-              <Radio
-                value={ProgramType[ProgramType.ACADEMIC]}
-                defaultChecked={program?.program_type === ProgramType.ACADEMIC}
-                required
-              />
+              <Radio value={ProgramType[ProgramType.ACADEMIC]} required />
             }
             label={getProgramTypeDisplay(ProgramType.ACADEMIC)}
           />

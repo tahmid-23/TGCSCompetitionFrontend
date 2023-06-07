@@ -1,58 +1,45 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { ProgramType, getProgramTypeDisplay } from '../../api/model/program';
-import { FormControlLabel, Checkbox } from '@mui/material';
+import { FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 interface ProgramSelectionProps {
+  programTypes: ProgramType[];
   onProgramTypeChange?: (arg0: ProgramType[]) => void;
 }
 
 const ProgramSelection = ({
+  programTypes,
   onProgramTypeChange: onFocusChange
 }: ProgramSelectionProps) => {
-  const [focuses, setFocuses] = useState<ProgramType[]>([]);
-
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      let newFocuses;
+      let newProgramTypes;
 
       if (e.currentTarget.checked) {
-        setFocuses(
-          (newFocuses = focuses.concat(
-            ProgramType[e.currentTarget.value as keyof typeof ProgramType]
-          ))
+        newProgramTypes = programTypes.concat(
+          ProgramType[e.currentTarget.value as keyof typeof ProgramType]
         );
       } else {
-        setFocuses(
-          (newFocuses = focuses.filter(
-            (focus) =>
-              focus !==
-              ProgramType[e.currentTarget.value as keyof typeof ProgramType]
-          ))
+        newProgramTypes = programTypes.filter(
+          (focus) =>
+            focus !==
+            ProgramType[e.currentTarget.value as keyof typeof ProgramType]
         );
       }
 
-      onFocusChange?.(newFocuses);
+      onFocusChange?.(newProgramTypes);
     },
-    [onFocusChange, focuses]
+    [onFocusChange, programTypes]
   );
   return (
-    <>
+    <FormGroup row>
       <FormControlLabel
         label={getProgramTypeDisplay(ProgramType.INTERN)}
         control={
           <Checkbox
             name="intern"
             value={ProgramType[ProgramType.INTERN]}
-            onChange={onChange}
-          />
-        }
-      />
-      <FormControlLabel
-        label={getProgramTypeDisplay(ProgramType.ACADEMIC)}
-        control={
-          <Checkbox
-            name="academic"
-            value={ProgramType[ProgramType.ACADEMIC]}
+            checked={programTypes.includes(ProgramType.INTERN)}
             onChange={onChange}
           />
         }
@@ -63,6 +50,7 @@ const ProgramSelection = ({
           <Checkbox
             name="presentation"
             value={ProgramType[ProgramType.PRESENTATION]}
+            checked={programTypes.includes(ProgramType.PRESENTATION)}
             onChange={onChange}
           />
         }
@@ -73,11 +61,23 @@ const ProgramSelection = ({
           <Checkbox
             name="research"
             value={ProgramType[ProgramType.RESEARCH]}
+            checked={programTypes.includes(ProgramType.RESEARCH)}
             onChange={onChange}
           />
         }
       />
-    </>
+      <FormControlLabel
+        label={getProgramTypeDisplay(ProgramType.ACADEMIC)}
+        control={
+          <Checkbox
+            name="academic"
+            value={ProgramType[ProgramType.ACADEMIC]}
+            checked={programTypes.includes(ProgramType.ACADEMIC)}
+            onChange={onChange}
+          />
+        }
+      />
+    </FormGroup>
   );
 };
 
