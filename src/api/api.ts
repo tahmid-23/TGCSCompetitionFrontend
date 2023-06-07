@@ -170,7 +170,33 @@ export async function refreshRecommendations(
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({})
+    body: JSON.stringify({
+      preferenceVec: [
+        Category.TECHNOLOGY,
+        Category.SCIENCE,
+        Category.BIOLOGY,
+        Category.CHEMISTRY,
+        Category.PHYSICS,
+        Category.MATH,
+        Category.ENGINEERING,
+        Category.BUSINESS,
+        Category.MEDICAL,
+        Category.CULINARY,
+        Category.MUSIC,
+        Category.ATHLETICS,
+        Category.ART,
+        Category.THEATER,
+        Category.DANCE,
+        Category['LANGUAGE ARTS'],
+        Category.SPELLING,
+        Category.GEOGRAPHY,
+        Category.HISTORY,
+        Category['FOREIGN LANGUAGE'],
+        Category.CHESS,
+        Category.RESEARCH,
+        Category.OTHER
+      ].map((category) => (topics.includes(category) ? 1 : 0))
+    })
   };
 
   const response = await fetch(

@@ -1,4 +1,5 @@
 import {
+  Button,
   Collapse,
   Divider,
   FormControlLabel,
@@ -109,10 +110,12 @@ function createFilter(
 }
 
 interface FilterMenuProps {
+  topics: Category[];
+  setTopics: (topics: Category[]) => void;
   onChangeFilter?: (filter: Filter) => void;
 }
 
-const FilterMenu = ({ onChangeFilter }: FilterMenuProps) => {
+const FilterMenu = ({ topics, setTopics, onChangeFilter }: FilterMenuProps) => {
   const [experienceType, setExperienceType] = useState<ExperienceType>();
   const [topicsOpen, setTopicsOpen] = useState(false);
   const [grades, setGrades] = useState<Grade[]>([
@@ -120,31 +123,6 @@ const FilterMenu = ({ onChangeFilter }: FilterMenuProps) => {
     Grade['3-5'],
     Grade['6-8'],
     Grade['9-12']
-  ]);
-  const [topics, setTopics] = useState<Category[]>([
-    Category.TECHNOLOGY,
-    Category.SCIENCE,
-    Category.BIOLOGY,
-    Category.CHEMISTRY,
-    Category.PHYSICS,
-    Category.MATH,
-    Category.ENGINEERING,
-    Category.BUSINESS,
-    Category.MEDICAL,
-    Category.CULINARY,
-    Category.MUSIC,
-    Category.ATHLETICS,
-    Category.ART,
-    Category.THEATER,
-    Category.DANCE,
-    Category['LANGUAGE ARTS'],
-    Category.SPELLING,
-    Category.GEOGRAPHY,
-    Category.HISTORY,
-    Category['FOREIGN LANGUAGE'],
-    Category.CHESS,
-    Category.RESEARCH,
-    Category.OTHER
   ]);
   const [awards, setAwards] = useState<AwardType[]>([]);
   const [programTypes, setProgramTypes] = useState<ProgramType[]>([]);
@@ -295,6 +273,51 @@ const FilterMenu = ({ onChangeFilter }: FilterMenuProps) => {
               );
             }}
           />
+          <Button
+            variant="contained"
+            onClick={() => {
+              const newTopics =
+                topics.length === 0
+                  ? [
+                      Category.TECHNOLOGY,
+                      Category.SCIENCE,
+                      Category.BIOLOGY,
+                      Category.CHEMISTRY,
+                      Category.PHYSICS,
+                      Category.MATH,
+                      Category.ENGINEERING,
+                      Category.BUSINESS,
+                      Category.MEDICAL,
+                      Category.CULINARY,
+                      Category.MUSIC,
+                      Category.ATHLETICS,
+                      Category.ART,
+                      Category.THEATER,
+                      Category.DANCE,
+                      Category['LANGUAGE ARTS'],
+                      Category.SPELLING,
+                      Category.GEOGRAPHY,
+                      Category.HISTORY,
+                      Category['FOREIGN LANGUAGE'],
+                      Category.CHESS,
+                      Category.RESEARCH,
+                      Category.OTHER
+                    ]
+                  : [];
+              setTopics(newTopics);
+              onChangeFilter?.(
+                createFilter(
+                  experienceType,
+                  grades,
+                  newTopics,
+                  awards,
+                  programTypes
+                )
+              );
+            }}
+          >
+            {topics.length === 0 ? 'Select All' : 'Clear All'}
+          </Button>
         </Collapse>
       </ListItem>
       {experienceType === ExperienceType.COMPETITION && (

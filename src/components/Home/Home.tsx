@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Experience } from '../../api/model/experience';
+import { Category, Experience } from '../../api/model/experience';
 import ExperienceList, { Filter } from '../ExperienceList/ExperienceList';
 import { useNavigate } from 'react-router-dom';
-import { getExperiences, remove } from '../../api/api';
+import { getExperiences, refreshRecommendations, remove } from '../../api/api';
 import { selectLogin } from '../../features/login';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { Button, InputAdornment, Stack, TextField } from '@mui/material';
@@ -15,6 +15,31 @@ const Home = () => {
   const [filter, setFilter] = useState<Filter>();
   const [highlightId, setHighlightId] = useState<number>();
   const [keyword, setKeyword] = useState('');
+  const [topics, setTopics] = useState<Category[]>([
+    Category.TECHNOLOGY,
+    Category.SCIENCE,
+    Category.BIOLOGY,
+    Category.CHEMISTRY,
+    Category.PHYSICS,
+    Category.MATH,
+    Category.ENGINEERING,
+    Category.BUSINESS,
+    Category.MEDICAL,
+    Category.CULINARY,
+    Category.MUSIC,
+    Category.ATHLETICS,
+    Category.ART,
+    Category.THEATER,
+    Category.DANCE,
+    Category['LANGUAGE ARTS'],
+    Category.SPELLING,
+    Category.GEOGRAPHY,
+    Category.HISTORY,
+    Category['FOREIGN LANGUAGE'],
+    Category.CHESS,
+    Category.RESEARCH,
+    Category.OTHER
+  ]);
   const [recommendations, setRecommendations] =
     useState<Record<number, number>>();
   const navigate = useNavigate();
@@ -73,6 +98,8 @@ const Home = () => {
     <Grid className={styles.wrapper} container rowSpacing={1} columnSpacing={4}>
       <Grid xs={4}>
         <FilterMenu
+          topics={topics}
+          setTopics={setTopics}
           onChangeFilter={(newFilter) => setFilter(() => newFilter)}
         />
       </Grid>
@@ -97,7 +124,19 @@ const Home = () => {
                 Add Experience
               </Button>
             )}
-            <Button variant="contained">Refresh recommendations</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                refreshRecommendations(topics, () => navigate('/login'))
+                  .then(setRecommendations)
+                  .catch((err) => {
+                    console.error(err);
+                    alert('Something went wrong!');
+                  });
+              }}
+            >
+              Refresh recommendations
+            </Button>
           </Stack>
           <ExperienceList
             experiences={experiences || []}

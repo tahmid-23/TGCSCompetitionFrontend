@@ -92,13 +92,13 @@ const ExperienceList = ({
       : 5;
 
     if (ratingA < ratingB) {
-      return -1;
+      return 1;
     }
     if (ratingA === ratingB) {
       return 0;
     }
 
-    return 1;
+    return -1;
   });
 
   const listItems: ReactElement[] = [];
